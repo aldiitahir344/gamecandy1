@@ -291,7 +291,7 @@
             
             <div class="flex flex-col gap-1">
                 <label class="font-semibold text-gray-700 text-sm ml-2">🏫 Kelas</label>
-                <input type="text" value="KELAS V" readonly class="w-full p-3 rounded-xl border-2 border-gray-200 bg-gray-100 text-gray-500 outline-none font-bold text-center cursor-not-allowed">
+                <input type="text" id="input-kelas" value="KELAS V" readonly class="w-full p-3 rounded-xl border-2 border-gray-200 bg-gray-100 text-gray-500 outline-none font-bold text-center cursor-not-allowed">
             </div>
  
             <div class="flex flex-col gap-1">
@@ -831,12 +831,6 @@
         showScreen('screen-game');
     }
 
-    function quitGame() {
-        if (confirm("Apakah kamu yakin ingin keluar dan membatalkan game?")) {
-            showScreen('screen-menu');
-        }
-    }
-
     // Mengacak array
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -844,6 +838,12 @@
             [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
+    }
+
+    function quitGame() {
+        if (confirm("Apakah kamu yakin ingin keluar dan membatalkan game?")) {
+            showScreen('screen-menu');
+        }
     }
 
     // --- GAMEPLAY MECHANICS (Candy Match Match-3 Engine) ---
@@ -1301,18 +1301,27 @@
     function sendScoreToGoogleSheet(nama, absen, benar, salah, skor) {
         const webAppUrl = 'https://script.google.com/macros/s/AKfycbzJWUr_U4p-SAcy0_FMbPMUhANrHWYmqZtTf9mfVi1K-oN2qo_AAp6opun0zB6BvHrkzg/exec';
         const statusEl = document.getElementById('cloud-status');
+        const kelasInput = document.getElementById('input-kelas')?.value || "KELAS V";
 
-        // Mempersiapkan data untuk dikirim (menyediakan parameter bahasa Indonesia & Inggris agar kompatibel penuh)
+        // MEMPERSIAPKAN DATA INTEGRASI PENUH (NAMA, KELAS, ABSEN, NILAI)
         const payload = {
+            // FORMAT UTAMA: KAPITAL (Sesuai nama kolom Google Sheet Anda)
+            NAMA: nama,
+            KELAS: kelasInput,
+            ABSEN: parseInt(absen),
+            NILAI: skor,
+
+            // FORMAT CADANGAN 1: HURUF KECIL
             nama: nama,
+            kelas: kelasInput,
             absen: parseInt(absen),
+            nilai: skor,
+
+            // FORMAT CADANGAN 2: VARIABEL INTEGRAL LAIN
+            skor: skor,
+            SKOR: skor,
             benar: benar,
             salah: salah,
-            skor: skor,
-            name: nama,
-            correct: benar,
-            wrong: salah,
-            score: skor,
             timestamp: new Date().toISOString()
         };
 
@@ -1337,7 +1346,7 @@
         });
     }
 
-    // Simpan data nilai ke daftar leaderboard
+    // Simpan data nilai ke daftar leaderboard lokal
     function saveSiswaScore(nama, absen, benar, skor) {
         let scores = localStorage.getItem('candyEduLeaderboard');
         scores = scores ? JSON.parse(scores) : [];
