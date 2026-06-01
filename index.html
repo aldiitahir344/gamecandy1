@@ -9,64 +9,89 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        :root { --primary: #4fc3f7; --secondary: #81c784; }
         body { font-family: 'Baloo 2', cursive; background-color: #0f172a; display: flex; justify-content: center; align-items: center; min-height: 100dvh; margin: 0; overflow: hidden; }
-        #app-container { width: 100%; max-width: 450px; height: 100dvh; background: #f8fafc; position: relative; overflow: hidden; box-shadow: 0 0 50px rgba(0,0,0,0.3); }
-        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; z-index: 10; padding: 20px; }
+        #app-container { width: 100%; max-width: 450px; height: 100dvh; background: #f8fafc; position: relative; overflow-y: auto; box-shadow: 0 0 50px rgba(0,0,0,0.3); }
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; z-index: 10; padding: 20px; overflow-y: auto; }
         .screen.active { display: flex; }
-        .btn-custom { background: white; border-radius: 1rem; padding: 1rem; font-weight: 800; text-align: center; box-shadow: 0 4px 0 #e2e8f0; border: 2px solid #e2e8f0; transition: all 0.2s; cursor: pointer; }
+        .btn-custom { background: white; border-radius: 1rem; padding: 1rem; font-weight: 800; text-align: center; box-shadow: 0 4px 0 #e2e8f0; border: 2px solid #e2e8f0; transition: all 0.2s; cursor: pointer; margin-bottom: 10px; }
         .btn-custom:active { transform: translateY(4px); box-shadow: 0 0 0 #e2e8f0; }
         .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.5); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; border: 1px solid #e2e8f0; text-align: left; }
     </style>
 </head>
 <body>
 
 <div id="app-container">
+    <!-- Screen: Loading -->
     <section id="screen-loading" class="screen active justify-center items-center">
         <div class="text-6xl animate-bounce">🍬</div>
-        <h1 class="text-2xl font-bold text-blue-600 mt-4">MEMUAT DATA...</h1>
+        <h1 class="text-2xl font-bold text-blue-600 mt-4">MEMUAT SISTEM...</h1>
     </section>
 
-    <!-- Menu Utama -->
+    <!-- Screen: Menu -->
     <section id="screen-menu" class="screen justify-center items-center gap-4">
         <h1 class="text-4xl font-extrabold text-blue-500 mb-8 text-center">CANDY MATCH<br>EDU V</h1>
-        <button class="btn-custom w-full" onclick="showScreen('screen-identity')">▶ MULAI</button>
-        <button class="btn-custom w-full" onclick="showLeaderboard()">🏆 NILAI KELAS</button>
+        <button class="btn-custom w-full" onclick="showScreen('screen-identity')">▶ MULAI GAME</button>
+        <button class="btn-custom w-full" onclick="showLeaderboard()">🏆 LIHAT NILAI</button>
         <button class="btn-custom w-full bg-purple-100" onclick="showScreen('screen-teacher-login')">👩‍🏫 AKSES GURU</button>
     </section>
 
-    <!-- Identitas -->
+    <!-- Screen: Identity -->
     <section id="screen-identity" class="screen justify-center gap-4">
-        <h2 class="text-xl font-bold text-center">IDENTITAS</h2>
+        <h2 class="text-xl font-bold text-center">DATA SISWA</h2>
         <input type="text" id="input-name" placeholder="Nama Lengkap" class="w-full p-4 rounded-xl border-2 border-blue-200">
         <input type="number" id="input-absen" placeholder="No Absen" class="w-full p-4 rounded-xl border-2 border-blue-200">
-        <button class="btn-custom w-full bg-blue-500 text-white" onclick="startGame()">MASUK</button>
+        <button class="btn-custom w-full bg-blue-500 text-white" onclick="startGame()">MULAI</button>
         <button class="text-sm text-gray-500" onclick="showScreen('screen-menu')">Kembali</button>
     </section>
 
-    <!-- Hasil / End Game -->
+    <!-- Screen: Game Area (Mockup Logic) -->
+    <section id="screen-game" class="screen justify-center items-center gap-4">
+        <h2 class="text-2xl font-bold">GAME SEDANG BERJALAN</h2>
+        <div class="glass p-10 w-full text-center">
+            <p>Puzzle Match 3...</p>
+            <button class="btn-custom mt-4" onclick="finishGame()">SELESAI</button>
+        </div>
+    </section>
+
+    <!-- Screen: Result & Submit -->
     <section id="screen-result" class="screen justify-center items-center gap-4">
         <h2 class="text-3xl font-bold">SELESAI!</h2>
         <div class="glass p-6 w-full text-center">
-            <p class="text-lg">Skor Anda: <span id="final-score" class="text-4xl font-bold text-blue-600">0</span></p>
+            <p>Skor Anda: <span id="final-score" class="text-4xl font-bold text-blue-600">0</span></p>
         </div>
         <button id="btn-submit" class="btn-custom w-full bg-green-500 text-white" onclick="submitScore()">KIRIM NILAI KE GURU</button>
-        <button class="btn-custom w-full" onclick="showScreen('screen-menu')">MENU UTAMA</button>
     </section>
 
-    <!-- Leaderboard -->
-    <section id="screen-leaderboard" class="screen overflow-y-auto">
-        <h2 class="text-2xl font-bold mb-4">DAFTAR NILAI</h2>
-        <div id="leaderboard-list" class="flex flex-col gap-2 w-full"></div>
-        <button class="btn-custom w-full mt-4" onclick="showScreen('screen-menu')">KEMBALI</button>
+    <!-- Screen: Teacher Login -->
+    <section id="screen-teacher-login" class="screen justify-center gap-4">
+        <h2 class="text-xl font-bold text-center">LOGIN GURU</h2>
+        <input type="text" id="teacher-user" placeholder="Username" class="w-full p-4 rounded-xl border-2 border-blue-200">
+        <input type="password" id="teacher-pass" placeholder="Password" class="w-full p-4 rounded-xl border-2 border-blue-200">
+        <button class="btn-custom w-full bg-purple-500 text-white" onclick="checkTeacher()">LOGIN</button>
+        <button onclick="showScreen('screen-menu')">Kembali</button>
+    </section>
+
+    <!-- Screen: Teacher Dashboard -->
+    <section id="screen-dashboard" class="screen overflow-y-auto">
+        <h2 class="text-2xl font-bold mb-4">DAFTAR NILAI (GURU)</h2>
+        <button class="btn-custom bg-yellow-400" onclick="copyTable()">📋 SALIN TABEL KE EXCEL</button>
+        <div id="table-container" class="glass p-2 w-full">
+            <table id="leaderboard-table" class="text-sm">
+                <thead><tr><th>Nama</th><th>Absen</th><th>Skor</th></tr></thead>
+                <tbody id="leaderboard-list"></tbody>
+            </table>
+        </div>
+        <button class="btn-custom mt-4" onclick="showScreen('screen-menu')">LOGOUT</button>
     </section>
 </div>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, onSnapshot, addDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+    // Konfigurasi Database
     const appId = "candy-match-edu-v-2026"; 
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
 
@@ -74,30 +99,28 @@
     let currentScore = 0;
     let currentUser = { name: '', absen: '' };
 
-    window.onload = async () => {
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            const auth = getAuth(app);
-            await signInAnonymously(auth);
-            scoresCollection = collection(db, 'artifacts', appId, 'public', 'data', 'scores');
-            window.showScreen('screen-menu');
-        } catch (e) {
-            console.error(e);
-        }
+    window.onload = () => {
+        const app = initializeApp(firebaseConfig);
+        db = getFirestore(app);
+        scoresCollection = collection(db, 'artifacts', appId, 'public', 'data', 'scores');
+        window.showScreen('screen-menu');
+    };
+
+    window.showScreen = (id) => {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
     };
 
     window.startGame = () => {
         currentUser.name = document.getElementById('input-name').value;
         currentUser.absen = document.getElementById('input-absen').value;
-        if(!currentUser.name) return;
-        // Simulasi game
+        if(!currentUser.name) return alert("Masukkan nama!");
         currentScore = Math.floor(Math.random() * 500) + 500;
         document.getElementById('final-score').innerText = currentScore;
-        window.showScreen('screen-result');
-        document.getElementById('btn-submit').disabled = false;
-        document.getElementById('btn-submit').innerText = "KIRIM NILAI KE GURU";
+        window.showScreen('screen-game');
     };
+
+    window.finishGame = () => window.showScreen('screen-result');
 
     window.submitScore = async () => {
         const btn = document.getElementById('btn-submit');
@@ -109,34 +132,41 @@
                 score: currentScore,
                 timestamp: Date.now()
             });
-            btn.innerText = "TERKIRIM!";
-            btn.disabled = true;
-        } catch(e) {
-            btn.innerText = "GAGAL, COBA LAGI";
+            alert("Nilai terkirim!");
+            window.showScreen('screen-menu');
+        } catch(e) { alert("Gagal!"); }
+    };
+
+    window.checkTeacher = () => {
+        if(document.getElementById('teacher-user').value === 'aldi260605' && document.getElementById('teacher-pass').value === '111111aldi') {
+            loadTeacherDashboard();
+        } else {
+            alert("Login Gagal!");
         }
     };
 
-    window.showLeaderboard = () => {
+    const loadTeacherDashboard = () => {
         const list = document.getElementById('leaderboard-list');
-        list.innerHTML = "Memuat...";
-        window.showScreen('screen-leaderboard');
-        
+        window.showScreen('screen-dashboard');
         onSnapshot(query(scoresCollection, orderBy('score', 'desc')), (snapshot) => {
             list.innerHTML = "";
             snapshot.forEach(doc => {
-                const data = doc.data();
-                list.innerHTML += `<div class="glass p-3 flex justify-between">
-                    <span>${data.name} (Absen ${data.absen})</span>
-                    <span class="font-bold text-blue-600">${data.score}</span>
-                </div>`;
+                const d = doc.data();
+                list.innerHTML += `<tr><td>${d.name}</td><td>${d.absen}</td><td>${d.score}</td></tr>`;
             });
         });
     };
 
-    window.showScreen = (id) => {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+    window.copyTable = () => {
+        const el = document.getElementById('leaderboard-table');
+        const range = document.createRange();
+        range.selectNode(el);
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
+        alert("Tabel berhasil disalin! Silakan Paste ke Excel.");
     };
+
+    window.showLeaderboard = () => loadTeacherDashboard();
 </script>
 </body>
 </html>
