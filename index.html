@@ -572,13 +572,11 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, collection, addDoc, getDocs, doc, setDoc, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // --- Firebase Initialization ---
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-    const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    
+    // Ganti ID otomatis dari canvas dengan ID statis jika berjalan di GitHub
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'candy-match-edu-v';
 
     let currentUser = null;
     let cloudScores = [];
@@ -650,14 +648,16 @@
                 await signInAnonymously(auth);
             }
         } catch(e) {
-            console.error("Auth error:", e);
+            console.warn("Auth gagal (abaikan jika Anda belum memasukkan konfigurasi Firebase di GitHub):", e);
+            // Tetap izinkan game jalan secara lokal walau cloud auth gagal
+            currentUser = { uid: "local-user-only" }; 
         }
 
         const intv = setInterval(() => {
             progress += 5;
             document.getElementById('loading-progress').style.width = `${progress}%`;
             document.getElementById('loading-percentage').innerText = `${progress}%`;
-            if (progress >= 100 && currentUser) {
+            if (progress >= 100) {
                 clearInterval(intv);
                 clearInterval(tipInterval);
                 setTimeout(() => { window.showScreen('screen-menu'); }, 500);
@@ -667,48 +667,52 @@
 
     // --- Firebase Realtime Observers ---
     onAuthStateChanged(auth, (user) => {
-        currentUser = user;
         if (user) {
+            currentUser = user;
             setupRealtimeListeners();
         }
     });
 
     function setupRealtimeListeners() {
-        if (!currentUser) return;
+        if (!currentUser || currentUser.uid === "local-user-only") return;
 
-        // Listener untuk Nilai Siswa
-        const scoresRef = collection(db, 'artifacts', appId, 'public', 'data', 'scores');
-        onSnapshot(scoresRef, (snapshot) => {
-            cloudScores = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            cloudScores.sort((a, b) => b.score - a.score); // Sorting memori tertinggi ke terendah
-            
-            // Update UI jika sedang buka menu
-            if (document.getElementById('screen-leaderboard').classList.contains('active')) {
-                window.showLeaderboard();
-            }
-            if (document.getElementById('screen-teacher-dashboard').classList.contains('active')) {
-                renderTeacherDashboardScores();
-            }
-        }, (error) => {
-            console.error("Error fetching scores:", error);
-        });
+        try {
+            // Listener untuk Nilai Siswa
+            const scoresRef = collection(db, 'artifacts', appId, 'public', 'data', 'scores');
+            onSnapshot(scoresRef, (snapshot) => {
+                cloudScores = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                cloudScores.sort((a, b) => b.score - a.score); // Sorting memori tertinggi ke terendah
+                
+                // Update UI jika sedang buka menu
+                if (document.getElementById('screen-leaderboard').classList.contains('active')) {
+                    window.showLeaderboard();
+                }
+                if (document.getElementById('screen-teacher-dashboard').classList.contains('active')) {
+                    renderTeacherDashboardScores();
+                }
+            }, (error) => {
+                console.warn("Sinkronisasi skor gagal:", error);
+            });
 
-        // Listener untuk Soal dari Guru
-        const questionsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'questions');
-        onSnapshot(questionsDocRef, (docSnap) => {
-            if (docSnap.exists() && docSnap.data().data) {
-                activeQuestions = docSnap.data().data;
-            } else {
-                activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
-            }
-            
-            // Coba re-render di menu soal guru jika sedang aktif dan tidak dalam keadaan diedit
-            if (document.getElementById('screen-teacher-dashboard').classList.contains('active') && !document.getElementById('content-soal').classList.contains('hidden')) {
-                renderTeacherDashboardQuestions();
-            }
-        }, (error) => {
-            console.error("Error fetching questions:", error);
-        });
+            // Listener untuk Soal dari Guru
+            const questionsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'questions');
+            onSnapshot(questionsDocRef, (docSnap) => {
+                if (docSnap.exists() && docSnap.data().data) {
+                    activeQuestions = docSnap.data().data;
+                } else {
+                    activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+                }
+                
+                // Coba re-render di menu soal guru jika sedang aktif dan tidak dalam keadaan diedit
+                if (document.getElementById('screen-teacher-dashboard').classList.contains('active') && !document.getElementById('content-soal').classList.contains('hidden')) {
+                    renderTeacherDashboardQuestions();
+                }
+            }, (error) => {
+                console.warn("Sinkronisasi soal gagal:", error);
+            });
+        } catch (e) {
+            console.error("Gagal menjalankan Listener Realtime:", e);
+        }
     }
 
     // --- Expose Navigation & Handlers to Window ---
@@ -897,7 +901,10 @@
     }
 
     window.saveQuestionsBtnClick = async function() {
-        if(!currentUser) return;
+        if(!currentUser || currentUser.uid === "local-user-only") {
+            alert("Sistem penyimpanan tidak terhubung. Periksa Konfigurasi Firebase Anda.");
+            return;
+        }
         window.playSound('click');
         let newQuestions = [];
         for(let idx = 0; idx < MAX_QUESTIONS; idx++) {
@@ -931,7 +938,7 @@
             
         } catch(e) {
             console.error("Gagal simpan soal:", e);
-            alert("Gagal menyimpan soal ke Cloud.");
+            alert("Gagal menyimpan soal ke Cloud. Pastikan aturan keamanan (Security Rules) Firebase Anda sudah tepat.");
         }
     };
  
@@ -963,7 +970,10 @@
     };
 
     window.resetData = async function() {
-        if(!currentUser) return;
+        if(!currentUser || currentUser.uid === "local-user-only") {
+            alert("Sistem penyimpanan tidak terhubung.");
+            return;
+        }
         if(confirm("Apakah Anda yakin ingin menghapus SEMUA data nilai siswa di CLOUD? Data tidak dapat dikembalikan.")) {
             try {
                 const scoresRef = collection(db, 'artifacts', appId, 'public', 'data', 'scores');
@@ -1383,7 +1393,7 @@
  
     // Menyimpan data khusus ke Firebase
     async function saveScoreToCloud() {
-        if (!currentUser) return;
+        if (!currentUser || currentUser.uid === "local-user-only") return;
         try {
             const scoresRef = collection(db, 'artifacts', appId, 'public', 'data', 'scores');
             await addDoc(scoresRef, {
