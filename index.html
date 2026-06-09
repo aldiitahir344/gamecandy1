@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>CANDY MATCH EDU V</title>
     
     <!-- Tailwind CSS -->
@@ -14,7 +14,7 @@
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
  
-    <!-- FIREBASE COMPAT SDK (Pasti jalan di semua browser & file lokal) -->
+    <!-- FIREBASE COMPAT SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
@@ -31,104 +31,112 @@
  
         body {
             font-family: 'Baloo 2', cursive;
-            background-color: #0f172a;
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
             overflow: hidden;
-            touch-action: none;
+            -webkit-tap-highlight-color: transparent; /* Mencegah kedip abu-abu saat tap di iOS */
         }
  
         #app-container {
             width: 100%;
-            max-width: 450px;
-            height: 100vh;
-            max-height: 900px;
-            background: linear-gradient(180deg, #e1f5fe 0%, #c8e6c9 50%, #ffffff 100%);
+            max-width: 100%;
+            height: 100dvh; /* Dynamic Viewport untuk iOS/Android Address Bar */
+            background: linear-gradient(180deg, #f0f9ff 0%, #dcfce7 50%, #ffffff 100%);
             position: relative;
             overflow: hidden;
             box-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
         
-        @media (min-width: 451px) {
+        /* Tampilan Khusus Tablet, Laptop, PC */
+        @media (min-width: 480px) {
             #app-container {
-                height: 95vh;
-                border-radius: 24px;
-                border: 8px solid #1e293b;
+                width: 420px;
+                height: 90dvh;
+                max-height: 850px;
+                border-radius: 40px;
+                border: 8px solid #0f172a;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.5);
             }
         }
 
         /* ==========================================================================
-           2. ANIMATIONS
+           2. ANIMATIONS & TRANSITIONS
            ========================================================================== */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
         }
  
         @keyframes pulse-glow {
-            0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
-            50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.9)); }
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(255,255,255,0.4)); }
+            50% { filter: drop-shadow(0 0 15px rgba(255,255,255,0.8)); }
         }
  
         @keyframes bounce-soft {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
         }
  
         @keyframes pop-in {
-            0% { transform: scale(0); opacity: 0; }
-            80% { transform: scale(1.1); opacity: 1; }
+            0% { transform: scale(0.9); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Transisi Halaman (Screen) yang Halus ala Aplikasi Native */
+        .screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: none;
+            flex-direction: column;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+            transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+ 
+        .screen.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .screen.leaving {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.98);
         }
 
         /* ==========================================================================
            3. UI COMPONENTS
            ========================================================================== */
-        .screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            flex-direction: column;
-            z-index: 10;
-        }
- 
-        .screen.active {
-            display: flex;
-            animation: fadeIn 0.3s ease-out;
-        }
-
+        
+        /* --- Buttons --- */
         .btn-custom {
             background: white;
             color: var(--text-color);
             border-radius: 9999px;
-            padding: 12px 24px;
-            font-size: 1.2rem;
+            padding: 14px 24px;
+            font-size: 1.1rem;
             font-weight: 800;
             text-align: center;
             box-shadow: 0 6px 0 #e5e7eb, 0 10px 15px -3px rgba(0,0,0,0.1);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efek pantul/bouncy */
             border: 2px solid #f3f4f6;
             cursor: pointer;
-            width: 80%;
-            margin: 8px auto;
+            width: 85%;
+            max-width: 320px;
+            margin: 6px auto;
             position: relative;
             overflow: hidden;
+            transform: translateY(0) scale(1);
         }
  
         .btn-custom:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #e5e7eb, 0 5px 5px -3px rgba(0,0,0,0.1);
+            transform: translateY(4px) scale(0.98);
+            box-shadow: 0 2px 0 #e5e7eb, 0 4px 6px -2px rgba(0,0,0,0.1);
         }
  
         .btn-primary {
@@ -139,7 +147,7 @@
         }
         
         .btn-primary:active {
-            box-shadow: 0 2px 0 #f472b6, 0 5px 5px -3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 0 #f472b6, 0 4px 6px -2px rgba(0,0,0,0.1);
         }
         
         .btn-teacher {
@@ -150,11 +158,12 @@
         }
 
         .btn-teacher:active {
-            box-shadow: 0 2px 0 #8b5cf6, 0 5px 5px -3px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 0 #8b5cf6, 0 4px 6px -2px rgba(0,0,0,0.1);
         }
 
+        /* --- Game Board & Emoticons --- */
         .emoticon {
-            font-size: 2.5rem;
+            font-size: clamp(1.8rem, 7vw, 2.5rem); /* Skala dinamis dari HP terkecil ke layar normal */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -163,24 +172,26 @@
             user-select: none;
             cursor: grab;
             animation: pulse-glow 3s infinite, float 4s infinite ease-in-out;
-            transition: transform 0.2s;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         
         .emoticon:active {
             cursor: grabbing;
-            transform: scale(0.9);
+            transform: scale(0.85);
         }
  
         .grid-cell {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 12px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            overflow: hidden;
         }
 
+        /* --- Background Particles --- */
         .bg-particles {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -195,19 +206,23 @@
             animation: float 6s infinite ease-in-out;
         }
 
+        /* --- Glass Panels --- */
         .glass-panel {
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border: 2px solid white;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 28px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.05);
         }
 
+        /* --- Loading Bar --- */
         .loading-bar-container {
             width: 80%;
-            height: 20px;
+            max-width: 250px;
+            height: 16px;
             background: #e5e7eb;
-            border-radius: 10px;
+            border-radius: 999px;
             overflow: hidden;
             border: 2px solid white;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
@@ -217,19 +232,20 @@
             height: 100%;
             width: 0%;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
-            border-radius: 10px;
+            border-radius: 999px;
             transition: width 0.1s linear;
         }
 
+        /* --- Combo Text --- */
         #combo-text {
             position: absolute;
             top: 40%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
+            transform: translate(-50%, -50%) scale(0.5);
+            font-size: clamp(2.5rem, 10vw, 4rem);
             font-weight: 900;
             color: #ffeb3b;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5), 2px 2px 0 #f57f17;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.4), 2px 2px 0 #f57f17;
             z-index: 50;
             pointer-events: none;
             opacity: 0;
@@ -237,9 +253,22 @@
             line-height: 1;
         }
 
+        /* --- Modals --- */
+        .modal-box {
+            transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.95) translateY(10px);
+            opacity: 0;
+        }
+        .modal-box.show {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        /* --- Custom Scrollbar --- */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #93c5fd; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background: #94a3b8; }
     </style>
 </head>
 <body>
@@ -247,235 +276,237 @@
 <div id="app-container">
     <!-- BACKGROUND ELEMENTS -->
     <div class="bg-particles" id="bg-particles">
-        <div class="floating-icon" style="top: 10%; left: 10%; animation-delay: 0s;">📚</div>
-        <div class="floating-icon" style="top: 20%; left: 80%; animation-delay: 1s;">💡</div>
-        <div class="floating-icon" style="top: 70%; left: 15%; animation-delay: 2s;">✏️</div>
-        <div class="floating-icon" style="top: 80%; left: 75%; animation-delay: 3s;">🏫</div>
-        <div class="floating-icon" style="top: 50%; left: 50%; animation-delay: 4s; font-size: 4rem; opacity: 0.05;">🌸</div>
+        <div class="floating-icon" style="top: 8%; left: 10%; animation-delay: 0s;">📚</div>
+        <div class="floating-icon" style="top: 15%; left: 82%; animation-delay: 1s;">💡</div>
+        <div class="floating-icon" style="top: 75%; left: 12%; animation-delay: 2s;">✏️</div>
+        <div class="floating-icon" style="top: 85%; left: 78%; animation-delay: 3s;">🏫</div>
+        <div class="floating-icon" style="top: 50%; left: 50%; animation-delay: 4s; font-size: 5rem; opacity: 0.05;">🌸</div>
     </div>
  
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
-        <div class="text-6xl mb-4 animate-bounce">🌸</div>
-        <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">CANDY MATCH<br>EDU V</h1>
-        <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
+        <div class="text-7xl mb-6" style="animation: bounce-soft 2s infinite;">🌸</div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">CANDY MATCH<br>EDU V</h1>
+        <p class="text-gray-600 font-semibold mb-10 text-sm sm:text-base">"Belajar Sambil Bermain"</p>
         
-        <div class="loading-bar-container mb-4">
+        <div class="loading-bar-container mb-3">
             <div id="loading-progress" class="loading-bar"></div>
         </div>
-        <p id="loading-percentage" class="text-blue-500 font-bold mb-6">0%</p>
-        <p id="loading-cloud" class="text-xs text-purple-600 font-bold mb-2 opacity-0 transition-opacity">Menghubungkan ke Cloud...</p>
+        <p id="loading-percentage" class="text-blue-500 font-bold mb-5 text-sm">0%</p>
+        <p id="loading-cloud" class="text-xs sm:text-sm text-purple-600 font-bold mb-4 opacity-0 transition-opacity">Menghubungkan ke Cloud...</p>
         
-        <div class="glass-panel px-6 py-3 text-center">
-            <p id="loading-tip" class="text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
+        <div class="glass-panel px-6 py-3 text-center mx-6">
+            <p id="loading-tip" class="text-xs sm:text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
         </div>
     </section>
  
     <!-- SCREEN: MAIN MENU -->
     <section id="screen-menu" class="screen justify-center items-center">
-        <div class="text-center mb-8 animation-pop-in">
-            <div class="text-7xl mb-2 inline-block" style="animation: bounce-soft 2s infinite;">🌸</div>
-            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">CANDY MATCH<br>EDU V</h1>
-            <p class="text-lg text-gray-600 font-bold bg-white px-4 py-1 rounded-full inline-block shadow-sm">Belajar Sambil Bermain</p>
-            <div id="cloud-status" class="mt-2 text-xs font-bold bg-green-100 text-green-600 px-3 py-1 rounded-full inline-block shadow-sm">☁️ Cloud Terhubung</div>
+        <div class="text-center mb-8" style="animation: pop-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+            <div class="text-7xl mb-3 inline-block" style="animation: float 4s infinite ease-in-out;">🌸</div>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-2" style="line-height: 1.1;">CANDY MATCH<br>EDU V</h1>
+            <p class="text-sm sm:text-base text-gray-600 font-bold bg-white px-5 py-1.5 rounded-full inline-block shadow-sm">Belajar Sambil Bermain</p>
+            <div id="cloud-status" class="mt-3 text-[10px] sm:text-xs font-bold bg-green-100 text-green-600 px-3 py-1 rounded-full inline-block shadow-sm transition-all">☁️ Cloud Terhubung</div>
         </div>
  
-        <div class="w-full flex flex-col gap-3 px-6 z-20">
-            <button class="btn-custom btn-primary" onclick="showScreen('screen-identity'); playSound('click')">▶ MULAI</button>
-            <button class="btn-custom" onclick="showScreen('screen-tutorial'); playSound('click')">📖 CARA BERMAIN</button>
+        <div class="w-full flex flex-col gap-2 sm:gap-3 px-6 z-20">
+            <button class="btn-custom btn-primary" onclick="transitionTo('screen-identity'); playSound('click')">▶ MULAI</button>
+            <button class="btn-custom" onclick="transitionTo('screen-tutorial'); playSound('click')">📖 CARA BERMAIN</button>
             <button class="btn-custom" onclick="showLeaderboard(); playSound('click')">🏆 NILAI (100)</button>
-            <button class="btn-custom" onclick="showScreen('screen-settings'); playSound('click')">⚙ PENGATURAN</button>
-            <button class="btn-custom btn-teacher" onclick="showScreen('screen-teacher-login'); playSound('click')">👩‍🏫 AKSES GURU</button>
+            <button class="btn-custom" onclick="transitionTo('screen-settings'); playSound('click')">⚙ PENGATURAN</button>
+            <button class="btn-custom btn-teacher" onclick="transitionTo('screen-teacher-login'); playSound('click')">👩‍🏫 AKSES GURU</button>
         </div>
     </section>
  
     <!-- SCREEN: IDENTITY -->
-    <section id="screen-identity" class="screen justify-center items-center px-6">
-        <div class="glass-panel w-full p-6 flex flex-col gap-4 relative">
-            <button class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-2xl" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
+    <section id="screen-identity" class="screen justify-center items-center px-4 sm:px-6">
+        <div class="glass-panel w-full p-6 sm:p-8 flex flex-col gap-4 relative">
+            <button class="absolute top-4 left-4 text-gray-400 hover:text-gray-600 text-2xl transition-transform active:scale-75" onclick="transitionTo('screen-menu'); playSound('click')">⬅</button>
             
-            <h2 class="text-2xl font-bold text-center text-blue-600 mt-2 mb-4">📋 IDENTITAS PEMAIN</h2>
+            <h2 class="text-xl sm:text-2xl font-bold text-center text-blue-600 mt-4 mb-2">📋 IDENTITAS PEMAIN</h2>
             
             <div class="flex flex-col gap-1">
-                <label class="font-semibold text-gray-700 text-sm ml-2">👤 Nama Lengkap</label>
-                <input type="text" id="input-name" placeholder="Tulis nama" class="w-full p-3 rounded-xl border-2 border-blue-200 focus:border-blue-500 outline-none font-sans bg-white shadow-inner">
+                <label class="font-semibold text-gray-700 text-xs sm:text-sm ml-2">👤 Nama Lengkap</label>
+                <input type="text" id="input-name" placeholder="Tulis nama" class="w-full p-3 sm:p-4 rounded-2xl border-2 border-blue-200 focus:border-blue-500 outline-none font-sans bg-white shadow-inner transition-colors text-sm sm:text-base">
             </div>
             
             <div class="flex flex-col gap-1">
-                <label class="font-semibold text-gray-700 text-sm ml-2">🏫 Kelas</label>
-                <input type="text" value="KELAS V" readonly class="w-full p-3 rounded-xl border-2 border-gray-200 bg-gray-100 text-gray-500 outline-none font-bold text-center cursor-not-allowed">
+                <label class="font-semibold text-gray-700 text-xs sm:text-sm ml-2">🏫 Kelas</label>
+                <input type="text" value="KELAS V" readonly class="w-full p-3 sm:p-4 rounded-2xl border-2 border-gray-200 bg-gray-100 text-gray-500 outline-none font-bold text-center cursor-not-allowed text-sm sm:text-base">
             </div>
  
             <div class="flex flex-col gap-1">
-                <label class="font-semibold text-gray-700 text-sm ml-2">🔢 Nomor Absen</label>
-                <input type="number" id="input-absen" placeholder="Masukkan nomor" class="w-full p-3 rounded-xl border-2 border-blue-200 focus:border-blue-500 outline-none font-sans bg-white shadow-inner">
+                <label class="font-semibold text-gray-700 text-xs sm:text-sm ml-2">🔢 Nomor Absen</label>
+                <input type="number" id="input-absen" placeholder="Masukkan nomor" class="w-full p-3 sm:p-4 rounded-2xl border-2 border-blue-200 focus:border-blue-500 outline-none font-sans bg-white shadow-inner transition-colors text-sm sm:text-base">
             </div>
  
-            <p id="identity-error" class="text-red-500 text-sm text-center font-semibold h-5 opacity-0 transition-opacity">Lengkapi data terlebih dahulu!</p>
+            <p id="identity-error" class="text-red-500 text-xs sm:text-sm text-center font-semibold h-4 sm:h-5 opacity-0 transition-opacity">Lengkapi data terlebih dahulu!</p>
  
-            <button class="btn-custom btn-primary w-full mt-2" onclick="startGame()">▶ MASUK GAME</button>
+            <button class="btn-custom btn-primary w-full max-w-full mt-2" onclick="startGame()">▶ MASUK GAME</button>
         </div>
     </section>
  
     <!-- SCREEN: TUTORIAL -->
-    <section id="screen-tutorial" class="screen justify-start items-center p-6 overflow-y-auto">
-        <div class="glass-panel w-full p-6 pb-8 relative mt-10">
-            <h2 class="text-2xl font-bold text-center text-blue-600 mb-6 border-b-2 border-blue-100 pb-2">📖 CARA BERMAIN</h2>
-            <div class="text-sm font-semibold text-gray-700 space-y-3 font-sans">
-                <p class="flex gap-2"><span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">1</span> Geser emotikon (Kanan, Kiri, Atas, Bawah).</p>
-                <p class="flex gap-2"><span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">2</span> Susun minimal 3 emot yang sama.</p>
-                <div class="flex justify-center items-center gap-2 my-4 bg-white p-2 rounded-xl shadow-inner">
-                    <span class="text-3xl">🌸</span><span class="text-3xl">🌸</span><span class="text-3xl">🌸</span>
+    <section id="screen-tutorial" class="screen justify-start items-center p-4 sm:p-6 overflow-y-auto custom-scrollbar">
+        <div class="glass-panel w-full p-6 sm:p-8 pb-8 relative mt-6 sm:mt-10 mb-10">
+            <h2 class="text-xl sm:text-2xl font-bold text-center text-blue-600 mb-6 border-b-2 border-blue-100 pb-3">📖 CARA BERMAIN</h2>
+            <div class="text-xs sm:text-sm font-semibold text-gray-700 space-y-4 font-sans">
+                <p class="flex gap-3"><span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">1</span> Geser emotikon (Kanan, Kiri, Atas, Bawah).</p>
+                <p class="flex gap-3"><span class="bg-blue-100 text-blue-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">2</span> Susun minimal 3 emot yang sama.</p>
+                <div class="flex justify-center items-center gap-2 my-5 bg-white p-3 rounded-2xl shadow-inner border border-gray-100">
+                    <span class="text-2xl sm:text-3xl">🌸</span><span class="text-2xl sm:text-3xl">🌸</span><span class="text-2xl sm:text-3xl">🌸</span>
                     <span class="text-xl mx-2 text-gray-400">➡️</span>
-                    <span class="text-3xl animate-ping">💥</span>
+                    <span class="text-2xl sm:text-3xl animate-ping">💥</span>
                 </div>
-                <p class="flex gap-2"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">3</span> Lakukan 3 kali Match untuk memunculkan soal.</p>
-                <p class="flex gap-2"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">4</span> Jawab soal pilihan ganda.</p>
-                <p class="flex gap-2"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">5</span> Nilai akhir dihitung otomatis 0-100 berdasarkan jumlah soal.</p>
-                <p class="flex gap-2"><span class="bg-red-100 text-red-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">6</span> Jawaban salah dilewati tanpa pengurangan.</p>
-                <p class="flex gap-2"><span class="bg-purple-100 text-purple-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">7</span> Total soal ditentukan oleh guru.</p>
+                <p class="flex gap-3"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">3</span> Lakukan 3 kali Match untuk memunculkan soal.</p>
+                <p class="flex gap-3"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">4</span> Jawab soal pilihan ganda.</p>
+                <p class="flex gap-3"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">5</span> Nilai akhir dihitung otomatis 0-100 berdasarkan jumlah soal.</p>
+                <p class="flex gap-3"><span class="bg-red-100 text-red-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">6</span> Jawaban salah dilewati tanpa pengurangan.</p>
+                <p class="flex gap-3"><span class="bg-purple-100 text-purple-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">7</span> Total soal ditentukan oleh guru.</p>
             </div>
-            <button class="btn-custom w-full mt-8" onclick="showScreen('screen-menu'); playSound('click')">⬅ KEMBALI</button>
+            <button class="btn-custom w-full max-w-full mt-8" onclick="transitionTo('screen-menu'); playSound('click')">⬅ KEMBALI</button>
         </div>
     </section>
  
     <!-- SCREEN: SETTINGS -->
-    <section id="screen-settings" class="screen justify-center items-center p-6">
-        <div class="glass-panel w-full p-6 relative">
-            <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">⚙ PENGATURAN</h2>
-            <div class="flex justify-between items-center bg-white p-3 rounded-xl mb-3 shadow-sm">
-                <span class="font-bold text-gray-600">🎵 Musik</span>
-                <button id="toggle-music" class="w-12 h-6 bg-green-400 rounded-full relative transition-colors duration-300" onclick="toggleSetting('music')">
-                    <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow transition-transform duration-300 transform translate-x-0"></div>
+    <section id="screen-settings" class="screen justify-center items-center p-4 sm:p-6">
+        <div class="glass-panel w-full p-6 sm:p-8 relative">
+            <h2 class="text-xl sm:text-2xl font-bold text-center text-gray-700 mb-6">⚙ PENGATURAN</h2>
+            
+            <div class="flex justify-between items-center bg-white p-4 rounded-2xl mb-3 shadow-sm border border-gray-50">
+                <span class="font-bold text-gray-600 text-sm sm:text-base">🎵 Musik Latar</span>
+                <button id="toggle-music" class="w-14 h-7 bg-green-400 rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('music')">
+                    <div class="w-6 h-6 bg-white rounded-full absolute top-0.5 right-0.5 shadow-md transition-transform duration-300 transform translate-x-0"></div>
                 </button>
             </div>
-            <div class="flex justify-between items-center bg-white p-3 rounded-xl mb-3 shadow-sm">
-                <span class="font-bold text-gray-600">🔊 Efek Suara</span>
-                <button id="toggle-sfx" class="w-12 h-6 bg-green-400 rounded-full relative transition-colors duration-300" onclick="toggleSetting('sfx')">
-                    <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow transition-transform duration-300"></div>
+            
+            <div class="flex justify-between items-center bg-white p-4 rounded-2xl mb-6 shadow-sm border border-gray-50">
+                <span class="font-bold text-gray-600 text-sm sm:text-base">🔊 Efek Suara</span>
+                <button id="toggle-sfx" class="w-14 h-7 bg-green-400 rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('sfx')">
+                    <div class="w-6 h-6 bg-white rounded-full absolute top-0.5 right-0.5 shadow-md transition-transform duration-300"></div>
                 </button>
             </div>
-            <button class="btn-custom w-full mt-4" onclick="showScreen('screen-menu'); playSound('click')">⬅ KEMBALI</button>
+            
+            <button class="btn-custom w-full max-w-full" onclick="transitionTo('screen-menu'); playSound('click')">⬅ KEMBALI</button>
         </div>
     </section>
  
     <!-- SCREEN: TEACHER LOGIN -->
-    <section id="screen-teacher-login" class="screen justify-center items-center p-6 bg-purple-50">
-        <div class="glass-panel w-full p-6 flex flex-col gap-4 relative border-purple-200 border-4">
-            <button class="absolute top-4 left-4 text-gray-400 hover:text-purple-600 text-2xl" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
+    <section id="screen-teacher-login" class="screen justify-center items-center p-4 sm:p-6 bg-purple-50">
+        <div class="glass-panel w-full p-6 sm:p-8 flex flex-col gap-4 relative border-purple-200 border-4">
+            <button class="absolute top-4 left-4 text-gray-400 hover:text-purple-600 text-2xl transition-transform active:scale-75" onclick="transitionTo('screen-menu'); playSound('click')">⬅</button>
             
-            <div class="text-center text-5xl mt-2 mb-2">👩‍🏫</div>
-            <h2 class="text-2xl font-bold text-center text-purple-700 mb-2">AKSES GURU</h2>
-            <p class="text-xs text-center text-gray-500 font-sans mb-4">Silakan login untuk mengelola soal dan melihat rekap nilai siswa.</p>
+            <div class="text-center text-5xl mt-4 mb-2">👩‍🏫</div>
+            <h2 class="text-xl sm:text-2xl font-bold text-center text-purple-700 mb-2">AKSES GURU</h2>
+            <p class="text-xs sm:text-sm text-center text-gray-500 font-sans mb-4 px-2">Silakan login untuk mengelola soal dan melihat rekap nilai siswa secara live.</p>
             
             <div class="flex flex-col gap-1">
-                <label class="font-semibold text-gray-700 text-sm ml-2">Username</label>
-                <input type="text" id="teacher-username" class="w-full p-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 outline-none font-sans bg-white shadow-inner">
+                <label class="font-semibold text-gray-700 text-xs sm:text-sm ml-2">Username</label>
+                <input type="text" id="teacher-username" class="w-full p-3 sm:p-4 rounded-2xl border-2 border-purple-200 focus:border-purple-500 outline-none font-sans bg-white shadow-inner transition-colors text-sm sm:text-base">
             </div>
             
             <div class="flex flex-col gap-1">
-                <label class="font-semibold text-gray-700 text-sm ml-2">Password</label>
-                <input type="password" id="teacher-password" class="w-full p-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 outline-none font-sans bg-white shadow-inner">
+                <label class="font-semibold text-gray-700 text-xs sm:text-sm ml-2">Password</label>
+                <input type="password" id="teacher-password" class="w-full p-3 sm:p-4 rounded-2xl border-2 border-purple-200 focus:border-purple-500 outline-none font-sans bg-white shadow-inner transition-colors text-sm sm:text-base">
             </div>
  
-            <p id="teacher-error" class="text-red-500 text-sm text-center font-semibold h-5 opacity-0 transition-opacity">Username atau Password salah!</p>
+            <p id="teacher-error" class="text-red-500 text-xs sm:text-sm text-center font-semibold h-4 opacity-0 transition-opacity">Username atau Password salah!</p>
  
-            <button class="btn-custom btn-teacher w-full mt-2" onclick="loginTeacher()">MASUK</button>
+            <button class="btn-custom btn-teacher w-full max-w-full mt-2" onclick="loginTeacher()">MASUK</button>
         </div>
     </section>
  
     <!-- SCREEN: TEACHER DASHBOARD -->
-    <section id="screen-teacher-dashboard" class="screen bg-gray-100">
+    <section id="screen-teacher-dashboard" class="screen bg-gray-50">
         <!-- Dashboard Header -->
-        <div class="w-full bg-purple-600 text-white p-4 flex justify-between items-center shadow-md z-20">
-            <h2 class="font-bold text-lg flex items-center gap-2"><span class="animate-pulse">☁️</span> Dashboard Guru</h2>
-            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold shadow" onclick="logoutTeacher()">Keluar</button>
+        <div class="w-full bg-purple-600 text-white p-4 sm:p-5 flex justify-between items-center shadow-lg z-20 sticky top-0">
+            <h2 class="font-bold text-base sm:text-lg flex items-center gap-2"><span class="animate-pulse">☁️</span> Dashboard Guru</h2>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-xl text-xs sm:text-sm font-bold shadow-md transition-transform active:scale-95" onclick="logoutTeacher()">Keluar</button>
         </div>
  
         <!-- Dashboard Tabs -->
-        <div class="flex w-full bg-white shadow-sm z-10 font-sans text-sm font-bold">
-            <button id="tab-nilai" class="flex-1 py-3 text-purple-600 border-b-4 border-purple-600" onclick="switchTeacherTab('nilai')">📊 Rekap Nilai</button>
-            <button id="tab-soal" class="flex-1 py-3 text-gray-500 border-b-4 border-transparent" onclick="switchTeacherTab('soal')">📝 Kelola Soal</button>
+        <div class="flex w-full bg-white shadow-sm z-10 font-sans text-sm sm:text-base font-bold sticky top-[68px] sm:top-[76px]">
+            <button id="tab-nilai" class="flex-1 py-3 sm:py-4 text-purple-600 border-b-4 border-purple-600 transition-colors" onclick="switchTeacherTab('nilai')">📊 Rekap Nilai</button>
+            <button id="tab-soal" class="flex-1 py-3 sm:py-4 text-gray-400 border-b-4 border-transparent hover:text-gray-600 transition-colors" onclick="switchTeacherTab('soal')">📝 Kelola Soal</button>
         </div>
  
         <!-- Tab Content: REKAP NILAI -->
-        <div id="content-nilai" class="flex-1 overflow-y-auto p-4 custom-scrollbar">
-            <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-gray-700">Data Nilai (Cloud)</h3>
-                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow flex items-center gap-1 active:scale-95 transition-transform" onclick="downloadExcel()">
+        <div id="content-nilai" class="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar">
+            <div class="bg-white rounded-2xl shadow-sm p-4 sm:p-6 border border-gray-100">
+                <div class="flex justify-between items-center mb-4 sm:mb-6">
+                    <h3 class="font-bold text-gray-700 text-sm sm:text-base">Data Nilai (Cloud)</h3>
+                    <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-xl text-xs sm:text-sm font-bold shadow flex items-center gap-1 transition-transform active:scale-95" onclick="downloadExcel()">
                         📥 Download Excel
                     </button>
                 </div>
                 
-                <div class="overflow-x-auto border rounded-lg">
-                    <table class="w-full text-sm font-sans text-left min-w-[600px]">
-                        <thead class="bg-gray-50 text-gray-600 border-b">
+                <div class="overflow-x-auto border border-gray-200 rounded-xl">
+                    <table class="w-full text-xs sm:text-sm font-sans text-left min-w-[500px]">
+                        <thead class="bg-gray-50 text-gray-600 border-b border-gray-200">
                             <tr>
-                                <th class="p-2">Nama</th>
-                                <th class="p-2 text-center">Absen</th>
-                                <th class="p-2 text-center">Benar</th>
-                                <th class="p-2 text-center">Salah</th>
-                                <th class="p-2 text-center text-purple-600">Skor (100)</th>
+                                <th class="p-3">Nama</th>
+                                <th class="p-3 text-center">Absen</th>
+                                <th class="p-3 text-center">Benar</th>
+                                <th class="p-3 text-center">Salah</th>
+                                <th class="p-3 text-center text-purple-600">Skor (100)</th>
                             </tr>
                         </thead>
-                        <tbody id="teacher-table-body" class="divide-y text-gray-700">
+                        <tbody id="teacher-table-body" class="divide-y divide-gray-100 text-gray-700">
                             <!-- Injected via JS -->
                         </tbody>
                     </table>
                 </div>
                 
-                <div class="mt-4 flex gap-2">
-                     <button class="flex-1 bg-red-100 text-red-600 font-bold py-2 rounded-lg text-sm" onclick="resetData()">🗑 Hapus Semua Data</button>
+                <div class="mt-6 flex justify-end">
+                     <button class="w-full sm:w-auto bg-red-50 text-red-600 hover:bg-red-100 font-bold py-2.5 px-6 rounded-xl text-sm transition-colors border border-red-100" onclick="resetData()">🗑 Hapus Semua Data</button>
                 </div>
             </div>
         </div>
  
         <!-- Tab Content: KELOLA SOAL -->
-        <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
-            <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 text-xs text-yellow-800 font-sans">
-                <strong>Catatan Cloud:</strong> Tambah, hapus, atau ubah soal di sini. Jumlah soal bebas. Nilai siswa otomatis dihitung skala 100 berdasarkan jumlah soal.
+        <div id="content-soal" class="flex-1 overflow-y-auto p-4 sm:p-6 custom-scrollbar hidden relative pb-28">
+            <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mb-6 text-xs sm:text-sm text-yellow-800 font-sans shadow-sm">
+                <strong>Catatan Cloud:</strong> Tambah, hapus, atau ubah soal di sini. Jumlah soal bebas. Nilai siswa otomatis dihitung ke skala 100 berdasarkan jumlah soal.
             </div>
             
-            <div id="questions-editor" class="space-y-4 font-sans pb-24">
+            <div id="questions-editor" class="space-y-5 font-sans">
                 <!-- Injected via JS -->
             </div>
- 
-            <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-20" style="max-width: 450px; margin: 0 auto; left: 0; right: 0;">
-                <button class="w-full bg-purple-600 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition-transform" onclick="saveQuestions()">💾 SIMPAN SOAL KE CLOUD</button>
-            </div>
+        </div>
+        
+        <!-- Sticky Save Button inside Soal Tab -->
+        <div id="sticky-save-btn" class="absolute bottom-0 left-0 w-full p-4 sm:p-6 bg-gradient-to-t from-white via-white to-transparent z-20 hidden">
+            <button class="w-full bg-purple-600 text-white font-bold py-3.5 sm:py-4 rounded-2xl shadow-xl transition-transform active:scale-95 text-sm sm:text-base hover:bg-purple-700" onclick="saveQuestions()">💾 SIMPAN SOAL KE CLOUD</button>
         </div>
     </section>
  
-    <!-- =========================================================
-         SCREEN: GAMEPLAY
-         ========================================================= -->
+    <!-- SCREEN: GAMEPLAY -->
     <section id="screen-game" class="screen">
         <!-- Game HUD -->
-        <div class="w-full h-24 bg-white/90 backdrop-blur-md shadow-md rounded-b-3xl p-4 flex flex-col justify-between z-20 border-b-4 border-blue-100">
+        <div class="w-full h-auto min-h-[96px] bg-white/95 backdrop-blur-md shadow-lg rounded-b-3xl p-3 sm:p-5 flex flex-col justify-between z-20 border-b-4 border-blue-100">
             <div class="flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex justify-center items-center text-xl shadow-inner border border-blue-200">👦</div>
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex justify-center items-center text-xl sm:text-2xl shadow-inner border border-blue-200">👦</div>
                     <div>
-                        <div id="hud-name" class="font-bold text-sm text-gray-800 leading-none">Nama Pemain</div>
-                        <div class="text-xs text-gray-500 font-sans">Kelas V - Absen <span id="hud-absen"></span></div>
+                        <div id="hud-name" class="font-bold text-sm sm:text-base text-gray-800 leading-none">Nama Pemain</div>
+                        <div class="text-[10px] sm:text-xs text-gray-500 font-sans mt-1">Kelas V - Absen <span id="hud-absen"></span></div>
                     </div>
                 </div>
                 <div class="flex gap-2">
-                    <button class="w-10 h-10 bg-gray-100 rounded-full flex justify-center items-center text-lg active:scale-90 shadow" onclick="toggleMuteInGame()">🔊</button>
-                    <button class="w-10 h-10 bg-red-100 text-red-500 rounded-full flex justify-center items-center text-lg active:scale-90 font-bold shadow" onclick="quitGame()">✖</button>
+                    <button class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-50 rounded-full flex justify-center items-center text-lg sm:text-xl transition-transform active:scale-90 shadow border border-gray-200" onclick="toggleMuteInGame()">🔊</button>
+                    <button class="w-10 h-10 sm:w-12 sm:h-12 bg-red-50 text-red-500 rounded-full flex justify-center items-center text-lg sm:text-xl transition-transform active:scale-90 font-bold shadow border border-red-200" onclick="quitGame()">✖</button>
                 </div>
             </div>
-            <div class="flex justify-between items-end mt-2">
-                <div class="bg-yellow-100 px-4 py-1 rounded-full border border-yellow-300 shadow-sm">
-                    <span class="text-xs text-yellow-700 font-bold">NILAI</span>
-                    <span id="hud-score" class="text-lg font-extrabold text-yellow-600 ml-1">0</span>
+            <div class="flex justify-between items-end mt-3 sm:mt-4">
+                <div class="bg-gradient-to-r from-yellow-100 to-yellow-50 px-4 py-1.5 sm:py-2 rounded-full border border-yellow-300 shadow-sm flex items-center gap-2">
+                    <span class="text-xs sm:text-sm text-yellow-700 font-bold">NILAI</span>
+                    <span id="hud-score" class="text-lg sm:text-xl font-extrabold text-yellow-600 leading-none">0</span>
                 </div>
-                <div class="flex flex-col items-end gap-1">
-                    <div class="text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200 shadow-sm">
+                <div class="flex flex-col items-end gap-1.5">
+                    <div class="text-xs sm:text-sm font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-200 shadow-sm">
                         SOAL: <span id="hud-progress">1</span>/<span id="hud-total">10</span>
                     </div>
-                    <div class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
+                    <div class="text-[9px] sm:text-[10px] font-bold text-green-600 bg-green-50 px-2.5 py-0.5 rounded-full border border-green-200">
                         MATCH: <span id="hud-match-progress">0</span>/3
                     </div>
                 </div>
@@ -483,8 +514,9 @@
         </div>
  
         <!-- Game Board Area -->
-        <div class="flex-1 flex justify-center items-center relative p-4">
-            <div id="game-board" class="w-full aspect-square max-w-[360px] bg-white/60 backdrop-blur-lg rounded-2xl p-2 grid grid-cols-7 grid-rows-7 gap-1 shadow-xl border-4 border-white/80 relative touch-none">
+        <div class="flex-1 flex justify-center items-center relative p-2 sm:p-4 w-full">
+            <!-- Papan Game dibuat sangat responsif dengan vw dan max-w -->
+            <div id="game-board" class="w-[92vw] max-w-[380px] aspect-square bg-white/50 backdrop-blur-md rounded-2xl sm:rounded-3xl p-1.5 sm:p-2.5 grid grid-cols-7 grid-rows-7 gap-1 sm:gap-1.5 shadow-2xl border-4 border-white/70 relative touch-none mx-auto">
                 <!-- Cells generated via JS -->
             </div>
             <div id="combo-text"></div>
@@ -495,34 +527,34 @@
          MODALS & OVERLAYS
          ========================================================= -->
     <!-- Quiz Modal -->
-    <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center items-center p-6 hidden">
-        <div class="bg-white w-full rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-300 border-4 border-blue-200 relative overflow-hidden" id="quiz-box">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-200 rounded-full opacity-20"></div>
-            <div class="absolute -bottom-10 -left-10 w-24 h-24 bg-blue-200 rounded-full opacity-20"></div>
+    <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[70] flex flex-col justify-center items-center p-4 sm:p-6 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-[95%] max-w-sm max-h-[90dvh] overflow-y-auto custom-scrollbar rounded-3xl p-5 sm:p-7 shadow-2xl transition-all duration-300 transform scale-95 border-4 border-blue-200 relative modal-box" id="quiz-box">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-200 rounded-full opacity-20 pointer-events-none"></div>
+            <div class="absolute -bottom-10 -left-10 w-24 h-24 bg-blue-200 rounded-full opacity-20 pointer-events-none"></div>
  
-            <div class="text-center mb-4">
-                <span class="bg-blue-100 text-blue-600 font-bold px-4 py-1 rounded-full text-xs tracking-wider">PERTANYAAN <span id="quiz-number">1</span></span>
+            <div class="text-center mb-5">
+                <span class="bg-blue-100 text-blue-600 font-bold px-4 py-1.5 rounded-full text-[10px] sm:text-xs tracking-wider border border-blue-200 shadow-sm">PERTANYAAN <span id="quiz-number">1</span></span>
             </div>
             
-            <p id="quiz-question" class="text-lg font-bold text-gray-800 text-center mb-6 font-sans leading-relaxed"></p>
+            <p id="quiz-question" class="text-base sm:text-lg font-bold text-gray-800 text-center mb-6 font-sans leading-relaxed"></p>
             
-            <div id="quiz-options" class="flex flex-col gap-3 font-sans">
+            <div id="quiz-options" class="flex flex-col gap-3 font-sans pb-2">
                 <!-- Options injected via JS -->
             </div>
         </div>
     </div>
  
     <!-- Feedback Banner (Benar/Salah) -->
-    <div id="feedback-banner" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[60] flex flex-col items-center pointer-events-none opacity-0">
-        <div id="feedback-icon" class="text-7xl drop-shadow-xl mb-2">🎉</div>
-        <div id="feedback-text" class="text-4xl font-extrabold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] bg-green-500 px-6 py-2 rounded-full border-4 border-white">BENAR!</div>
-        <div id="feedback-score" class="text-2xl font-bold text-yellow-300 drop-shadow-md mt-2">BAGUS SEKALI!</div>
+    <div id="feedback-banner" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[80] flex flex-col items-center pointer-events-none opacity-0 transition-all duration-300 scale-90">
+        <div id="feedback-icon" class="text-6xl sm:text-7xl drop-shadow-2xl mb-2 sm:mb-3">🎉</div>
+        <div id="feedback-text" class="text-3xl sm:text-4xl font-extrabold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] bg-green-500 px-6 sm:px-8 py-2 sm:py-3 rounded-full border-4 border-white shadow-xl">BENAR!</div>
+        <div id="feedback-score" class="text-xl sm:text-2xl font-bold text-yellow-300 drop-shadow-md mt-2 sm:mt-3 bg-black/30 px-4 py-1 rounded-full backdrop-blur-sm">BAGUS SEKALI!</div>
     </div>
  
     <!-- Custom Alerts & Modals -->
-    <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[100] flex flex-col justify-center items-center p-6 hidden">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-blue-200 relative">
-            <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 font-sans mt-4"></p>
+    <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[100] flex flex-col justify-center items-center p-4 sm:p-6 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-[90%] max-w-sm rounded-3xl p-6 sm:p-8 shadow-2xl text-center border-4 border-blue-200 relative modal-box transform scale-95">
+            <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 sm:mb-8 font-sans mt-2 sm:mt-4 text-sm sm:text-base leading-relaxed"></p>
             <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full">
                 <!-- Buttons injected here -->
             </div>
@@ -532,49 +564,49 @@
     <!-- =========================================================
          SCREEN: RESULT
          ========================================================= -->
-    <section id="screen-result" class="screen justify-center items-center p-6 bg-gradient-to-b from-yellow-100 to-orange-100">
-        <div class="glass-panel w-full p-6 flex flex-col items-center text-center relative overflow-hidden border-yellow-300">
-            <div class="absolute top-0 left-0 w-full h-full pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==')] opacity-50"></div>
+    <section id="screen-result" class="screen justify-center items-center p-4 sm:p-6 bg-gradient-to-b from-yellow-100 to-orange-100">
+        <div class="glass-panel w-full p-6 sm:p-8 flex flex-col items-center text-center relative overflow-hidden border-yellow-300 shadow-2xl">
+            <div class="absolute top-0 left-0 w-full h-full pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==')] opacity-40"></div>
             
-            <div class="text-6xl mb-2 animate-bounce mt-4">🏆</div>
-            <h2 class="text-3xl font-extrabold text-yellow-600 mb-1 drop-shadow-sm">LEVEL COMPLETE</h2>
-            <div class="w-16 h-1 bg-yellow-400 rounded-full mb-4"></div>
+            <div class="text-6xl sm:text-7xl mb-3 animate-bounce mt-2 sm:mt-4">🏆</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-yellow-600 mb-2 drop-shadow-sm leading-none">LEVEL COMPLETE</h2>
+            <div class="w-16 h-1.5 bg-yellow-400 rounded-full mb-5"></div>
  
-            <div class="bg-white w-full rounded-2xl p-4 shadow-inner mb-4 relative z-10 font-sans text-left">
-                <p class="text-xs text-gray-500 font-bold mb-1">HASIL AKHIR</p>
-                <div class="flex justify-between border-b py-1 border-gray-100">
+            <div class="bg-white w-full rounded-3xl p-5 sm:p-6 shadow-inner mb-5 relative z-10 font-sans text-left border border-gray-100">
+                <p class="text-[10px] sm:text-xs text-gray-400 font-bold mb-2 tracking-wider">HASIL AKHIR</p>
+                <div class="flex justify-between border-b py-2 border-gray-100 text-sm sm:text-base">
                     <span class="text-gray-600">Nama</span>
-                    <span id="res-name" class="font-bold text-gray-800"></span>
+                    <span id="res-name" class="font-bold text-gray-800 truncate max-w-[150px] text-right"></span>
                 </div>
-                <div class="flex justify-between border-b py-1 border-gray-100">
+                <div class="flex justify-between border-b py-2 border-gray-100 text-sm sm:text-base">
                     <span class="text-gray-600">Kelas</span>
                     <span class="font-bold text-gray-800">V</span>
                 </div>
-                <div class="flex justify-between border-b py-1 border-gray-100">
+                <div class="flex justify-between border-b py-2 border-gray-100 text-sm sm:text-base">
                     <span class="text-gray-600">Absen</span>
                     <span id="res-absen" class="font-bold text-gray-800"></span>
                 </div>
-                <div class="flex justify-between border-b py-1 border-gray-100 mt-2">
+                <div class="flex justify-between border-b py-2 border-gray-100 mt-2 text-sm sm:text-base">
                     <span class="text-green-500 font-bold">Benar</span>
-                    <span id="res-benar" class="font-bold text-green-600"></span>
+                    <span id="res-benar" class="font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-md"></span>
                 </div>
-                <div class="flex justify-between border-b py-1 border-gray-100">
+                <div class="flex justify-between border-b py-2 border-gray-100 text-sm sm:text-base">
                     <span class="text-red-500 font-bold">Salah</span>
-                    <span id="res-salah" class="font-bold text-red-600"></span>
+                    <span id="res-salah" class="font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-md"></span>
                 </div>
-                <div class="flex justify-between pt-2 items-end mt-2">
-                    <span class="text-yellow-600 font-black text-lg">NILAI (100)</span>
-                    <span id="res-skor" class="font-black text-4xl text-yellow-500"></span>
+                <div class="flex justify-between items-end mt-4 pt-2 bg-yellow-50 -mx-5 -mb-5 p-5 rounded-b-3xl border-t border-yellow-100">
+                    <span class="text-yellow-700 font-black text-sm sm:text-base leading-none">NILAI (100)</span>
+                    <span id="res-skor" class="font-black text-4xl sm:text-5xl text-yellow-500 leading-none drop-shadow-md"></span>
                 </div>
             </div>
  
-            <div id="res-predikat" class="text-xl font-black text-white bg-gradient-to-r from-blue-500 to-purple-500 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white">
+            <div id="res-predikat" class="text-lg sm:text-xl font-black text-white bg-gradient-to-r from-blue-500 to-purple-500 px-8 py-2.5 rounded-full shadow-lg mb-6 z-10 border-2 border-white">
                 HEBAT
             </div>
  
-            <div class="w-full flex flex-col gap-2 z-10">
-                <button class="btn-custom btn-primary !w-full !m-0" onclick="startGame()">🔄 MAIN LAGI</button>
-                <button class="btn-custom !w-full !m-0" onclick="showScreen('screen-menu')">🏠 MENU UTAMA</button>
+            <div class="w-full flex flex-col gap-2.5 z-10">
+                <button class="btn-custom btn-primary !w-full !max-w-full !m-0" onclick="startGame()">🔄 MAIN LAGI</button>
+                <button class="btn-custom !w-full !max-w-full !m-0" onclick="transitionTo('screen-menu')">🏠 MENU UTAMA</button>
             </div>
         </div>
     </section>
@@ -582,13 +614,13 @@
     <!-- =========================================================
          SCREEN: LEADERBOARD
          ========================================================= -->
-    <section id="screen-leaderboard" class="screen justify-center items-center p-6 bg-blue-50">
-        <div class="glass-panel w-full p-4 h-[80vh] flex flex-col relative border-blue-200">
-            <h2 class="text-2xl font-bold text-center text-blue-600 mb-4 flex-shrink-0">🏆 TOP 10 NILAI</h2>
-            <div id="leaderboard-list" class="flex-1 overflow-y-auto space-y-2 font-sans pr-2 custom-scrollbar">
+    <section id="screen-leaderboard" class="screen justify-center items-center p-4 sm:p-6 bg-blue-50">
+        <div class="glass-panel w-full p-4 sm:p-6 h-[85dvh] flex flex-col relative border-blue-200">
+            <h2 class="text-xl sm:text-2xl font-bold text-center text-blue-600 mb-4 sm:mb-6 flex-shrink-0">🏆 TOP 10 NILAI</h2>
+            <div id="leaderboard-list" class="flex-1 overflow-y-auto space-y-2 sm:space-y-3 font-sans pr-1 sm:pr-2 custom-scrollbar pb-2">
                 <!-- Injected via JS -->
             </div>
-            <button class="btn-custom w-full mt-4 flex-shrink-0" onclick="showScreen('screen-menu'); playSound('click')">⬅ KEMBALI</button>
+            <button class="btn-custom w-full max-w-full mt-4 sm:mt-6 flex-shrink-0" onclick="transitionTo('screen-menu'); playSound('click')">⬅ KEMBALI</button>
         </div>
     </section>
 
@@ -598,7 +630,7 @@
      JAVASCRIPT LOGIC & FIREBASE INTEGRATION
      ========================================================================== -->
 <script>
-    /* --- 1. FIREBASE CONFIGURATION (Using Compat Libraries for Maximum Stability) --- */
+    /* --- 1. FIREBASE CONFIGURATION (Compat Libraries) --- */
     const isCanvas = typeof __firebase_config !== 'undefined';
     const firebaseConfig = isCanvas ? JSON.parse(__firebase_config) : {
         apiKey: "AIzaSyCam7kcUvKBRlLEP5LhQL9tfAwUDVFmKYU",
@@ -610,7 +642,6 @@
         measurementId: "G-Y1F6PRRG75"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
@@ -624,11 +655,9 @@
     const ROWS = 7;
     const COLS = 7;
     
-    // Akun Guru
     const TEACHER_USER = 'aldi260605';
     const TEACHER_PASS = '111111aldi';
  
-    // Default Soal (Jika di Cloud Kosong)
     const DEFAULT_QUESTIONS = [
         { q: "Benda yang dapat ditarik magnet disebut …", options: ["Cair", "Nonmagnetik", "Magnetik", "Elastis"], answer: 2 },
         { q: "Contoh benda yang dapat ditarik magnet …", options: ["Kayu", "Besi", "Plastik", "Kertas"], answer: 1 },
@@ -638,65 +667,90 @@
     ];
  
     let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
-    let draftQuestions = []; // Untuk diedit di menu guru
-    let allScores = [];      // Menyimpan semua nilai murid
+    let draftQuestions = []; 
+    let allScores = [];      
     let currentUser = null;
-    let board = [];          // Papan permainan
+    let board = [];          
     
     let state = {
-        name: '', 
-        absen: '',
-        score: 0, 
-        correct: 0, 
-        wrong: 0,
-        questionIndex: 0,
-        isAnimating: false,
-        dragStart: null, 
-        dragElement: null, 
-        comboCount: 0,
-        matchesSinceLastQuiz: 0,
-        currentShuffledQuestions: []
+        name: '', absen: '',
+        score: 0, correct: 0, wrong: 0,
+        questionIndex: 0, isAnimating: false,
+        dragStart: null, dragElement: null, comboCount: 0,
+        matchesSinceLastQuiz: 0, currentShuffledQuestions: []
     };
  
-    let settings = { 
-        music: true, 
-        sfx: true 
-    };
+    let settings = { music: true, sfx: true };
 
-    /* --- 3. CORE UTILITIES (UI & Audio) --- */
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => {
-            s.classList.remove('active');
-            s.style.display = 'none';
-        });
+    /* --- 3. UI ANIMATION & SCREEN TRANSITIONS --- */
+    
+    // Fungsi Transisi Halus Antar Layar
+    function transitionTo(id) {
+        const current = document.querySelector('.screen.active');
         const target = document.getElementById(id);
-        target.style.display = 'flex';
-        void target.offsetWidth; // Memicu animasi
-        target.classList.add('active');
+        
+        if (current && current.id !== id) {
+            current.classList.remove('active');
+            current.classList.add('leaving');
+            
+            setTimeout(() => {
+                current.style.display = 'none';
+                current.classList.remove('leaving');
+                
+                target.style.display = 'flex';
+                void target.offsetWidth; // Trigger reflow
+                target.classList.add('active');
+            }, 300); // Wait for CSS transition (0.3s)
+        } else {
+            target.style.display = 'flex';
+            void target.offsetWidth;
+            target.classList.add('active');
+        }
     }
 
-    // Modal Custom (Pengganti alert bawaan yang sering di-blok)
+    // Modal Custom Animations
     function showCustomAlert(message) {
+        const modal = document.getElementById('custom-modal');
+        const box = modal.querySelector('.modal-box');
         document.getElementById('custom-modal-text').innerText = message;
-        document.getElementById('custom-modal-buttons').innerHTML = `<button class="btn-custom btn-primary !w-full !m-0" onclick="closeCustomModal()">OK</button>`;
-        document.getElementById('custom-modal').classList.remove('hidden');
+        document.getElementById('custom-modal-buttons').innerHTML = `<button class="btn-custom btn-primary !w-full !max-w-full !m-0" onclick="closeCustomModal()">Mengerti</button>`;
+        
+        modal.classList.remove('hidden');
+        // Small delay for display:block to apply before animating opacity/transform
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            box.classList.add('show');
+        }, 10);
     }
 
     function showCustomConfirm(message, onConfirm) {
+        const modal = document.getElementById('custom-modal');
+        const box = modal.querySelector('.modal-box');
         document.getElementById('custom-modal-text').innerText = message;
         document.getElementById('custom-modal-buttons').innerHTML = `
-            <button class="btn-custom !w-full !m-0 !bg-gray-200 !text-gray-700 !border-gray-300" onclick="closeCustomModal()">Batal</button>
-            <button class="btn-custom btn-primary !w-full !m-0" onclick="closeCustomModal(); window._confirmAction()">Ya</button>
+            <button class="btn-custom !w-full !max-w-full !m-0 !bg-gray-100 !text-gray-600 !border-gray-200" onclick="closeCustomModal()">Batal</button>
+            <button class="btn-custom btn-primary !w-full !max-w-full !m-0" onclick="closeCustomModal(); setTimeout(window._confirmAction, 300)">Ya, Yakin</button>
         `;
         window._confirmAction = onConfirm;
-        document.getElementById('custom-modal').classList.remove('hidden');
+        
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            box.classList.add('show');
+        }, 10);
     }
 
     function closeCustomModal() {
-        document.getElementById('custom-modal').classList.add('hidden');
+        const modal = document.getElementById('custom-modal');
+        const box = modal.querySelector('.modal-box');
+        modal.style.opacity = '0';
+        box.classList.remove('show');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
     }
 
-    // Sistem Suara (Web Audio API)
+    /* --- AUDIO --- */
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
     
@@ -742,8 +796,6 @@
     }
 
     /* --- 4. STARTUP & FIREBASE LOGIC --- */
-    
-    // Fungsi ini Dijalankan Otomatis Begitu Halaman Selesai Dimuat
     window.onload = function() {
         try {
             initApp();
@@ -754,7 +806,10 @@
     };
 
     function initApp() {
-        showScreen('screen-loading');
+        const loadingScreen = document.getElementById('screen-loading');
+        loadingScreen.style.display = 'flex';
+        loadingScreen.classList.add('active');
+        
         updateSettingsUI();
         
         let progress = 0;
@@ -770,9 +825,8 @@
                 tipEl.innerText = tips[tipIdx];
                 tipEl.style.opacity = 1;
             }, 300);
-        }, 1000);
+        }, 1500); // Slowed down slightly for elegance
  
-        // Animasi Progress Bar
         const intv = setInterval(() => {
             progress += 2;
             document.getElementById('loading-progress').style.width = `${progress}%`;
@@ -780,15 +834,15 @@
             
             if (progress === 50) {
                 document.getElementById('loading-cloud').style.opacity = 1;
-                initFirebaseAuth(); // Login ke Firebase Diam-diam
+                initFirebaseAuth(); 
             }
             
             if (progress >= 100) {
                 clearInterval(intv);
                 clearInterval(tipInterval);
-                setTimeout(() => { showScreen('screen-menu'); }, 500);
+                setTimeout(() => { transitionTo('screen-menu'); }, 400);
             }
-        }, 60); 
+        }, 50); // Faster loading
     }
 
     async function initFirebaseAuth() {
@@ -803,7 +857,7 @@
             const statusEl = document.getElementById('cloud-status');
             if(statusEl) {
                 statusEl.innerText = "☁️ Cloud Gagal";
-                statusEl.className = "mt-2 text-xs font-bold bg-red-100 text-red-600 px-3 py-1 rounded-full inline-block shadow-sm";
+                statusEl.className = "mt-3 text-[10px] sm:text-xs font-bold bg-red-100 text-red-600 px-3 py-1 rounded-full inline-block shadow-sm transition-all";
             }
         }
     }
@@ -816,7 +870,6 @@
         }
     });
 
-    // Mengambil Soal dari Database
     function loadActiveQuestionsFromCloud() {
         if (!currentUser) return;
         
@@ -834,7 +887,6 @@
         }, (error) => console.error("Gagal memuat soal", error));
     }
 
-    // Mengambil Nilai dari Database
     function listenToScoresFromCloud() {
         if (!currentUser) return;
         
@@ -844,7 +896,7 @@
                 allScores.push({ id: doc.id, ...doc.data() });
             });
             
-            allScores.sort((a, b) => b.score - a.score); // Urutkan nilai
+            allScores.sort((a, b) => b.score - a.score); 
 
             if (document.getElementById('screen-teacher-dashboard').classList.contains('active')) {
                 renderTeacherDashboardTable();
@@ -856,12 +908,11 @@
             console.error("Error baca skor: ", error);
             const list = document.getElementById('teacher-table-body');
             if (list) {
-                list.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-red-500 font-bold">Error: Database Terkunci!<br><span class="text-sm font-normal text-gray-500">Ubah Firestore Rules Anda ke 'allow read, write: if true;'</span></td></tr>`;
+                list.innerHTML = `<tr><td colspan="5" class="text-center py-6 px-4 bg-red-50 text-red-500 font-bold rounded-lg border-2 border-red-200 border-dashed">Error: Database Terkunci!<br><span class="text-xs sm:text-sm font-normal text-gray-600 mt-2 block">Ubah aturan Firebase (Firestore Rules) Anda menjadi:<br><code class="bg-white p-1 rounded mt-1 block font-mono text-xs text-red-400">allow read, write: if true;</code></span></td></tr>`;
             }
         });
     }
 
-    // Mengirim Nilai Akhir Anak ke Database
     async function saveScoreToCloud() {
         if (!currentUser) return;
         try {
@@ -895,7 +946,7 @@
             
             renderTeacherDashboardTable();
             renderTeacherQuestionsEditor();
-            showScreen('screen-teacher-dashboard');
+            transitionTo('screen-teacher-dashboard');
         } else {
             err.style.opacity = 1;
             playSound('wrong');
@@ -904,13 +955,24 @@
  
     function logoutTeacher() {
         playSound('click');
-        showScreen('screen-menu');
+        transitionTo('screen-menu');
     }
  
     function switchTeacherTab(tab) {
         playSound('click');
-        document.getElementById('tab-nilai').className = `flex-1 py-3 font-bold ${tab === 'nilai' ? 'text-purple-600 border-b-4 border-purple-600' : 'text-gray-500 border-b-4 border-transparent'}`;
-        document.getElementById('tab-soal').className = `flex-1 py-3 font-bold ${tab === 'soal' ? 'text-purple-600 border-b-4 border-purple-600' : 'text-gray-500 border-b-4 border-transparent'}`;
+        const tabNilai = document.getElementById('tab-nilai');
+        const tabSoal = document.getElementById('tab-soal');
+        const btnSave = document.getElementById('sticky-save-btn');
+        
+        if(tab === 'nilai') {
+            tabNilai.className = "flex-1 py-3 sm:py-4 text-purple-600 border-b-4 border-purple-600 transition-colors";
+            tabSoal.className = "flex-1 py-3 sm:py-4 text-gray-400 border-b-4 border-transparent hover:text-gray-600 transition-colors";
+            btnSave.classList.add('hidden');
+        } else {
+            tabSoal.className = "flex-1 py-3 sm:py-4 text-purple-600 border-b-4 border-purple-600 transition-colors";
+            tabNilai.className = "flex-1 py-3 sm:py-4 text-gray-400 border-b-4 border-transparent hover:text-gray-600 transition-colors";
+            btnSave.classList.remove('hidden');
+        }
         
         document.getElementById('content-nilai').classList.toggle('hidden', tab !== 'nilai');
         document.getElementById('content-soal').classList.toggle('hidden', tab !== 'soal');
@@ -918,19 +980,20 @@
  
     function renderTeacherDashboardTable() {
         const list = document.getElementById('teacher-table-body');
+        if(!list) return;
         list.innerHTML = '';
         
         if(allScores.length === 0) {
-            list.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-400">Belum ada data nilai di Cloud</td></tr>';
+            list.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-gray-400 font-medium">Belum ada data nilai di Cloud</td></tr>';
         } else {
             allScores.forEach(s => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td class="p-2 truncate max-w-[120px] font-semibold">${s.name}</td>
-                    <td class="p-2 text-center">${s.absen}</td>
-                    <td class="p-2 text-center text-green-600 font-bold">${s.correct}</td>
-                    <td class="p-2 text-center text-red-500 font-bold">${s.wrong}</td>
-                    <td class="p-2 text-center text-purple-600 font-bold">${s.score}</td>
+                    <td class="p-3 font-semibold text-gray-800">${s.name}</td>
+                    <td class="p-3 text-center bg-gray-50/50">${s.absen}</td>
+                    <td class="p-3 text-center text-green-600 font-bold bg-green-50/30">${s.correct}</td>
+                    <td class="p-3 text-center text-red-500 font-bold bg-red-50/30">${s.wrong}</td>
+                    <td class="p-3 text-center text-purple-600 font-black bg-purple-50/30">${s.score}</td>
                 `;
                 list.appendChild(tr);
             });
@@ -939,42 +1002,44 @@
 
     function renderTeacherQuestionsEditor() {
         const editor = document.getElementById('questions-editor');
+        if(!editor) return;
         editor.innerHTML = '';
         
         draftQuestions.forEach((q, idx) => {
             const div = document.createElement('div');
-            div.className = 'bg-white p-4 rounded-xl border border-gray-200 shadow-sm relative';
+            div.className = 'bg-white p-5 sm:p-6 rounded-2xl border border-gray-200 shadow-sm relative transition-all hover:shadow-md';
             
             let optionsHTML = '';
             const labels = ['A', 'B', 'C', 'D'];
             for(let i=0; i<4; i++) {
                 optionsHTML += `
-                <div class="flex items-center gap-2 mt-2">
-                    <span class="font-bold text-gray-500 w-6">${labels[i]}</span>
-                    <input type="text" id="draft-q${idx}-opt${i}" value="${q.options[i]}" class="flex-1 p-2 border rounded bg-gray-50 text-sm focus:border-purple-500 outline-none" onchange="updateDraftOption(${idx}, ${i}, this.value)">
-                    <input type="radio" name="draft-q${idx}-answer" value="${i}" ${q.answer === i ? 'checked' : ''} class="w-5 h-5 accent-purple-600 cursor-pointer" onchange="updateDraftAnswer(${idx}, ${i})">
+                <div class="flex items-center gap-3 mt-3">
+                    <span class="font-bold text-gray-400 w-5 text-sm sm:text-base">${labels[i]}</span>
+                    <input type="text" id="draft-q${idx}-opt${i}" value="${q.options[i]}" class="flex-1 p-2.5 sm:p-3 border rounded-xl bg-gray-50 text-xs sm:text-sm focus:border-purple-500 focus:bg-white outline-none transition-colors" onchange="updateDraftOption(${idx}, ${i}, this.value)">
+                    <input type="radio" name="draft-q${idx}-answer" value="${i}" ${q.answer === i ? 'checked' : ''} class="w-5 h-5 sm:w-6 sm:h-6 accent-purple-600 cursor-pointer transition-transform active:scale-90" onchange="updateDraftAnswer(${idx}, ${i})">
                 </div>`;
             }
  
             div.innerHTML = `
-                <div class="flex justify-between items-center mb-2">
-                    <h4 class="font-bold text-purple-600">Soal ${idx + 1}</h4>
-                    <button class="text-red-500 font-bold text-sm bg-red-50 px-2 py-1 rounded hover:bg-red-100 transition-colors" onclick="deleteDraftQuestion(${idx})">🗑 Hapus</button>
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-bold text-purple-600 bg-purple-50 px-3 py-1 rounded-lg text-sm sm:text-base">Soal ${idx + 1}</h4>
+                    <button class="text-red-500 font-bold text-xs sm:text-sm bg-red-50 px-3 py-1.5 rounded-lg hover:bg-red-100 transition-colors active:scale-95" onclick="deleteDraftQuestion(${idx})">🗑 Hapus</button>
                 </div>
-                <textarea id="draft-q${idx}-text" class="w-full p-2 border rounded-lg bg-gray-50 text-sm focus:border-purple-500 outline-none resize-none h-16" onchange="updateDraftText(${idx}, this.value)">${q.q}</textarea>
+                <textarea id="draft-q${idx}-text" class="w-full p-3 sm:p-4 border rounded-xl bg-gray-50 text-sm focus:border-purple-500 focus:bg-white outline-none resize-none h-20 sm:h-24 transition-colors" onchange="updateDraftText(${idx}, this.value)">${q.q}</textarea>
                 ${optionsHTML}
             `;
             editor.appendChild(div);
         });
         
         const addBtn = document.createElement('button');
-        addBtn.className = "w-full mt-4 bg-purple-50 text-purple-700 font-bold py-3 rounded-xl border-2 border-dashed border-purple-300 hover:bg-purple-100 transition-colors shadow-sm";
+        addBtn.className = "w-full mt-2 bg-purple-50 text-purple-700 font-bold py-4 rounded-2xl border-2 border-dashed border-purple-300 hover:bg-purple-100 hover:border-purple-400 transition-colors shadow-sm active:scale-95 text-sm sm:text-base";
         addBtn.innerHTML = "➕ Tambah Soal Baru";
         addBtn.onclick = addDraftQuestion;
         editor.appendChild(addBtn);
     }
  
     function addDraftQuestion() {
+        playSound('click');
         draftQuestions.push({ 
             q: "Ketik pertanyaan di sini...", 
             options: ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"], 
@@ -983,13 +1048,14 @@
         renderTeacherQuestionsEditor();
         setTimeout(() => {
             const container = document.getElementById('content-soal');
-            container.scrollTop = container.scrollHeight;
+            container.scrollTo({ top: container.scrollHeight, behavior: 'smooth' });
         }, 100);
     }
 
     function deleteDraftQuestion(idx) {
+        playSound('click');
         if(draftQuestions.length <= 1) {
-            showCustomAlert("Peringatan: Minimal harus tersisa 1 soal!");
+            showCustomAlert("Minimal harus tersisa 1 soal di dalam game!");
             return;
         }
         draftQuestions.splice(idx, 1);
@@ -999,12 +1065,12 @@
     async function saveQuestions() {
         playSound('click');
         if (!currentUser) {
-            showCustomAlert("Terputus dari Cloud. Gagal menyimpan.");
+            showCustomAlert("Terputus dari Cloud. Gagal menyimpan. Silakan login ulang.");
             return;
         }
         try {
             await db.collection(getQuestionsCollectionPath()).doc('active_questions').set({ questions: draftQuestions });
-            showCustomAlert('Berhasil!\n' + draftQuestions.length + ' soal telah disimpan ke Cloud.\nAnak-anak akan otomatis memainkan soal baru ini.');
+            showCustomAlert(`Berhasil!\n\n${draftQuestions.length} soal telah disimpan ke Cloud.\nAnak-anak akan otomatis memainkan soal baru ini secara real-time.`);
         } catch (e) {
             console.error("Gagal simpan soal", e);
             showCustomAlert('Gagal menyimpan soal ke Cloud. Periksa koneksi internet Anda.');
@@ -1014,15 +1080,17 @@
     function downloadExcel() {
         playSound('click');
         if(allScores.length === 0) {
-            showCustomAlert('Tidak ada data untuk diunduh.');
+            showCustomAlert('Belum ada data nilai dari siswa untuk diunduh.');
             return;
         }
  
-        let csv = "Nama Lengkap,Kelas,Nomor Absen,Jumlah Benar,Jumlah Salah,Nilai Akhir (100),Waktu Bermain\n";
+        // Menggunakan \uFEFF (BOM) agar Excel membaca karakter dengan sempurna
+        // Menggunakan titik koma (;) sebagai pemisah karena format PC Indonesia
+        let csv = "\uFEFFNama Lengkap;Kelas;Nomor Absen;Jumlah Benar;Jumlah Salah;Nilai Akhir (100);Waktu Bermain\n";
         allScores.forEach(s => {
-            let d = new Date(s.date).toLocaleString('id-ID').replace(/,/g, '');
-            let safeName = s.name.replace(/,/g, ' '); 
-            csv += `${safeName},V,${s.absen},${s.correct},${s.wrong},${s.score},${d}\n`;
+            let d = new Date(s.date).toLocaleString('id-ID').replace(/;/g, ' ');
+            let safeName = s.name.replace(/;/g, ' '); 
+            csv += `${safeName};V;${s.absen};${s.correct};${s.wrong};${s.score};${d}\n`;
         });
  
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -1037,21 +1105,22 @@
         document.body.removeChild(link);
         
         setTimeout(() => {
-            showCustomAlert('✅ File Excel (CSV) berhasil diunduh!\n\nJika tulisan menyatu saat dibuka di Excel, blok kolom A -> klik "Data" -> "Text to Columns" -> pilih "Delimited" -> centang "Comma".');
+            showCustomAlert('✅ File Excel berhasil diunduh!\n\nData sekarang akan langsung terpisah otomatis ke dalam kolom Excel Anda.');
         }, 500);
     }
 
     async function resetData() {
+        playSound('click');
         if (!currentUser) return;
-        showCustomConfirm("Apakah Anda yakin ingin menghapus SEMUA data nilai siswa dari Cloud?", async () => {
+        showCustomConfirm("Apakah Anda yakin ingin menghapus SEMUA data nilai siswa secara permanen?", async () => {
             try {
                 for(let s of allScores) {
                     await db.collection(getScoresCollectionPath()).doc(s.id).delete();
                 }
-                showCustomAlert("Semua Data Nilai Berhasil Dihapus!");
+                showCustomAlert("Berhasil! Semua Data Nilai telah dihapus dari Cloud.");
             } catch(e) {
                 console.error(e);
-                showCustomAlert("Gagal menghapus data. Periksa koneksi.");
+                showCustomAlert("Gagal menghapus data. Periksa koneksi internet.");
             }
         });
     }
@@ -1077,13 +1146,24 @@
             if(!el) return;
             const knob = el.firstElementChild;
             if (val) {
-                el.classList.replace('bg-gray-300', 'bg-green-400');
-                knob.classList.add('translate-x-6');
+                el.classList.replace('bg-gray-100', 'bg-green-400');
+                el.classList.replace('border-gray-200', 'border-green-500');
+                knob.classList.add('translate-x-7');
             } else {
-                el.classList.replace('bg-green-400', 'bg-gray-300');
-                knob.classList.remove('translate-x-6');
+                el.classList.replace('bg-green-400', 'bg-gray-100');
+                el.classList.replace('border-green-500', 'border-gray-200');
+                knob.classList.remove('translate-x-7');
             }
         };
+        
+        // Add borders to toggles if not exist
+        ['toggle-music', 'toggle-sfx'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el && !el.classList.contains('border')) {
+                el.classList.add('border', 'border-gray-200');
+            }
+        });
+
         toggleClass('toggle-music', settings.music);
         toggleClass('toggle-sfx', settings.sfx);
     }
@@ -1104,7 +1184,7 @@
         }
         
         if (activeQuestions.length === 0) {
-            showCustomAlert("Gagal memulai. Guru belum memasukkan soal.");
+            showCustomAlert("Gagal memulai. Guru belum memasukkan soal ke dalam sistem.");
             return;
         }
  
@@ -1125,7 +1205,7 @@
  
         updateHUD();
         createBoard();
-        showScreen('screen-game');
+        transitionTo('screen-game');
     }
  
     function updateHUD() {
@@ -1137,7 +1217,17 @@
         let currentScore = totalSoal > 0 ? Math.round((state.correct / totalSoal) * 100) : 0;
         state.score = currentScore;
         
-        document.getElementById('hud-score').innerText = currentScore;
+        // Animate score change
+        const scoreEl = document.getElementById('hud-score');
+        if(scoreEl.innerText !== currentScore.toString()) {
+            scoreEl.innerText = currentScore;
+            scoreEl.style.transform = 'scale(1.3)';
+            setTimeout(() => scoreEl.style.transform = 'scale(1)', 200);
+        } else {
+            scoreEl.innerText = currentScore;
+        }
+        scoreEl.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        
         document.getElementById('hud-progress').innerText = Math.min(state.questionIndex + 1, totalSoal);
         document.getElementById('hud-total').innerText = totalSoal;
         
@@ -1172,6 +1262,9 @@
                 span.dataset.r = r;
                 span.dataset.c = c;
                 
+                // Add smooth style for swapping
+                span.style.transition = 'transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s';
+                
                 span.addEventListener('mousedown', handleDragStart);
                 span.addEventListener('touchstart', handleDragStart, {passive: false});
                 
@@ -1193,7 +1286,11 @@
     
     function handleDragStart(e) {
         if (state.isAnimating) return;
-        if(e.type === 'touchstart') e.preventDefault(); 
+        
+        // Hanya preventDefault jika event terjadi di dalam area game-board (agar tutorial bisa di-scroll)
+        if(e.type === 'touchstart' && e.target.closest('#game-board')) {
+            e.preventDefault(); 
+        }
         
         state.dragElement = e.target;
         state.dragStart = {
@@ -1204,13 +1301,15 @@
         dragOrigin.x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
         dragOrigin.y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
         
-        e.target.style.transform = 'scale(0.8)';
+        e.target.style.transform = 'scale(0.75)';
+        e.target.style.zIndex = '10'; // Bring to front while dragging
     }
  
     function handleDragEnd(e) {
         if (!state.dragElement || state.isAnimating) return;
         
-        state.dragElement.style.transform = '';
+        state.dragElement.style.transform = 'scale(1)';
+        state.dragElement.style.zIndex = '1';
         
         let endX = e.type.includes('mouse') ? e.clientX : e.changedTouches[0].clientX;
         let endY = e.type.includes('mouse') ? e.clientY : e.changedTouches[0].clientY;
@@ -1245,10 +1344,20 @@
         const el1 = getDOMCell(r1, c1);
         const el2 = getDOMCell(r2, c2);
         
+        // Visual Swap
         const tempText = el1.innerText;
         el1.innerText = el2.innerText;
         el2.innerText = tempText;
- 
+        
+        // Pop effect
+        el1.style.transform = 'scale(1.2)';
+        el2.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+            el1.style.transform = 'scale(1)';
+            el2.style.transform = 'scale(1)';
+        }, 150);
+
+        // Logical Swap
         const tempType = board[r1][c1];
         board[r1][c1] = board[r2][c2];
         board[r2][c2] = tempType;
@@ -1261,14 +1370,23 @@
                 state.comboCount = 0;
                 processMatches(matches, true);
             } else {
+                // Revert swap smoothly
                 el2.innerText = el1.innerText;
                 el1.innerText = tempText;
                 board[r2][c2] = board[r1][c1];
                 board[r1][c1] = tempType;
+                
+                el1.style.transform = 'scale(1.1)';
+                el2.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    el1.style.transform = 'scale(1)';
+                    el2.style.transform = 'scale(1)';
+                }, 100);
+
                 state.isAnimating = false;
                 playSound('wrong'); 
             }
-        }, 200);
+        }, 250); // Give time for visual swap to register
     }
  
     function findMatches() {
@@ -1338,7 +1456,7 @@
             } else {
                 applyGravity();
             }
-        }, 300);
+        }, 350); // Wait for dissolve animation
     }
  
     function applyGravity() {
@@ -1372,8 +1490,15 @@
             for (let c = 0; c < COLS; c++) {
                 const el = getDOMCell(r, c);
                 el.innerText = board[r][c];
-                el.style.transform = '';
-                el.style.opacity = '1';
+                
+                // Add tiny bounce effect on drop
+                el.style.transform = 'translateY(-10px)';
+                el.style.opacity = '0.8';
+                
+                setTimeout(() => {
+                    el.style.transform = 'translateY(0) scale(1)';
+                    el.style.opacity = '1';
+                }, 50);
             }
         }
  
@@ -1396,9 +1521,9 @@
         p.innerText = '✨';
         p.style.position = 'absolute';
         p.style.fontSize = '1.5rem';
-        p.style.animation = 'pop-out 0.5s ease-out forwards';
+        p.style.animation = 'pop-out 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
         parent.appendChild(p);
-        setTimeout(() => p.remove(), 500);
+        setTimeout(() => p.remove(), 600);
     }
  
     function showComboText() {
@@ -1406,13 +1531,13 @@
         const t = document.getElementById('combo-text');
         t.innerText = texts[Math.min(state.comboCount, 5)];
         t.style.opacity = 1;
-        t.style.transform = 'translate(-50%, -50%) scale(1.2)';
-        t.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        t.style.transform = 'translate(-50%, -50%) scale(1.2) rotate(-5deg)';
+        t.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
         
         setTimeout(() => {
             t.style.opacity = 0;
-            t.style.transform = 'translate(-50%, -50%) scale(0.5)';
-        }, 1000);
+            t.style.transform = 'translate(-50%, -50%) scale(0.5) rotate(0deg)';
+        }, 1200);
     }
 
     /* --- 8. QUIZ & ENDGAME LOGIC --- */
@@ -1431,25 +1556,35 @@
         const labels = ['A', 'B', 'C', 'D'];
         qData.options.forEach((opt, idx) => {
             const btn = document.createElement('button');
-            btn.className = 'w-full text-left bg-gray-50 border-2 border-gray-200 p-3 rounded-xl flex items-center gap-3 hover:bg-blue-50 hover:border-blue-300 transition-colors active:scale-95';
-            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 rounded-lg flex justify-center items-center shrink-0">${labels[idx]}</span> <span class="font-semibold text-gray-700">${opt}</span>`;
+            btn.className = 'w-full text-left bg-gray-50 border-2 border-gray-200 p-3 sm:p-4 rounded-2xl flex items-center gap-3 sm:gap-4 hover:bg-blue-50 hover:border-blue-300 transition-all active:scale-95 shadow-sm text-sm sm:text-base';
+            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex justify-center items-center shrink-0 shadow-inner">${labels[idx]}</span> <span class="font-semibold text-gray-700 leading-tight">${opt}</span>`;
             btn.onclick = () => submitAnswer(idx, qData.answer);
             optsContainer.appendChild(btn);
         });
  
         const modal = document.getElementById('modal-quiz');
         const box = document.getElementById('quiz-box');
+        
         modal.classList.remove('hidden');
-        setTimeout(() => box.classList.remove('scale-95'), 10);
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            box.classList.add('show');
+        }, 10);
     }
  
     function submitAnswer(selectedIdx, correctIdx) {
-        document.getElementById('modal-quiz').classList.add('hidden');
-        document.getElementById('quiz-box').classList.add('scale-95');
+        const modal = document.getElementById('modal-quiz');
+        const box = document.getElementById('quiz-box');
         
-        const isCorrect = selectedIdx === correctIdx;
-        state.questionIndex++;
-        showFeedback(isCorrect);
+        modal.style.opacity = '0';
+        box.classList.remove('show');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            const isCorrect = selectedIdx === correctIdx;
+            state.questionIndex++;
+            showFeedback(isCorrect);
+        }, 300);
     }
  
     function showFeedback(isCorrect) {
@@ -1463,36 +1598,34 @@
             state.correct++;
             icon.innerText = '🎉';
             text.innerText = 'BENAR!';
-            text.className = 'text-4xl font-extrabold text-white bg-green-500 px-6 py-2 rounded-full border-4 border-white';
+            text.className = 'text-3xl sm:text-4xl font-extrabold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] bg-green-500 px-6 sm:px-8 py-2 sm:py-3 rounded-full border-4 border-white shadow-xl';
             scoreStr.innerText = "MANTAP!";
             scoreStr.style.display = 'block';
-            confetti({ particleCount: 50, spread: 60, origin: { y: 0.5 } });
+            confetti({ particleCount: 60, spread: 70, origin: { y: 0.5 }, colors: ['#4ade80', '#facc15', '#ffffff'] });
         } else {
             playSound('wrong');
             state.wrong++;
             icon.innerText = '❌';
             text.innerText = 'SALAH';
-            text.className = 'text-4xl font-extrabold text-white bg-red-500 px-6 py-2 rounded-full border-4 border-white';
+            text.className = 'text-3xl sm:text-4xl font-extrabold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] bg-red-500 px-6 sm:px-8 py-2 sm:py-3 rounded-full border-4 border-white shadow-xl';
             scoreStr.style.display = 'none';
         }
  
         updateHUD();
  
-        banner.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
         banner.style.opacity = 1;
-        banner.style.transform = 'translate(-50%, -50%) scale(1.2)';
+        banner.style.transform = 'translate(-50%, -50%) scale(1.1) rotate(2deg)';
  
         setTimeout(() => {
             banner.style.opacity = 0;
-            banner.style.transform = 'translate(-50%, -50%) scale(0.8)';
-            if(postQuizCallback) postQuizCallback();
+            banner.style.transform = 'translate(-50%, -50%) scale(0.8) rotate(0deg)';
+            if(postQuizCallback) setTimeout(postQuizCallback, 300); // Wait for banner to hide before resuming
         }, 1500);
     }
 
     function endGame() {
         playSound('win');
         
-        // Final Score Calculation (Scale 100)
         let totalSoal = activeQuestions.length;
         state.score = totalSoal > 0 ? Math.round((state.correct / totalSoal) * 100) : 0;
         
@@ -1502,41 +1635,52 @@
         document.getElementById('res-absen').innerText = state.absen;
         document.getElementById('res-benar').innerText = state.correct;
         document.getElementById('res-salah').innerText = state.wrong;
-        document.getElementById('res-skor').innerText = state.score;
+        
+        // Animasi angka nilai akhir
+        let finalScoreEl = document.getElementById('res-skor');
+        let counter = 0;
+        let finalInterval = setInterval(() => {
+            counter += 5;
+            if(counter >= state.score) {
+                counter = state.score;
+                clearInterval(finalInterval);
+            }
+            finalScoreEl.innerText = counter;
+        }, 50);
  
         const p = document.getElementById('res-predikat');
         if (state.score === 100) {
             p.innerText = 'SEMPURNA'; 
-            p.className = 'text-xl font-black text-white bg-gradient-to-r from-yellow-400 to-yellow-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.className = 'text-lg sm:text-xl font-black text-white bg-gradient-to-r from-yellow-400 to-yellow-600 px-8 py-2.5 rounded-full shadow-xl mb-6 z-10 border-2 border-white animate-pulse'; 
         } else if (state.score >= 80) { 
             p.innerText = 'HEBAT'; 
-            p.className = 'text-xl font-black text-white bg-gradient-to-r from-blue-400 to-blue-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.className = 'text-lg sm:text-xl font-black text-white bg-gradient-to-r from-blue-400 to-blue-600 px-8 py-2.5 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         } else if (state.score >= 60) { 
             p.innerText = 'BAGUS'; 
-            p.className = 'text-xl font-black text-white bg-gradient-to-r from-green-400 to-green-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.className = 'text-lg sm:text-xl font-black text-white bg-gradient-to-r from-green-400 to-green-600 px-8 py-2.5 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         } else { 
             p.innerText = 'TERUS BELAJAR'; 
-            p.className = 'text-xl font-black text-white bg-gradient-to-r from-gray-400 to-gray-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.className = 'text-lg sm:text-xl font-black text-white bg-gradient-to-r from-gray-400 to-gray-600 px-8 py-2.5 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         }
  
-        showScreen('screen-result');
+        transitionTo('screen-result');
         
         let endConfetti = setInterval(() => {
-            confetti({ particleCount: 30, angle: 60, spread: 55, origin: { x: 0 } });
-            confetti({ particleCount: 30, angle: 120, spread: 55, origin: { x: 1 } });
-        }, 1000);
+            confetti({ particleCount: 40, angle: 60, spread: 60, origin: { x: 0 } });
+            confetti({ particleCount: 40, angle: 120, spread: 60, origin: { x: 1 } });
+        }, 800);
         setTimeout(() => clearInterval(endConfetti), 4000);
     }
  
     function quitGame() {
-        showCustomConfirm("Yakin ingin keluar? Progres di game saat ini tidak akan tersimpan.", () => {
-            showScreen('screen-menu');
+        showCustomConfirm("Yakin ingin keluar? Progres di permainan saat ini tidak akan tersimpan.", () => {
+            transitionTo('screen-menu');
         });
     }
 
     function showLeaderboard() {
         renderLeaderboardUI();
-        showScreen('screen-leaderboard');
+        transitionTo('screen-leaderboard');
     }
 
     function renderLeaderboardUI() {
@@ -1544,21 +1688,21 @@
         list.innerHTML = '';
         
         if (allScores.length === 0) {
-            list.innerHTML = '<p class="text-center text-gray-500 mt-10">Belum ada data nilai di Cloud.</p>';
+            list.innerHTML = '<div class="text-center text-gray-500 mt-10 bg-white p-6 rounded-2xl border border-dashed border-gray-300">Belum ada data nilai di Cloud.<br>Jadilah yang pertama bermain!</div>';
         } else {
             const medals = ['🥇', '🥈', '🥉'];
             allScores.slice(0, 10).forEach((s, i) => {
-                const m = i < 3 ? medals[i] : `<span class="w-6 inline-block text-center text-gray-400 font-bold">${i+1}</span>`;
+                const m = i < 3 ? medals[i] : `<span class="w-7 inline-block text-center text-gray-400 font-black text-lg">${i+1}</span>`;
                 const div = document.createElement('div');
-                div.className = 'bg-white p-3 rounded-xl flex justify-between items-center shadow-sm border border-gray-100';
+                div.className = 'bg-white p-3 sm:p-4 rounded-2xl flex justify-between items-center shadow-sm border border-gray-100 transform transition-transform hover:scale-[1.02]';
                 div.innerHTML = `
-                    <div class="flex gap-2 items-center">
-                        <span class="text-xl">${m}</span>
-                        <span class="font-bold text-gray-700 truncate w-32">${s.name}</span>
+                    <div class="flex gap-3 items-center">
+                        <span class="text-2xl drop-shadow-sm">${m}</span>
+                        <span class="font-bold text-gray-700 truncate w-32 sm:w-40 text-sm sm:text-base">${s.name}</span>
                     </div>
-                    <div class="text-right">
-                        <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded mr-1">V</span>
-                        <span class="font-black text-yellow-600">${s.score}</span>
+                    <div class="text-right flex items-center gap-2">
+                        <span class="text-[10px] sm:text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-lg font-bold border border-blue-100">Absen ${s.absen}</span>
+                        <span class="font-black text-yellow-600 text-lg sm:text-xl">${s.score}</span>
                     </div>
                 `;
                 list.appendChild(div);
@@ -1567,7 +1711,7 @@
     }
 
     /* --- 9. GLOBAL BINDINGS --- */
-    window.showScreen = showScreen;
+    window.transitionTo = transitionTo;
     window.playSound = playSound;
     window.startGame = startGame;
     window.showLeaderboard = showLeaderboard;
