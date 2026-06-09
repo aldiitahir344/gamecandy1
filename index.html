@@ -14,14 +14,21 @@
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
  
+    <!-- FIREBASE COMPAT SDK (Pasti jalan di semua browser & file lokal) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+
     <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & BASE STYLES
+           ========================================================================== */
         :root {
             --primary: #4fc3f7;
             --secondary: #81c784;
             --text-color: #374151;
         }
  
-        /* Responsivitas Desktop & Mobile */
         body {
             font-family: 'Baloo 2', cursive;
             background-color: #0f172a;
@@ -52,7 +59,10 @@
                 border: 8px solid #1e293b;
             }
         }
- 
+
+        /* ==========================================================================
+           2. ANIMATIONS
+           ========================================================================== */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -73,7 +83,15 @@
             80% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
- 
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ==========================================================================
+           3. UI COMPONENTS
+           ========================================================================== */
         .screen {
             position: absolute;
             top: 0;
@@ -89,12 +107,7 @@
             display: flex;
             animation: fadeIn 0.3s ease-out;
         }
- 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
- 
+
         .btn-custom {
             background: white;
             color: var(--text-color);
@@ -135,10 +148,11 @@
             border-color: #c4b5fd;
             box-shadow: 0 6px 0 #8b5cf6, 0 10px 15px -3px rgba(0,0,0,0.1);
         }
+
         .btn-teacher:active {
             box-shadow: 0 2px 0 #8b5cf6, 0 5px 5px -3px rgba(0,0,0,0.1);
         }
- 
+
         .emoticon {
             font-size: 2.5rem;
             display: flex;
@@ -166,7 +180,7 @@
             align-items: center;
             position: relative;
         }
- 
+
         .bg-particles {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -180,7 +194,7 @@
             font-size: 2rem;
             animation: float 6s infinite ease-in-out;
         }
- 
+
         .glass-panel {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
@@ -188,8 +202,7 @@
             border-radius: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
- 
-        /* Loading Bar */
+
         .loading-bar-container {
             width: 80%;
             height: 20px;
@@ -199,6 +212,7 @@
             border: 2px solid white;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
+
         .loading-bar {
             height: 100%;
             width: 0%;
@@ -206,7 +220,7 @@
             border-radius: 10px;
             transition: width 0.1s linear;
         }
- 
+
         #combo-text {
             position: absolute;
             top: 40%;
@@ -222,8 +236,7 @@
             text-align: center;
             line-height: 1;
         }
- 
-        /* Custom Scrollbar */
+
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #93c5fd; border-radius: 10px; }
@@ -232,7 +245,7 @@
 <body>
  
 <div id="app-container">
-    <!-- Animated Background Elements -->
+    <!-- BACKGROUND ELEMENTS -->
     <div class="bg-particles" id="bg-particles">
         <div class="floating-icon" style="top: 10%; left: 10%; animation-delay: 0s;">📚</div>
         <div class="floating-icon" style="top: 20%; left: 80%; animation-delay: 1s;">💡</div>
@@ -373,21 +386,23 @@
  
     <!-- SCREEN: TEACHER DASHBOARD -->
     <section id="screen-teacher-dashboard" class="screen bg-gray-100">
+        <!-- Dashboard Header -->
         <div class="w-full bg-purple-600 text-white p-4 flex justify-between items-center shadow-md z-20">
             <h2 class="font-bold text-lg flex items-center gap-2"><span class="animate-pulse">☁️</span> Dashboard Guru</h2>
             <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold shadow" onclick="logoutTeacher()">Keluar</button>
         </div>
  
+        <!-- Dashboard Tabs -->
         <div class="flex w-full bg-white shadow-sm z-10 font-sans text-sm font-bold">
             <button id="tab-nilai" class="flex-1 py-3 text-purple-600 border-b-4 border-purple-600" onclick="switchTeacherTab('nilai')">📊 Rekap Nilai</button>
             <button id="tab-soal" class="flex-1 py-3 text-gray-500 border-b-4 border-transparent" onclick="switchTeacherTab('soal')">📝 Kelola Soal</button>
         </div>
  
-        <!-- REKAP NILAI (TAB) -->
+        <!-- Tab Content: REKAP NILAI -->
         <div id="content-nilai" class="flex-1 overflow-y-auto p-4 custom-scrollbar">
             <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-gray-700">Data Nilai Siswa (Cloud)</h3>
+                    <h3 class="font-bold text-gray-700">Data Nilai (Cloud)</h3>
                     <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow flex items-center gap-1 active:scale-95 transition-transform" onclick="downloadExcel()">
                         📥 Download Excel
                     </button>
@@ -416,10 +431,10 @@
             </div>
         </div>
  
-        <!-- KELOLA SOAL (TAB) -->
+        <!-- Tab Content: KELOLA SOAL -->
         <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 text-xs text-yellow-800 font-sans">
-                <strong>Catatan Cloud:</strong> Tambah, hapus, atau ubah soal di sini. Jumlah soal bebas (tidak dibatasi 10). Nilai akhir siswa akan otomatis dikonversi ke skala 100 berdasarkan jumlah soal yang ada.
+                <strong>Catatan Cloud:</strong> Tambah, hapus, atau ubah soal di sini. Jumlah soal bebas. Nilai siswa otomatis dihitung skala 100 berdasarkan jumlah soal.
             </div>
             
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
@@ -432,8 +447,11 @@
         </div>
     </section>
  
-    <!-- SCREEN: GAMEPLAY -->
+    <!-- =========================================================
+         SCREEN: GAMEPLAY
+         ========================================================= -->
     <section id="screen-game" class="screen">
+        <!-- Game HUD -->
         <div class="w-full h-24 bg-white/90 backdrop-blur-md shadow-md rounded-b-3xl p-4 flex flex-col justify-between z-20 border-b-4 border-blue-100">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
@@ -464,6 +482,7 @@
             </div>
         </div>
  
+        <!-- Game Board Area -->
         <div class="flex-1 flex justify-center items-center relative p-4">
             <div id="game-board" class="w-full aspect-square max-w-[360px] bg-white/60 backdrop-blur-lg rounded-2xl p-2 grid grid-cols-7 grid-rows-7 gap-1 shadow-xl border-4 border-white/80 relative touch-none">
                 <!-- Cells generated via JS -->
@@ -472,7 +491,10 @@
         </div>
     </section>
  
-    <!-- MODAL: QUIZ -->
+    <!-- =========================================================
+         MODALS & OVERLAYS
+         ========================================================= -->
+    <!-- Quiz Modal -->
     <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-300 border-4 border-blue-200 relative overflow-hidden" id="quiz-box">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-200 rounded-full opacity-20"></div>
@@ -497,7 +519,19 @@
         <div id="feedback-score" class="text-2xl font-bold text-yellow-300 drop-shadow-md mt-2">BAGUS SEKALI!</div>
     </div>
  
-    <!-- SCREEN: RESULT -->
+    <!-- Custom Alerts & Modals -->
+    <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[100] flex flex-col justify-center items-center p-6 hidden">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-blue-200 relative">
+            <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 font-sans mt-4"></p>
+            <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full">
+                <!-- Buttons injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         SCREEN: RESULT
+         ========================================================= -->
     <section id="screen-result" class="screen justify-center items-center p-6 bg-gradient-to-b from-yellow-100 to-orange-100">
         <div class="glass-panel w-full p-6 flex flex-col items-center text-center relative overflow-hidden border-yellow-300">
             <div class="absolute top-0 left-0 w-full h-full pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==')] opacity-50"></div>
@@ -545,10 +579,12 @@
         </div>
     </section>
  
-    <!-- SCREEN: LEADERBOARD -->
+    <!-- =========================================================
+         SCREEN: LEADERBOARD
+         ========================================================= -->
     <section id="screen-leaderboard" class="screen justify-center items-center p-6 bg-blue-50">
         <div class="glass-panel w-full p-4 h-[80vh] flex flex-col relative border-blue-200">
-            <h2 class="text-2xl font-bold text-center text-blue-600 mb-4 flex-shrink-0">🏆 TOP 10 NILAI (CLOUD)</h2>
+            <h2 class="text-2xl font-bold text-center text-blue-600 mb-4 flex-shrink-0">🏆 TOP 10 NILAI</h2>
             <div id="leaderboard-list" class="flex-1 overflow-y-auto space-y-2 font-sans pr-2 custom-scrollbar">
                 <!-- Injected via JS -->
             </div>
@@ -556,28 +592,14 @@
         </div>
     </section>
 
-    <!-- CUSTOM ALERTS & MODALS (Replaces alert() and confirm() to prevent iframe blocks) -->
-    <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[100] flex flex-col justify-center items-center p-6 hidden">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-blue-200 relative">
-            <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 font-sans mt-4"></p>
-            <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full">
-                <!-- Buttons injected here -->
-            </div>
-        </div>
-    </div>
 </div>
  
-<!-- FIREBASE SDK & APP LOGIC -->
-<script type="module">
-    // 1. IMPORT FIREBASE (Versi 11.6.1 yang paling stabil dan pasti jalan)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-
-    // 2. SETUP FIREBASE CONFIGURATION
+<!-- ==========================================================================
+     JAVASCRIPT LOGIC & FIREBASE INTEGRATION
+     ========================================================================== -->
+<script>
+    /* --- 1. FIREBASE CONFIGURATION (Using Compat Libraries for Maximum Stability) --- */
     const isCanvas = typeof __firebase_config !== 'undefined';
-    
-    // KONFIGURASI FIREBASE ANDA
     const firebaseConfig = isCanvas ? JSON.parse(__firebase_config) : {
         apiKey: "AIzaSyCam7kcUvKBRlLEP5LhQL9tfAwUDVFmKYU",
         authDomain: "candy-match-edu-ff25e.firebaseapp.com",
@@ -588,23 +610,25 @@
         measurementId: "G-Y1F6PRRG75"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
     
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'candy-match-edu';
-
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
 
-    // --- Constants & Defaults ---
+    /* --- 2. GLOBAL VARIABLES & STATE --- */
     const EMOJIS = ['🌸', '🌼', '🐠', '🐢', '🦧'];
     const ROWS = 7;
     const COLS = 7;
     
+    // Akun Guru
     const TEACHER_USER = 'aldi260605';
     const TEACHER_PASS = '111111aldi';
  
+    // Default Soal (Jika di Cloud Kosong)
     const DEFAULT_QUESTIONS = [
         { q: "Benda yang dapat ditarik magnet disebut …", options: ["Cair", "Nonmagnetik", "Magnetik", "Elastis"], answer: 2 },
         { q: "Contoh benda yang dapat ditarik magnet …", options: ["Kayu", "Besi", "Plastik", "Kertas"], answer: 1 },
@@ -614,24 +638,44 @@
     ];
  
     let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
-    let draftQuestions = []; // Untuk diedit di akses guru
-    let allScores = [];
+    let draftQuestions = []; // Untuk diedit di menu guru
+    let allScores = [];      // Menyimpan semua nilai murid
     let currentUser = null;
+    let board = [];          // Papan permainan
     
-    let board = [];
     let state = {
-        name: '', absen: '',
-        score: 0, correct: 0, wrong: 0,
+        name: '', 
+        absen: '',
+        score: 0, 
+        correct: 0, 
+        wrong: 0,
         questionIndex: 0,
         isAnimating: false,
-        dragStart: null, dragElement: null, comboCount: 0,
+        dragStart: null, 
+        dragElement: null, 
+        comboCount: 0,
         matchesSinceLastQuiz: 0,
         currentShuffledQuestions: []
     };
  
-    let settings = { music: true, sfx: true };
+    let settings = { 
+        music: true, 
+        sfx: true 
+    };
 
-    // --- Custom Modal UI ---
+    /* --- 3. CORE UTILITIES (UI & Audio) --- */
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => {
+            s.classList.remove('active');
+            s.style.display = 'none';
+        });
+        const target = document.getElementById(id);
+        target.style.display = 'flex';
+        void target.offsetWidth; // Memicu animasi
+        target.classList.add('active');
+    }
+
+    // Modal Custom (Pengganti alert bawaan yang sering di-blok)
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
         document.getElementById('custom-modal-buttons').innerHTML = `<button class="btn-custom btn-primary !w-full !m-0" onclick="closeCustomModal()">OK</button>`;
@@ -651,8 +695,8 @@
     function closeCustomModal() {
         document.getElementById('custom-modal').classList.add('hidden');
     }
- 
-    // --- Audio System ---
+
+    // Sistem Suara (Web Audio API)
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
     
@@ -696,20 +740,19 @@
                 break;
         }
     }
- 
-    // --- UI Navigation ---
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => {
-            s.classList.remove('active');
-            s.style.display = 'none';
-        });
-        const target = document.getElementById(id);
-        target.style.display = 'flex';
-        void target.offsetWidth;
-        target.classList.add('active');
-    }
- 
-    // --- APP INITIALIZATION ---
+
+    /* --- 4. STARTUP & FIREBASE LOGIC --- */
+    
+    // Fungsi ini Dijalankan Otomatis Begitu Halaman Selesai Dimuat
+    window.onload = function() {
+        try {
+            initApp();
+        } catch(e) {
+            document.getElementById('loading-tip').innerText = "Gagal memuat: " + e.message;
+            console.error(e);
+        }
+    };
+
     function initApp() {
         showScreen('screen-loading');
         updateSettingsUI();
@@ -720,6 +763,7 @@
         
         const tipEl = document.getElementById('loading-tip');
         const tipInterval = setInterval(() => {
+            if(!tipEl) return;
             tipIdx = (tipIdx + 1) % tips.length;
             tipEl.style.opacity = 0;
             setTimeout(() => {
@@ -728,6 +772,7 @@
             }, 300);
         }, 1000);
  
+        // Animasi Progress Bar
         const intv = setInterval(() => {
             progress += 2;
             document.getElementById('loading-progress').style.width = `${progress}%`;
@@ -735,7 +780,7 @@
             
             if (progress === 50) {
                 document.getElementById('loading-cloud').style.opacity = 1;
-                initFirebaseAuth(); // Panggil fungsi login Firebase
+                initFirebaseAuth(); // Login ke Firebase Diam-diam
             }
             
             if (progress >= 100) {
@@ -746,22 +791,24 @@
         }, 60); 
     }
 
-    // Fungsi Auth Firebase
     async function initFirebaseAuth() {
         try {
             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                await signInWithCustomToken(auth, __initial_auth_token);
+                await auth.signInWithCustomToken(__initial_auth_token);
             } else {
-                await signInAnonymously(auth);
+                await auth.signInAnonymously();
             }
         } catch (e) {
             console.error("Auth error", e);
-            document.getElementById('cloud-status').innerText = "☁️ Cloud Gagal";
-            document.getElementById('cloud-status').className = "mt-2 text-xs font-bold bg-red-100 text-red-600 px-3 py-1 rounded-full inline-block shadow-sm";
+            const statusEl = document.getElementById('cloud-status');
+            if(statusEl) {
+                statusEl.innerText = "☁️ Cloud Gagal";
+                statusEl.className = "mt-2 text-xs font-bold bg-red-100 text-red-600 px-3 py-1 rounded-full inline-block shadow-sm";
+            }
         }
     }
 
-    onAuthStateChanged(auth, (user) => {
+    auth.onAuthStateChanged((user) => {
         currentUser = user;
         if (user) {
             loadActiveQuestionsFromCloud();
@@ -769,12 +816,11 @@
         }
     });
 
-    // --- CLOUD FIREBASE FUNCTIONS ---
+    // Mengambil Soal dari Database
     function loadActiveQuestionsFromCloud() {
         if (!currentUser) return;
-        const qRef = collection(db, getQuestionsCollectionPath());
         
-        onSnapshot(qRef, (snapshot) => {
+        db.collection(getQuestionsCollectionPath()).onSnapshot((snapshot) => {
             let loaded = false;
             snapshot.forEach(doc => {
                 if (doc.id === 'active_questions') {
@@ -785,23 +831,20 @@
             if (!loaded) {
                 activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
             }
-            if (document.getElementById('screen-teacher-dashboard').classList.contains('active')) {
-                // Jangan reset draft jika guru sedang mengedit
-            }
-        }, (error) => console.error("Gagal memuat soal dari Cloud", error));
+        }, (error) => console.error("Gagal memuat soal", error));
     }
 
+    // Mengambil Nilai dari Database
     function listenToScoresFromCloud() {
         if (!currentUser) return;
-        const scoresRef = collection(db, getScoresCollectionPath());
         
-        onSnapshot(scoresRef, (snapshot) => {
+        db.collection(getScoresCollectionPath()).onSnapshot((snapshot) => {
             allScores = [];
             snapshot.forEach(doc => {
                 allScores.push({ id: doc.id, ...doc.data() });
             });
-            // Urutkan berdasarkan nilai akhir
-            allScores.sort((a, b) => b.score - a.score);
+            
+            allScores.sort((a, b) => b.score - a.score); // Urutkan nilai
 
             if (document.getElementById('screen-teacher-dashboard').classList.contains('active')) {
                 renderTeacherDashboardTable();
@@ -810,46 +853,33 @@
                 renderLeaderboardUI();
             }
         }, (error) => {
-            console.error("Error membaca data skor: ", error);
+            console.error("Error baca skor: ", error);
             const list = document.getElementById('teacher-table-body');
             if (list) {
-                list.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-red-500 font-bold">Error: Database Terkunci!<br><span class="text-sm font-normal text-gray-500">Ubah Firestore Rules Anda menjadi "allow read, write: if true;"</span></td></tr>`;
+                list.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-red-500 font-bold">Error: Database Terkunci!<br><span class="text-sm font-normal text-gray-500">Ubah Firestore Rules Anda ke 'allow read, write: if true;'</span></td></tr>`;
             }
         });
     }
- 
-    function toggleSetting(type) {
-        settings[type] = !settings[type];
-        updateSettingsUI();
-        playSound('click');
+
+    // Mengirim Nilai Akhir Anak ke Database
+    async function saveScoreToCloud() {
+        if (!currentUser) return;
+        try {
+            await db.collection(getScoresCollectionPath()).add({
+                name: state.name,
+                absen: state.absen,
+                score: state.score,
+                correct: state.correct,
+                wrong: state.wrong,
+                date: new Date().getTime(),
+                userId: currentUser.uid
+            });
+        } catch(e) {
+            console.error("Gagal menyimpan nilai", e);
+        }
     }
- 
-    function toggleMuteInGame() {
-        settings.sfx = !settings.sfx;
-        settings.music = !settings.music;
-        playSound('click');
-        const btn = document.querySelector('button[onclick="toggleMuteInGame()"]');
-        btn.innerHTML = settings.sfx ? '🔊' : '🔇';
-    }
- 
-    function updateSettingsUI() {
-        const toggleClass = (id, val) => {
-            const el = document.getElementById(id);
-            if(!el) return;
-            const knob = el.firstElementChild;
-            if (val) {
-                el.classList.replace('bg-gray-300', 'bg-green-400');
-                knob.classList.add('translate-x-6');
-            } else {
-                el.classList.replace('bg-green-400', 'bg-gray-300');
-                knob.classList.remove('translate-x-6');
-            }
-        };
-        toggleClass('toggle-music', settings.music);
-        toggleClass('toggle-sfx', settings.sfx);
-    }
- 
-    // --- Akses Guru Logic ---
+
+    /* --- 5. TEACHER DASHBOARD LOGIC --- */
     function loginTeacher() {
         const user = document.getElementById('teacher-username').value;
         const pass = document.getElementById('teacher-password').value;
@@ -861,7 +891,6 @@
             document.getElementById('teacher-password').value = '';
             err.style.opacity = 0;
             
-            // Masuk dengan draft soal sesuai yang ada di Cloud saat ini
             draftQuestions = JSON.parse(JSON.stringify(activeQuestions));
             
             renderTeacherDashboardTable();
@@ -938,7 +967,6 @@
             editor.appendChild(div);
         });
         
-        // Tombol Tambah Soal
         const addBtn = document.createElement('button');
         addBtn.className = "w-full mt-4 bg-purple-50 text-purple-700 font-bold py-3 rounded-xl border-2 border-dashed border-purple-300 hover:bg-purple-100 transition-colors shadow-sm";
         addBtn.innerHTML = "➕ Tambah Soal Baru";
@@ -947,9 +975,12 @@
     }
  
     function addDraftQuestion() {
-        draftQuestions.push({ q: "Ketik pertanyaan di sini...", options: ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"], answer: 0 });
+        draftQuestions.push({ 
+            q: "Ketik pertanyaan di sini...", 
+            options: ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"], 
+            answer: 0 
+        });
         renderTeacherQuestionsEditor();
-        // Scroll ke bawah
         setTimeout(() => {
             const container = document.getElementById('content-soal');
             container.scrollTop = container.scrollHeight;
@@ -971,13 +1002,11 @@
             showCustomAlert("Terputus dari Cloud. Gagal menyimpan.");
             return;
         }
-        
         try {
-            const docRef = doc(db, getQuestionsCollectionPath(), 'active_questions');
-            await setDoc(docRef, { questions: draftQuestions });
+            await db.collection(getQuestionsCollectionPath()).doc('active_questions').set({ questions: draftQuestions });
             showCustomAlert('Berhasil!\n' + draftQuestions.length + ' soal telah disimpan ke Cloud.\nAnak-anak akan otomatis memainkan soal baru ini.');
         } catch (e) {
-            console.error("Gagal menyimpan ke Cloud", e);
+            console.error("Gagal simpan soal", e);
             showCustomAlert('Gagal menyimpan soal ke Cloud. Periksa koneksi internet Anda.');
         }
     }
@@ -989,12 +1018,9 @@
             return;
         }
  
-        // Header CSV dengan koma (format umum)
         let csv = "Nama Lengkap,Kelas,Nomor Absen,Jumlah Benar,Jumlah Salah,Nilai Akhir (100),Waktu Bermain\n";
-        
         allScores.forEach(s => {
             let d = new Date(s.date).toLocaleString('id-ID').replace(/,/g, '');
-            // Hindari koma di nama karena ini file CSV
             let safeName = s.name.replace(/,/g, ' '); 
             csv += `${safeName},V,${s.absen},${s.correct},${s.wrong},${s.score},${d}\n`;
         });
@@ -1005,16 +1031,64 @@
         link.setAttribute("href", url);
         link.setAttribute("download", "Rekap_Nilai_Candy_Match.csv");
         link.style.visibility = 'hidden';
+        
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         
-        // Modal pemberitahuan
         setTimeout(() => {
             showCustomAlert('✅ File Excel (CSV) berhasil diunduh!\n\nJika tulisan menyatu saat dibuka di Excel, blok kolom A -> klik "Data" -> "Text to Columns" -> pilih "Delimited" -> centang "Comma".');
         }, 500);
     }
+
+    async function resetData() {
+        if (!currentUser) return;
+        showCustomConfirm("Apakah Anda yakin ingin menghapus SEMUA data nilai siswa dari Cloud?", async () => {
+            try {
+                for(let s of allScores) {
+                    await db.collection(getScoresCollectionPath()).doc(s.id).delete();
+                }
+                showCustomAlert("Semua Data Nilai Berhasil Dihapus!");
+            } catch(e) {
+                console.error(e);
+                showCustomAlert("Gagal menghapus data. Periksa koneksi.");
+            }
+        });
+    }
+
+    /* --- 6. SETTINGS LOGIC --- */
+    function toggleSetting(type) {
+        settings[type] = !settings[type];
+        updateSettingsUI();
+        playSound('click');
+    }
  
+    function toggleMuteInGame() {
+        settings.sfx = !settings.sfx;
+        settings.music = !settings.music;
+        playSound('click');
+        const btn = document.querySelector('button[onclick="toggleMuteInGame()"]');
+        btn.innerHTML = settings.sfx ? '🔊' : '🔇';
+    }
+ 
+    function updateSettingsUI() {
+        const toggleClass = (id, val) => {
+            const el = document.getElementById(id);
+            if(!el) return;
+            const knob = el.firstElementChild;
+            if (val) {
+                el.classList.replace('bg-gray-300', 'bg-green-400');
+                knob.classList.add('translate-x-6');
+            } else {
+                el.classList.replace('bg-green-400', 'bg-gray-300');
+                knob.classList.remove('translate-x-6');
+            }
+        };
+        toggleClass('toggle-music', settings.music);
+        toggleClass('toggle-sfx', settings.sfx);
+    }
+
+    /* --- 7. GAMEPLAY LOGIC --- */
     function startGame() {
         playSound('click');
         if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -1035,10 +1109,16 @@
         }
  
         state = {
-            name: name, absen: absen,
-            score: 0, correct: 0, wrong: 0,
-            questionIndex: 0, isAnimating: false,
-            dragStart: null, dragElement: null, comboCount: 0,
+            name: name, 
+            absen: absen,
+            score: 0, 
+            correct: 0, 
+            wrong: 0,
+            questionIndex: 0, 
+            isAnimating: false,
+            dragStart: null, 
+            dragElement: null, 
+            comboCount: 0,
             matchesSinceLastQuiz: 0,
             currentShuffledQuestions: [...activeQuestions].sort(() => Math.random() - 0.5)
         };
@@ -1052,13 +1132,12 @@
         document.getElementById('hud-name').innerText = state.name;
         document.getElementById('hud-absen').innerText = state.absen;
         
-        // Hitung skor live skala 100
+        // Kalkulasi Skor Live (Skala 100)
         let totalSoal = activeQuestions.length;
         let currentScore = totalSoal > 0 ? Math.round((state.correct / totalSoal) * 100) : 0;
         state.score = currentScore;
         
         document.getElementById('hud-score').innerText = currentScore;
-        
         document.getElementById('hud-progress').innerText = Math.min(state.questionIndex + 1, totalSoal);
         document.getElementById('hud-total').innerText = totalSoal;
         
@@ -1194,6 +1273,7 @@
  
     function findMatches() {
         let matchedSet = new Set();
+        
         for (let r = 0; r < ROWS; r++) {
             for (let c = 0; c < COLS - 2; c++) {
                 let type = board[r][c];
@@ -1205,6 +1285,7 @@
                 }
             }
         }
+        
         for (let c = 0; c < COLS; c++) {
             for (let r = 0; r < ROWS - 2; r++) {
                 let type = board[r][c];
@@ -1216,6 +1297,7 @@
                 }
             }
         }
+        
         return Array.from(matchedSet).map(str => {
             let parts = str.split(',');
             return {r: parseInt(parts[0]), c: parseInt(parts[1])};
@@ -1261,6 +1343,7 @@
  
     function applyGravity() {
         let moved = false;
+        
         for (let c = 0; c < COLS; c++) {
             for (let r = ROWS - 1; r >= 0; r--) {
                 if (board[r][c] === null) {
@@ -1300,7 +1383,6 @@
                 processMatches(newMatches, false); 
             } else {
                 state.isAnimating = false;
-                // Jika total soal sudah dikerjakan semua, Game Over
                 if (state.questionIndex >= activeQuestions.length) {
                     endGame();
                 }
@@ -1332,7 +1414,8 @@
             t.style.transform = 'translate(-50%, -50%) scale(0.5)';
         }, 1000);
     }
- 
+
+    /* --- 8. QUIZ & ENDGAME LOGIC --- */
     let postQuizCallback = null;
  
     function showQuizModal(callback) {
@@ -1405,11 +1488,11 @@
             if(postQuizCallback) postQuizCallback();
         }, 1500);
     }
- 
+
     function endGame() {
         playSound('win');
         
-        // Pastikan kalkulasi nilai akhir dilakukan sekali lagi (Skala 100)
+        // Final Score Calculation (Scale 100)
         let totalSoal = activeQuestions.length;
         state.score = totalSoal > 0 ? Math.round((state.correct / totalSoal) * 100) : 0;
         
@@ -1423,13 +1506,17 @@
  
         const p = document.getElementById('res-predikat');
         if (state.score === 100) {
-            p.innerText = 'SEMPURNA'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-yellow-400 to-yellow-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.innerText = 'SEMPURNA'; 
+            p.className = 'text-xl font-black text-white bg-gradient-to-r from-yellow-400 to-yellow-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         } else if (state.score >= 80) { 
-            p.innerText = 'HEBAT'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-blue-400 to-blue-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.innerText = 'HEBAT'; 
+            p.className = 'text-xl font-black text-white bg-gradient-to-r from-blue-400 to-blue-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         } else if (state.score >= 60) { 
-            p.innerText = 'BAGUS'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-green-400 to-green-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.innerText = 'BAGUS'; 
+            p.className = 'text-xl font-black text-white bg-gradient-to-r from-green-400 to-green-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         } else { 
-            p.innerText = 'TERUS BELAJAR'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-gray-400 to-gray-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.innerText = 'TERUS BELAJAR'; 
+            p.className = 'text-xl font-black text-white bg-gradient-to-r from-gray-400 to-gray-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         }
  
         showScreen('screen-result');
@@ -1446,26 +1533,7 @@
             showScreen('screen-menu');
         });
     }
- 
-    async function saveScoreToCloud() {
-        if (!currentUser) return;
-        try {
-            const scoresRef = collection(db, getScoresCollectionPath());
-            await addDoc(scoresRef, {
-                name: state.name,
-                absen: state.absen,
-                score: state.score,
-                correct: state.correct,
-                wrong: state.wrong,
-                date: new Date().getTime(),
-                userId: currentUser.uid
-            });
-            console.log("Nilai berhasil tersimpan ke Cloud");
-        } catch(e) {
-            console.error("Gagal menyimpan nilai", e);
-        }
-    }
- 
+
     function showLeaderboard() {
         renderLeaderboardUI();
         showScreen('screen-leaderboard');
@@ -1497,23 +1565,8 @@
             });
         }
     }
- 
-    async function resetData() {
-        if (!currentUser) return;
-        showCustomConfirm("Apakah Anda yakin ingin menghapus SEMUA data nilai siswa dari Cloud? Data yang dihapus tidak dapat dikembalikan.", async () => {
-            try {
-                for(let s of allScores) {
-                    await deleteDoc(doc(db, getScoresCollectionPath(), s.id));
-                }
-                showCustomAlert("Semua Data Nilai Berhasil Dihapus dari Cloud!");
-            } catch(e) {
-                console.error(e);
-                showCustomAlert("Gagal menghapus data. Periksa koneksi.");
-            }
-        });
-    }
 
-    // EXPORT FUNGSI KE WINDOW AGAR BISA DIPANGGIL DARI HTML
+    /* --- 9. GLOBAL BINDINGS --- */
     window.showScreen = showScreen;
     window.playSound = playSound;
     window.startGame = startGame;
@@ -1521,35 +1574,17 @@
     window.loginTeacher = loginTeacher;
     window.logoutTeacher = logoutTeacher;
     window.switchTeacherTab = switchTeacherTab;
-    window.downloadExcel = downloadExcel; // Fungsi Download Excel Terpasang
+    window.downloadExcel = downloadExcel; 
     window.resetData = resetData;
     window.saveQuestions = saveQuestions;
     window.toggleSetting = toggleSetting;
     window.toggleMuteInGame = toggleMuteInGame;
     window.quitGame = quitGame;
     window.closeCustomModal = closeCustomModal;
-    
-    // Export fungsi editor soal draft
-    window.addDraftQuestion = addDraftQuestion;
-    window.deleteDraftQuestion = deleteDraftQuestion;
     window.updateDraftText = (idx, val) => draftQuestions[idx].q = val;
     window.updateDraftOption = (idx, optIdx, val) => draftQuestions[idx].options[optIdx] = val;
     window.updateDraftAnswer = (idx, ans) => draftQuestions[idx].answer = parseInt(ans);
 
-    // MULAI APLIKASI
-    initApp();
-
-    // CSS Keyframe Injection
-    const style = document.createElement('style');
-    style.innerHTML = `
-        @keyframes pop-out {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(2) translateY(-20px); opacity: 0; }
-        }
-        .pop-in-anim { animation: pop-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    `;
-    document.head.appendChild(style);
- 
 </script>
 </body>
 </html>
