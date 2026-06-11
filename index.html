@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CANDY MATCH EDU V</title>
+    <title>QUIZ MATCH CHALLENGE</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -244,7 +244,7 @@
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
         <div class="text-6xl mb-4 animate-bounce">🌸</div>
-        <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">CANDY MATCH<br>EDU V</h1>
+        <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">QUIZ MATCH<br>CHALLENGE</h1>
         <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
         
         <div class="loading-bar-container mb-4">
@@ -262,7 +262,7 @@
     <section id="screen-menu" class="screen justify-center items-center">
         <div class="text-center mb-8 animation-pop-in">
             <div class="text-7xl mb-2 inline-block" style="animation: bounce-soft 2s infinite;">🌸</div>
-            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">CANDY MATCH<br>EDU V</h1>
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">QUIZ MATCH<br>CHALLENGE</h1>
             <p class="text-lg text-gray-600 font-bold bg-white px-4 py-1 rounded-full inline-block shadow-sm">Belajar Sambil Bermain</p>
             <div id="cloud-status" class="mt-2 text-xs font-bold bg-green-100 text-green-600 px-3 py-1 rounded-full inline-block shadow-sm">☁️ Cloud Terhubung</div>
         </div>
@@ -590,7 +590,8 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'candy-match-edu';
+    // Updated app id default to match the new name logic
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'quiz-match-challenge';
 
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
