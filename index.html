@@ -122,6 +122,17 @@
         .btn-primary:active {
             box-shadow: 0 2px 0 #f472b6, 0 5px 5px -3px rgba(0,0,0,0.1);
         }
+
+        .btn-materi {
+            background: linear-gradient(135deg, #a7f3d0 0%, #34d399 100%);
+            color: #064e3b;
+            border-color: #6ee7b7;
+            box-shadow: 0 6px 0 #10b981, 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        
+        .btn-materi:active {
+            box-shadow: 0 2px 0 #10b981, 0 5px 5px -3px rgba(0,0,0,0.1);
+        }
         
         .btn-teacher {
             background: linear-gradient(135deg, #a78bfa 0%, #ddd6fe 100%);
@@ -231,9 +242,9 @@
         <div class="floating-icon" style="top: 80%; left: 75%; animation-delay: 3s;"> 🏫 </div>
         <div class="floating-icon" style="top: 50%; left: 50%; animation-delay: 4s; font-size: 4rem; opacity: 0.05;"> 🌸 </div>
     </div>
+    
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
-        <!-- Menggunakan gambar MASKOT.png -->
         <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">QUIZ MATCH<br>CHALLENGE</h1>
@@ -249,10 +260,10 @@
             <p id="loading-tip" class="text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
         </div>
     </section>
-    <!-- SCREEN: MAIN MENU -->
-    <section id="screen-menu" class="screen justify-start items-center py-8">
+
+    <!-- SCREEN: LANDING PAGE -->
+    <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
-            <!-- Menggunakan gambar MASKOT.png -->
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
                 <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl">
             </div>
@@ -261,14 +272,35 @@
             <p class="text-lg text-gray-600 font-bold bg-white px-4 py-1 rounded-full inline-block shadow-sm">Belajar Sambil Bermain</p>
             <div id="cloud-status" class="mt-2 text-xs font-bold bg-green-100 text-green-600 px-3 py-1 rounded-full inline-block shadow-sm"> ☁️  Cloud Terhubung</div>
         </div>
+        
+        <div class="w-full flex flex-col gap-4 px-6 z-20 mb-auto pb-4 mt-4">
+            <button class="btn-custom btn-materi" onclick="openMateri(); playSound('click')"> 📚 MENU MATERI</button>
+            <button class="btn-custom btn-primary" onclick="showScreen('screen-menu'); playSound('click')"> 🎮 MENU QUIZ</button>
+        </div>
+    </section>
+
+    <!-- SCREEN: MAIN MENU -->
+    <section id="screen-menu" class="screen justify-start items-center py-8">
+        <!-- Tombol Kembali ke Landing Page -->
+        <div class="absolute top-4 left-4 z-50">
+            <button class="text-gray-400 hover:text-gray-600 text-2xl bg-white/50 w-10 h-10 rounded-full flex justify-center items-center backdrop-blur shadow-sm border border-gray-200" onclick="showScreen('screen-landing'); playSound('click')"> ⬅ </button>
+        </div>
+
+        <div class="text-center mb-6 animation-pop-in mt-auto">
+            <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl">
+            </div>
+            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">MENU QUIZ</h1>
+        </div>
         <div class="w-full flex flex-col gap-3 px-6 z-20 mb-auto pb-4">
-            <button class="btn-custom btn-primary" onclick="showScreen('screen-identity'); playSound('click')"> ▶  MULAI</button>
+            <button class="btn-custom btn-primary" onclick="showScreen('screen-identity'); playSound('click')"> ▶  MULAI QUIZ</button>
             <button class="btn-custom" onclick="showScreen('screen-tutorial'); playSound('click')"> 📖  CARA BERMAIN</button>
             <button class="btn-custom" onclick="showLeaderboard(); playSound('click')"> 🏆  NILAI</button>
             <button class="btn-custom" onclick="showScreen('screen-settings'); playSound('click')"> ⚙  PENGATURAN</button>
             <button class="btn-custom btn-teacher" onclick="showScreen('screen-teacher-login'); playSound('click')"> 👩 ‍ 🏫  AKSES GURU</button>
         </div>
     </section>
+    
     <!-- SCREEN: IDENTITY -->
     <section id="screen-identity" class="screen justify-center items-center px-6">
         <div class="glass-panel w-full p-6 flex flex-col gap-4 relative">
@@ -293,6 +325,7 @@
             <button class="btn-custom btn-primary w-full mt-2" onclick="startGame()"> ▶  MASUK GAME</button>
         </div>
     </section>
+    
     <!-- SCREEN: TUTORIAL -->
     <section id="screen-tutorial" class="screen justify-start items-center p-6 overflow-y-auto">
         <div class="glass-panel w-full p-6 pb-8 relative mt-10">
@@ -314,6 +347,7 @@
             <button class="btn-custom w-full mt-8" onclick="showScreen('screen-menu'); playSound('click')"> ⬅  KEMBALI</button>
         </div>
     </section>
+    
     <!-- SCREEN: SETTINGS -->
     <section id="screen-settings" class="screen justify-center items-center p-6">
         <div class="glass-panel w-full p-6 relative">
@@ -333,6 +367,7 @@
             <button class="btn-custom w-full mt-4" onclick="showScreen('screen-menu'); playSound('click')"> ⬅  KEMBALI</button>
         </div>
     </section>
+    
     <!-- SCREEN: TEACHER LOGIN -->
     <section id="screen-teacher-login" class="screen justify-center items-center p-6 bg-purple-50">
         <div class="glass-panel w-full p-6 flex flex-col gap-4 relative border-purple-200 border-4">
@@ -355,21 +390,24 @@
             <button class="btn-custom btn-teacher w-full mt-2" onclick="loginTeacher()">MASUK</button>
         </div>
     </section>
+    
     <!-- SCREEN: TEACHER DASHBOARD -->
     <section id="screen-teacher-dashboard" class="screen bg-gray-100">
         <div class="w-full bg-purple-600 text-white p-4 flex justify-between items-center shadow-md z-20">
             <h2 class="font-bold text-lg flex items-center gap-2"><span class="animate-pulse"> ☁️ </span> Dashboard Guru</h2>
             <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold shadow" onclick="logoutTeacher()">Keluar</button>
         </div>
-        <div class="flex w-full bg-white shadow-sm z-10 font-sans text-sm font-bold">
-            <button id="tab-nilai" class="flex-1 py-3 text-purple-600 border-b-4 border-purple-600" onclick="switchTeacherTab('nilai')"> 📊  Rekap Nilai (Live)</button>
-            <button id="tab-soal" class="flex-1 py-3 text-gray-500 border-b-4 border-transparent" onclick="switchTeacherTab('soal')"> 📝  Kelola Soal</button>
+        <div class="flex w-full bg-white shadow-sm z-10 font-sans text-xs sm:text-sm font-bold">
+            <button id="tab-nilai" class="flex-1 py-3 text-purple-600 border-b-4 border-purple-600" onclick="switchTeacherTab('nilai')"> 📊 Nilai</button>
+            <button id="tab-soal" class="flex-1 py-3 text-gray-500 border-b-4 border-transparent" onclick="switchTeacherTab('soal')"> 📝 Soal</button>
+            <button id="tab-materi" class="flex-1 py-3 text-gray-500 border-b-4 border-transparent" onclick="switchTeacherTab('materi')"> 📚 Materi</button>
         </div>
+        
         <!-- TAB NILAI -->
         <div id="content-nilai" class="flex-1 overflow-y-auto p-4 custom-scrollbar">
             <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-gray-700">Data Nilai Siswa (Cloud)</h3>
+                    <h3 class="font-bold text-gray-700">Data Nilai Siswa</h3>
                     <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow flex items-center gap-1 active:scale-95 transition-transform" onclick="copyScoresToClipboard()">
                          📋  Salin Excel
                     </button>
@@ -397,6 +435,7 @@
                 </div>
             </div>
         </div>
+        
         <!-- TAB SOAL -->
         <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 text-xs text-yellow-800 font-sans">
@@ -411,7 +450,20 @@
                 <button class="w-2/3 bg-purple-600 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition-transform text-sm" onclick="saveQuestions()"> 💾  SIMPAN KE CLOUD</button>
             </div>
         </div>
+
+        <!-- TAB MATERI -->
+        <div id="content-materi" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
+            <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200 font-sans">
+                <h3 class="font-bold text-gray-700 mb-2">Tautan Materi (Heyzine Flipbook)</h3>
+                <p class="text-xs text-gray-500 mb-4">Masukkan tautan (link) materi Heyzine Anda di bawah ini. Tautan ini akan otomatis terbuka saat siswa menekan tombol "MENU MATERI" di Halaman Utama.</p>
+                
+                <input type="url" id="input-heyzine-link" placeholder="Contoh: https://heyzine.com/flip-book/..." class="w-full p-3 rounded-xl border-2 border-blue-200 focus:border-blue-500 outline-none bg-gray-50 mb-4 text-sm">
+                
+                <button class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition-transform text-sm" onclick="saveMateriLink()"> 💾  SIMPAN TAUTAN MATERI</button>
+            </div>
+        </div>
     </section>
+    
     <!-- SCREEN: GAMEPLAY -->
     <section id="screen-game" class="screen">
         <div class="w-full h-24 bg-white/90 backdrop-blur-md shadow-md rounded-b-3xl p-4 flex flex-col justify-between z-20 border-b-4 border-blue-100">
@@ -450,6 +502,7 @@
             <div id="combo-text"></div>
         </div>
     </section>
+    
     <!-- MODAL: QUIZ -->
     <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-300 border-4 border-blue-200 relative overflow-hidden" id="quiz-box">
@@ -466,12 +519,14 @@
             </div>
         </div>
     </div>
+    
     <!-- Feedback Banner (Benar/Salah) -->
     <div id="feedback-banner" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[60] flex flex-col items-center pointer-events-none opacity-0">
         <div id="feedback-icon" class="text-7xl drop-shadow-xl mb-2"> 🎉 </div>
         <div id="feedback-text" class="text-4xl font-extrabold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] bg-green-500 px-6 py-2 rounded-full border-4 border-white">BENAR!</div>
         <div id="feedback-score" class="text-2xl font-bold text-yellow-300 drop-shadow-md mt-2">+NILAI</div>
     </div>
+    
     <!-- SCREEN: RESULT -->
     <section id="screen-result" class="screen justify-center items-center p-6 bg-gradient-to-b from-yellow-100 to-orange-100">
         <div class="glass-panel w-full p-6 flex flex-col items-center text-center relative overflow-hidden border-yellow-300">
@@ -512,10 +567,11 @@
             </div>
             <div class="w-full flex flex-col gap-2 z-10">
                 <button class="btn-custom btn-primary !w-full !m-0" onclick="startGame()"> 🔄  MAIN LAGI</button>
-                <button class="btn-custom !w-full !m-0" onclick="showScreen('screen-menu')"> 🏠  MENU UTAMA</button>
+                <button class="btn-custom !w-full !m-0" onclick="showScreen('screen-landing')"> 🏠  MENU UTAMA</button>
             </div>
         </div>
     </section>
+    
     <!-- SCREEN: LEADERBOARD -->
     <section id="screen-leaderboard" class="screen justify-center items-center p-6 bg-blue-50">
         <div class="glass-panel w-full p-4 h-[80vh] flex flex-col relative border-blue-200">
@@ -526,6 +582,7 @@
             <button class="btn-custom w-full mt-4 flex-shrink-0" onclick="showScreen('screen-menu'); playSound('click')"> ⬅  KEMBALI</button>
         </div>
     </section>
+    
     <!-- CUSTOM ALERTS & MODALS -->
     <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[100] flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-blue-200 relative">
@@ -536,6 +593,7 @@
         </div>
     </div>
 </div>
+
 <!-- FIREBASE SDK & APP LOGIC -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -560,6 +618,7 @@
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'quiz-match-challenge';
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
+    
     // --- Constants & Defaults ---
     const EMOJIS = [' 🌸 ', ' 🌼 ', ' 🐠 ', ' 🐢 ', ' 🦧 '];
     const ROWS = 7;
@@ -582,6 +641,7 @@
     let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
     let allScores = [];
     let currentUser = null;
+    let heyzineLink = ""; // Tautan Materi Global
     
     let board = [];
     let state = {
@@ -593,16 +653,17 @@
         currentShuffledQuestions: []
     };
     let settings = { music: true, sfx: true };
+    
     // --- INISIALISASI BACKGROUND MUSIC ---
-    // Aturan keamanan modern browser mengharuskan adanya interaksi pertama sebelum audio di play
     document.addEventListener('click', function initBGM() {
         const bgMusic = document.getElementById('bg-music');
         if (settings.music && bgMusic.paused) {
-            bgMusic.volume = 0.4; // Volume pas agar tidak menimpa suara sfx
+            bgMusic.volume = 0.4;
             bgMusic.play().catch(e => console.log("BGM Error:", e));
         }
         document.removeEventListener('click', initBGM);
     }, { once: true });
+    
     document.addEventListener('touchstart', function initBGMTouch() {
         const bgMusic = document.getElementById('bg-music');
         if (settings.music && bgMusic.paused) {
@@ -611,6 +672,7 @@
         }
         document.removeEventListener('touchstart', initBGMTouch);
     }, { once: true });
+    
     // --- Custom Modal UI ---
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
@@ -629,6 +691,7 @@
     function closeCustomModal() {
         document.getElementById('custom-modal').classList.add('hidden');
     }
+    
     // --- Audio System ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
@@ -672,6 +735,7 @@
                 break;
         }
     }
+    
     // --- UI Navigation ---
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => {
@@ -683,6 +747,7 @@
         void target.offsetWidth;
         target.classList.add('active');
     }
+    
     // --- APP INITIALIZATION ---
     function initApp() {
         showScreen('screen-loading');
@@ -701,6 +766,7 @@
                 tipEl.style.opacity = 1;
             }, 300);
         }, 1000);
+        
         const intv = setInterval(() => {
             progress += 2;
             document.getElementById('loading-progress').style.width = `${progress}%`;
@@ -714,10 +780,12 @@
             if (progress >= 100) {
                 clearInterval(intv);
                 clearInterval(tipInterval);
-                setTimeout(() => { showScreen('screen-menu'); }, 500);
+                // Langsung arahkan ke Layar Landing (bukan layar menu langsung)
+                setTimeout(() => { showScreen('screen-landing'); }, 500);
             }
         }, 60); 
     }
+    
     async function initFirebaseAuth() {
         try {
             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
@@ -731,14 +799,59 @@
             document.getElementById('cloud-status').className = "mt-2 text-xs font-bold bg-red-100 text-red-600 px-3 py-1 rounded-full inline-block shadow-sm";
         }
     }
+    
     onAuthStateChanged(auth, (user) => {
         currentUser = user;
         if (user) {
             loadActiveQuestionsFromCloud();
             listenToScoresFromCloud();
+            loadSettingsFromCloud();
         }
     });
+    
     // --- CLOUD FIREBASE FUNCTIONS ---
+    
+    function loadSettingsFromCloud() {
+        if (!currentUser) return;
+        const docRef = doc(db, getQuestionsCollectionPath(), 'app_settings');
+        onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists() && docSnap.data().materiLink) {
+                heyzineLink = docSnap.data().materiLink;
+                const inputEl = document.getElementById('input-heyzine-link');
+                if(inputEl) inputEl.value = heyzineLink;
+            }
+        }, (error) => console.error("Gagal memuat setting tautan dari Cloud", error));
+    }
+    
+    async function saveMateriLink() {
+        playSound('click');
+        if (!currentUser) {
+            showCustomAlert("Terputus dari Cloud. Gagal menyimpan tautan.");
+            return;
+        }
+        const link = document.getElementById('input-heyzine-link').value.trim();
+        try {
+            const docRef = doc(db, getQuestionsCollectionPath(), 'app_settings');
+            await setDoc(docRef, { materiLink: link }, { merge: true });
+            showCustomAlert(" ✅ Tautan materi berhasil disimpan ke Cloud!");
+        } catch (e) {
+            console.error("Gagal menyimpan tautan", e);
+            showCustomAlert('Gagal menyimpan tautan ke Cloud. Periksa koneksi Anda.');
+        }
+    }
+    
+    function openMateri() {
+        if (heyzineLink && heyzineLink.trim() !== "") {
+            let finalLink = heyzineLink.trim();
+            if (!finalLink.startsWith('http://') && !finalLink.startsWith('https://')) {
+                finalLink = 'https://' + finalLink;
+            }
+            window.open(finalLink, '_blank');
+        } else {
+            showCustomAlert("Tautan materi belum ditambahkan oleh Guru. Silakan hubungi Guru Anda.");
+        }
+    }
+    
     function loadActiveQuestionsFromCloud() {
         if (!currentUser) return;
         const qRef = collection(db, getQuestionsCollectionPath());
@@ -759,6 +872,7 @@
             }
         }, (error) => console.error("Gagal memuat soal dari Cloud", error));
     }
+    
     function listenToScoresFromCloud() {
         if (!currentUser) return;
         const scoresRef = collection(db, getScoresCollectionPath());
@@ -783,11 +897,11 @@
             }
         });
     }
+    
     function toggleSetting(type) {
         settings[type] = !settings[type];
         updateSettingsUI();
         playSound('click');
-        // Play/Pause Background Music Based on Setting
         if (type === 'music') {
             const bgMusic = document.getElementById('bg-music');
             if (settings.music) {
@@ -797,13 +911,13 @@
             }
         }
     }
+    
     function toggleMuteInGame() {
         settings.sfx = !settings.sfx;
         settings.music = !settings.music;
         playSound('click');
         const btn = document.querySelector('button[onclick="toggleMuteInGame()"]');
         btn.innerHTML = settings.sfx ? ' 🔊 ' : ' 🔇 ';
-        // Play/Pause Background Music
         const bgMusic = document.getElementById('bg-music');
         if (settings.music) {
             bgMusic.play().catch(e => console.log(e));
@@ -811,6 +925,7 @@
             bgMusic.pause();
         }
     }
+    
     function updateSettingsUI() {
         const toggleClass = (id, val) => {
             const el = document.getElementById(id);
@@ -827,6 +942,7 @@
         toggleClass('toggle-music', settings.music);
         toggleClass('toggle-sfx', settings.sfx);
     }
+    
     // --- Akses Guru Logic ---
     function loginTeacher() {
         const user = document.getElementById('teacher-username').value;
@@ -847,18 +963,31 @@
             playSound('wrong');
         }
     }
+    
     function logoutTeacher() {
         playSound('click');
         showScreen('screen-menu');
     }
+    
     function switchTeacherTab(tab) {
         playSound('click');
-        document.getElementById('tab-nilai').className = `flex-1 py-3 font-bold ${tab === 'nilai' ? 'text-purple-600 border-b-4 border-purple-600' : 'text-gray-500 border-b-4 border-transparent'}`;
-        document.getElementById('tab-soal').className = `flex-1 py-3 font-bold ${tab === 'soal' ? 'text-purple-600 border-b-4 border-purple-600' : 'text-gray-500 border-b-4 border-transparent'}`;
+        const tabs = ['nilai', 'soal', 'materi'];
         
-        document.getElementById('content-nilai').classList.toggle('hidden', tab !== 'nilai');
-        document.getElementById('content-soal').classList.toggle('hidden', tab !== 'soal');
+        tabs.forEach(t => {
+            const isMatch = (tab === t);
+            const btn = document.getElementById(`tab-${t}`);
+            const content = document.getElementById(`content-${t}`);
+            
+            if (isMatch) {
+                btn.className = "flex-1 py-3 font-bold text-purple-600 border-b-4 border-purple-600";
+                content.classList.remove('hidden');
+            } else {
+                btn.className = "flex-1 py-3 font-bold text-gray-500 border-b-4 border-transparent";
+                content.classList.add('hidden');
+            }
+        });
     }
+    
     function renderTeacherDashboardTable() {
         const list = document.getElementById('teacher-table-body');
         list.innerHTML = '';
@@ -879,6 +1008,7 @@
             });
         }
     }
+    
     // --- Dynamic Question Editor ---
     function syncQuestionsFromDOM() {
         const items = document.querySelectorAll('.question-item');
@@ -1021,7 +1151,6 @@
         document.getElementById('hud-name').innerText = state.name;
         document.getElementById('hud-absen').innerText = state.absen;
         
-        // Kalkulasi skor live (Maksimal 100)
         let currentDisplayScore = Math.round((state.correct / totalQ) * 100);
         document.getElementById('hud-score').innerText = isNaN(currentDisplayScore) ? 0 : currentDisplayScore;
         
@@ -1331,7 +1460,7 @@
             text.className = 'text-4xl font-extrabold text-white bg-red-500 px-6 py-2 rounded-full border-4 border-white';
             scoreStr.style.display = 'none';
         }
-        // Hitung skala poin 100 untuk total saat ini
+        
         state.score = Math.round((state.correct / totalQ) * 100);
         updateHUD();
         banner.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
@@ -1372,7 +1501,7 @@
     }
     function quitGame() {
         showCustomConfirm("Yakin ingin keluar? Progres di game saat ini tidak akan tersimpan.", () => {
-            showScreen('screen-menu');
+            showScreen('screen-landing');
         });
     }
     async function saveScoreToCloud() {
@@ -1438,6 +1567,7 @@
             }
         });
     }
+    
     // EXPORT FUNGSI KE WINDOW AGAR BISA DIPANGGIL HTML
     window.showScreen = showScreen;
     window.playSound = playSound;
@@ -1455,8 +1585,12 @@
     window.toggleMuteInGame = toggleMuteInGame;
     window.quitGame = quitGame;
     window.closeCustomModal = closeCustomModal;
+    window.saveMateriLink = saveMateriLink;
+    window.openMateri = openMateri;
+    
     // MULAI APLIKASI
     initApp();
+    
     // CSS Keyframe Injection for dynamic stuff
     const style = document.createElement('style');
     style.innerHTML = `
