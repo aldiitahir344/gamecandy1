@@ -27,15 +27,15 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            min-height: 100dvh;
             margin: 0;
             overflow: hidden;
-            touch-action: none;
         }
         #app-container {
             width: 100%;
             max-width: 450px;
             height: 100vh;
-            max-height: 900px;
+            height: 100dvh;
             background: linear-gradient(180deg, #e1f5fe 0%, #c8e6c9 50%, #ffffff 100%);
             position: relative;
             overflow: hidden;
@@ -75,6 +75,13 @@
             display: none;
             flex-direction: column;
             z-index: 10;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 20px;
+        }
+        #screen-game {
+            overflow: hidden;
+            padding-bottom: 0;
         }
         .screen.active {
             display: flex;
@@ -214,22 +221,19 @@
     
     <!-- Background Music -->
     <audio id="bg-music" loop>
-        <source src="The_Golden_Tally.mp3?v=1" type="audio/mpeg">
+        <source src="The_Golden_Tally.mp3" type="audio/mpeg">
     </audio>
-
     <!-- Animated Background Elements -->
     <div class="bg-particles" id="bg-particles">
         <div class="floating-icon" style="top: 10%; left: 10%; animation-delay: 0s;"> 📚 </div>
         <div class="floating-icon" style="top: 20%; left: 80%; animation-delay: 1s;"> 💡 </div>
         <div class="floating-icon" style="top: 70%; left: 15%; animation-delay: 2s;"> ✏️ </div>
         <div class="floating-icon" style="top: 80%; left: 75%; animation-delay: 3s;"> 🏫 </div>
-        <!-- Maskot sebagai background transparan -->
-        <img src="MASKOT.png?v=1" class="floating-icon mix-blend-multiply" style="top: 50%; left: 50%; animation-delay: 4s; width: 10rem; opacity: 0.1;">
+        <div class="floating-icon" style="top: 50%; left: 50%; animation-delay: 4s; font-size: 4rem; opacity: 0.05;"> 🌸 </div>
     </div>
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
-        <!-- Maskot Loading -->
-        <img src="MASKOT.png?v=1" alt="Maskot Game" class="w-40 h-40 mb-4 animate-bounce object-contain drop-shadow-lg">
+        <div class="text-6xl mb-4 animate-bounce"> 🌸 </div>
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">QUIZ MATCH<br>CHALLENGE</h1>
         <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
         
@@ -244,15 +248,14 @@
         </div>
     </section>
     <!-- SCREEN: MAIN MENU -->
-    <section id="screen-menu" class="screen justify-center items-center">
-        <div class="text-center mb-8 animation-pop-in">
-            <!-- Maskot Menu Utama -->
-            <img src="MASKOT.png?v=1" alt="Maskot Menu" class="w-48 h-48 mx-auto mb-2 block object-contain drop-shadow-xl" style="animation: bounce-soft 2s infinite;">
+    <section id="screen-menu" class="screen justify-start items-center py-8">
+        <div class="text-center mb-6 animation-pop-in mt-auto">
+            <div class="text-7xl mb-2 inline-block" style="animation: bounce-soft 2s infinite;"> 🌸 </div>
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">QUIZ MATCH<br>CHALLENGE</h1>
             <p class="text-lg text-gray-600 font-bold bg-white px-4 py-1 rounded-full inline-block shadow-sm">Belajar Sambil Bermain</p>
             <div id="cloud-status" class="mt-2 text-xs font-bold bg-green-100 text-green-600 px-3 py-1 rounded-full inline-block shadow-sm"> ☁️  Cloud Terhubung</div>
         </div>
-        <div class="w-full flex flex-col gap-3 px-6 z-20">
+        <div class="w-full flex flex-col gap-3 px-6 z-20 mb-auto pb-4">
             <button class="btn-custom btn-primary" onclick="showScreen('screen-identity'); playSound('click')"> ▶  MULAI</button>
             <button class="btn-custom" onclick="showScreen('screen-tutorial'); playSound('click')"> 📖  CARA BERMAIN</button>
             <button class="btn-custom" onclick="showLeaderboard(); playSound('click')"> 🏆  NILAI</button>
@@ -329,8 +332,7 @@
         <div class="glass-panel w-full p-6 flex flex-col gap-4 relative border-purple-200 border-4">
             <button class="absolute top-4 left-4 text-gray-400 hover:text-purple-600 text-2xl" onclick="showScreen('screen-menu'); playSound('click')"> ⬅ </button>
             
-            <!-- Avatar Maskot Kak AL untuk Akses Guru -->
-            <img src="MASKOT.png?v=1" alt="Guru" class="w-32 h-32 mx-auto object-contain mt-2 mb-2 drop-shadow-sm">
+            <div class="text-center text-5xl mt-2 mb-2"> 👩 ‍ 🏫 </div>
             <h2 class="text-2xl font-bold text-center text-purple-700 mb-2">AKSES GURU</h2>
             <p class="text-xs text-center text-gray-500 font-sans mb-4">Silakan login untuk mengelola soal dan melihat rekap nilai siswa.</p>
             
@@ -409,11 +411,8 @@
         <div class="w-full h-24 bg-white/90 backdrop-blur-md shadow-md rounded-b-3xl p-4 flex flex-col justify-between z-20 border-b-4 border-blue-100">
             <div class="flex justify-between items-center">
                 <div class="flex items-center gap-2">
-                    <!-- Foto Profil Maskot Saat Bermain -->
-                    <div class="w-12 h-12 bg-blue-100 rounded-full flex justify-center items-center shadow-inner border border-blue-200 overflow-hidden">
-                        <img src="MASKOT.png?v=1" alt="Avatar" class="w-full h-full object-cover">
-                    </div>
-                    <div class="ml-1">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex justify-center items-center text-xl shadow-inner border border-blue-200"> 👦 </div>
+                    <div>
                         <div id="hud-name" class="font-bold text-sm text-gray-800 leading-none">Nama Pemain</div>
                         <div class="text-xs text-gray-500 font-sans">Kelas V - Absen <span id="hud-absen"></span></div>
                     </div>
@@ -472,8 +471,7 @@
         <div class="glass-panel w-full p-6 flex flex-col items-center text-center relative overflow-hidden border-yellow-300">
             <div class="absolute top-0 left-0 w-full h-full pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==')] opacity-50"></div>
             
-            <!-- Maskot Saat Menang/Selesai Bermain -->
-            <img src="MASKOT.png?v=1" alt="Selesai" class="w-40 h-40 mx-auto mb-2 animate-bounce object-contain drop-shadow-lg mt-4">
+            <div class="text-6xl mb-2 animate-bounce mt-4"> 🏆 </div>
             <h2 class="text-3xl font-extrabold text-yellow-600 mb-1 drop-shadow-sm">LEVEL COMPLETE</h2>
             <div class="w-16 h-1 bg-yellow-400 rounded-full mb-4"></div>
             <div class="bg-white w-full rounded-2xl p-4 shadow-inner mb-4 relative z-10 font-sans text-left">
@@ -589,7 +587,6 @@
         currentShuffledQuestions: []
     };
     let settings = { music: true, sfx: true };
-
     // --- INISIALISASI BACKGROUND MUSIC ---
     // Aturan keamanan modern browser mengharuskan adanya interaksi pertama sebelum audio di play
     document.addEventListener('click', function initBGM() {
@@ -608,7 +605,6 @@
         }
         document.removeEventListener('touchstart', initBGMTouch);
     }, { once: true });
-
     // --- Custom Modal UI ---
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
@@ -785,7 +781,6 @@
         settings[type] = !settings[type];
         updateSettingsUI();
         playSound('click');
-
         // Play/Pause Background Music Based on Setting
         if (type === 'music') {
             const bgMusic = document.getElementById('bg-music');
@@ -802,7 +797,6 @@
         playSound('click');
         const btn = document.querySelector('button[onclick="toggleMuteInGame()"]');
         btn.innerHTML = settings.sfx ? ' 🔊 ' : ' 🔇 ';
-
         // Play/Pause Background Music
         const bgMusic = document.getElementById('bg-music');
         if (settings.music) {
@@ -1288,7 +1282,7 @@
         qData.options.forEach((opt, idx) => {
             const btn = document.createElement('button');
             btn.className = 'w-full text-left bg-gray-50 border-2 border-gray-200 p-3 rounded-xl flex items-center gap-3 hover:bg-blue-50 hover:border-blue-300 transition-colors active:scale-95';
-            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 rounded-lg flex justify-center items-center shrink-0">${labels[idx]}</span> <span class="font-semibold text-gray-700">${opt}</span>`;
+            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 rounded-lg flex justify-center items-center shrink-0">${labels[idx]}</span> <span class="fontsemibold text-gray-700">${opt}</span>`;
             btn.onclick = () => submitAnswer(idx, qData.answer);
             optsContainer.appendChild(btn);
         });
