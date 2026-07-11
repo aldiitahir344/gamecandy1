@@ -538,8 +538,8 @@
     </div>
     
     <!-- SCREEN: RESULT -->
-    <section id="screen-result" class="screen justify-center items-center p-6 bg-gradient-to-b from-yellow-100 to-orange-100">
-        <div class="glass-panel w-full p-6 flex flex-col items-center text-center relative overflow-hidden border-yellow-300">
+    <section id="screen-result" class="screen justify-start items-center p-6 bg-gradient-to-b from-yellow-100 to-orange-100 overflow-y-auto">
+        <div class="glass-panel w-full p-6 pb-8 flex flex-col items-center text-center relative overflow-hidden border-yellow-300 mt-auto mb-auto">
             <div class="absolute top-0 left-0 w-full h-full pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==')] opacity-50"></div>
             
             <div class="text-6xl mb-2 animate-bounce mt-4"> 🏆 </div>
@@ -688,6 +688,31 @@
     // --- Audio System ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
+    let bgmGainNode = null;
+    let bgmSource = null;
+
+    // Fix Khusus iOS Safari - Menghubungkan elemen <audio> HTML5 ke Web Audio API
+    function setupBGM() {
+        if (bgmSource) return;
+        const bgMusic = document.getElementById('bg-music');
+        try {
+            bgmSource = audioCtx.createMediaElementSource(bgMusic);
+            bgmGainNode = audioCtx.createGain();
+            bgmGainNode.gain.value = settings.volume;
+            bgmSource.connect(bgmGainNode);
+            bgmGainNode.connect(audioCtx.destination);
+        } catch(e) {
+            console.log("Audio routing error (Mungkin CORS):", e);
+        }
+    }
+
+    function applyBGMVolume() {
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.volume = settings.volume; // Fallback untuk perangkat standar
+        if (bgmGainNode) {
+            bgmGainNode.gain.value = settings.volume; // Fix khusus iOS yang mengabaikan atribut volume
+        }
+    }
     
     function playTone(freq, type, duration, vol=0.1) {
         if (!settings.sfx) return;
@@ -728,6 +753,28 @@
                 break;
         }
     }
+
+    // --- INISIALISASI BACKGROUND MUSIC EVENT ---
+    document.addEventListener('click', function initBGM() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        setupBGM();
+        const bgMusic = document.getElementById('bg-music');
+        if (settings.music && bgMusic.paused) {
+            applyBGMVolume();
+            // Menunggu perintah play dari startQuizFlow saja
+        }
+        document.removeEventListener('click', initBGM);
+    }, { once: true });
+    
+    document.addEventListener('touchstart', function initBGMTouch() {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        setupBGM();
+        const bgMusic = document.getElementById('bg-music');
+        if (settings.music && bgMusic.paused) {
+            applyBGMVolume();
+        }
+        document.removeEventListener('touchstart', initBGMTouch);
+    }, { once: true });
     
     // --- UI Navigation ---
     function showScreen(id) {
@@ -821,9 +868,7 @@
                 if (volEl) volEl.value = Math.round(settings.volume * 100);
                 if (labelEl) labelEl.innerText = Math.round(settings.volume * 100) + '%';
                 
-                const bgMusic = document.getElementById('bg-music');
-                bgMusic.volume = settings.volume;
-                
+                applyBGMVolume();
                 updateSettingsUI();
             }
         }, (error) => console.error("Error muat pengaturan user:", error));
@@ -888,10 +933,14 @@
 
     function startQuizFlow() {
         showScreen('screen-menu');
+        
         // Aktifkan BGM saat memilih Quiz (jika diaktifkan pada pengaturan)
+        if(audioCtx.state === 'suspended') audioCtx.resume();
+        setupBGM();
+        
         const bgMusic = document.getElementById('bg-music');
         if (settings.music && settings.volume > 0) {
-            bgMusic.volume = settings.volume;
+            applyBGMVolume();
             bgMusic.play().catch(e => console.log("BGM Error:", e));
         }
     }
@@ -945,12 +994,14 @@
     function changeVolume(val) {
         settings.volume = val / 100;
         document.getElementById('volume-label').innerText = val + '%';
-        const bgMusic = document.getElementById('bg-music');
-        bgMusic.volume = settings.volume;
         
+        applyBGMVolume(); // Terapkan volume ke sistem
+        
+        const bgMusic = document.getElementById('bg-music');
         if (settings.volume > 0 && !settings.music) {
             settings.music = true;
             updateSettingsUI();
+            if(audioCtx.state === 'suspended') audioCtx.resume();
             bgMusic.play().catch(e=>console.log(e));
         } else if (settings.volume == 0 && settings.music) {
             settings.music = false;
@@ -963,6 +1014,7 @@
         settings[type] = !settings[type];
         updateSettingsUI();
         playSound('click');
+        
         if (type === 'music') {
             const bgMusic = document.getElementById('bg-music');
             if (settings.music) {
@@ -971,7 +1023,8 @@
                     document.getElementById('music-volume').value = 40;
                     document.getElementById('volume-label').innerText = '40%';
                 }
-                bgMusic.volume = settings.volume;
+                if(audioCtx.state === 'suspended') audioCtx.resume();
+                applyBGMVolume();
                 bgMusic.play().catch(e => console.log(e));
             } else {
                 bgMusic.pause();
@@ -984,15 +1037,19 @@
         settings.sfx = !settings.sfx;
         settings.music = !settings.music;
         playSound('click');
+        
         const btn = document.querySelector('button[onclick="toggleMuteInGame()"]');
         btn.innerHTML = settings.sfx ? ' 🔊 ' : ' 🔇 ';
+        
         const bgMusic = document.getElementById('bg-music');
         if (settings.music) {
-            bgMusic.volume = settings.volume;
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            applyBGMVolume();
             bgMusic.play().catch(e => console.log(e));
         } else {
             bgMusic.pause();
         }
+        
         updateSettingsUI();
         saveUserSettings();
     }
