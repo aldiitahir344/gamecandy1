@@ -274,8 +274,8 @@
         </div>
         
         <div class="w-full flex flex-col gap-4 px-6 z-20 mb-auto pb-4 mt-4">
-            <button class="btn-custom btn-materi" onclick="openMateri(); playSound('click')"> 📚 MENU MATERI</button>
-            <button class="btn-custom btn-primary" onclick="showScreen('screen-menu'); playSound('click')"> 🎮 MENU QUIZ</button>
+            <button class="btn-custom btn-materi" onclick="openMateri(); playSound('click')"> 📚 MATERI</button>
+            <button class="btn-custom btn-primary" onclick="startQuizFlow(); playSound('click')"> 🎮 QUIZ</button>
         </div>
     </section>
 
@@ -352,12 +352,22 @@
     <section id="screen-settings" class="screen justify-center items-center p-6">
         <div class="glass-panel w-full p-6 relative">
             <h2 class="text-2xl font-bold text-center text-gray-700 mb-6"> ⚙  PENGATURAN</h2>
-            <div class="flex justify-between items-center bg-white p-3 rounded-xl mb-3 shadow-sm">
-                <span class="font-bold text-gray-600"> 🎵  Musik</span>
-                <button id="toggle-music" class="w-12 h-6 bg-green-400 rounded-full relative transition-colors duration-300" onclick="toggleSetting('music')">
-                    <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow transition-transform duration-300 transform translate-x-0"></div>
-                </button>
+            
+            <div class="flex flex-col bg-white p-3 rounded-xl mb-3 shadow-sm">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-bold text-gray-600"> 🎵  Musik</span>
+                    <button id="toggle-music" class="w-12 h-6 bg-green-400 rounded-full relative transition-colors duration-300" onclick="toggleSetting('music')">
+                        <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow transition-transform duration-300 transform translate-x-0"></div>
+                    </button>
+                </div>
+                <div class="flex justify-between items-center mt-1">
+                    <span class="text-xs font-bold text-gray-500">Volume Musik</span>
+                    <span id="volume-label" class="text-xs font-bold text-blue-600">40%</span>
+                </div>
+                <!-- SLIDER VOLUME MUSIK -->
+                <input type="range" id="music-volume" min="0" max="100" value="40" class="w-full mt-1 accent-green-500" oninput="changeVolume(this.value)" onchange="saveUserSettings()">
             </div>
+
             <div class="flex justify-between items-center bg-white p-3 rounded-xl mb-3 shadow-sm">
                 <span class="font-bold text-gray-600"> 🔊  Efek Suara</span>
                 <button id="toggle-sfx" class="w-12 h-6 bg-green-400 rounded-full relative transition-colors duration-300" onclick="toggleSetting('sfx')">
@@ -652,26 +662,9 @@
         matchesSinceLastQuiz: 0,
         currentShuffledQuestions: []
     };
-    let settings = { music: true, sfx: true };
     
-    // --- INISIALISASI BACKGROUND MUSIC ---
-    document.addEventListener('click', function initBGM() {
-        const bgMusic = document.getElementById('bg-music');
-        if (settings.music && bgMusic.paused) {
-            bgMusic.volume = 0.4;
-            bgMusic.play().catch(e => console.log("BGM Error:", e));
-        }
-        document.removeEventListener('click', initBGM);
-    }, { once: true });
-    
-    document.addEventListener('touchstart', function initBGMTouch() {
-        const bgMusic = document.getElementById('bg-music');
-        if (settings.music && bgMusic.paused) {
-            bgMusic.volume = 0.4;
-            bgMusic.play().catch(e => console.log("BGM Error:", e));
-        }
-        document.removeEventListener('touchstart', initBGMTouch);
-    }, { once: true });
+    // Setting tersimpan secara default di dalam memori, lalu akan ditimpa setting pengguna dari cloud
+    let settings = { music: true, sfx: true, volume: 0.4 };
     
     // --- Custom Modal UI ---
     function showCustomAlert(message) {
@@ -805,12 +798,48 @@
         if (user) {
             loadActiveQuestionsFromCloud();
             listenToScoresFromCloud();
-            loadSettingsFromCloud();
+            loadSettingsFromCloud(); // Memuat tautan dari Guru
+            loadUserSettings(); // Memuat preferensi pengguna (volume/SFX)
         }
     });
     
     // --- CLOUD FIREBASE FUNCTIONS ---
     
+    // Memuat Preferensi Pengguna (Volume & SFX)
+    function loadUserSettings() {
+        if (!currentUser) return;
+        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'user_settings', 'preferences');
+        onSnapshot(docRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                if (data.volume !== undefined) settings.volume = data.volume;
+                if (data.music !== undefined) settings.music = data.music;
+                if (data.sfx !== undefined) settings.sfx = data.sfx;
+                
+                const volEl = document.getElementById('music-volume');
+                const labelEl = document.getElementById('volume-label');
+                if (volEl) volEl.value = Math.round(settings.volume * 100);
+                if (labelEl) labelEl.innerText = Math.round(settings.volume * 100) + '%';
+                
+                const bgMusic = document.getElementById('bg-music');
+                bgMusic.volume = settings.volume;
+                
+                updateSettingsUI();
+            }
+        }, (error) => console.error("Error muat pengaturan user:", error));
+    }
+    
+    // Menyimpan Preferensi Pengguna (Volume & SFX)
+    async function saveUserSettings() {
+        if (!currentUser) return;
+        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'user_settings', 'preferences');
+        try {
+            await setDoc(docRef, { music: settings.music, sfx: settings.sfx, volume: settings.volume }, { merge: true });
+        } catch (e) {
+            console.error("Gagal menyimpan pengaturan", e);
+        }
+    }
+
     function loadSettingsFromCloud() {
         if (!currentUser) return;
         const docRef = doc(db, getQuestionsCollectionPath(), 'app_settings');
@@ -840,7 +869,12 @@
         }
     }
     
+    // --- Lading Page Handlers ---
     function openMateri() {
+        // Matikan BGM ketika memilih Materi
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.pause(); 
+
         if (heyzineLink && heyzineLink.trim() !== "") {
             let finalLink = heyzineLink.trim();
             if (!finalLink.startsWith('http://') && !finalLink.startsWith('https://')) {
@@ -849,6 +883,16 @@
             window.open(finalLink, '_blank');
         } else {
             showCustomAlert("Tautan materi belum ditambahkan oleh Guru. Silakan hubungi Guru Anda.");
+        }
+    }
+
+    function startQuizFlow() {
+        showScreen('screen-menu');
+        // Aktifkan BGM saat memilih Quiz (jika diaktifkan pada pengaturan)
+        const bgMusic = document.getElementById('bg-music');
+        if (settings.music && settings.volume > 0) {
+            bgMusic.volume = settings.volume;
+            bgMusic.play().catch(e => console.log("BGM Error:", e));
         }
     }
     
@@ -898,6 +942,23 @@
         });
     }
     
+    function changeVolume(val) {
+        settings.volume = val / 100;
+        document.getElementById('volume-label').innerText = val + '%';
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.volume = settings.volume;
+        
+        if (settings.volume > 0 && !settings.music) {
+            settings.music = true;
+            updateSettingsUI();
+            bgMusic.play().catch(e=>console.log(e));
+        } else if (settings.volume == 0 && settings.music) {
+            settings.music = false;
+            updateSettingsUI();
+            bgMusic.pause();
+        }
+    }
+
     function toggleSetting(type) {
         settings[type] = !settings[type];
         updateSettingsUI();
@@ -905,11 +966,18 @@
         if (type === 'music') {
             const bgMusic = document.getElementById('bg-music');
             if (settings.music) {
+                if(settings.volume === 0) {
+                    settings.volume = 0.4;
+                    document.getElementById('music-volume').value = 40;
+                    document.getElementById('volume-label').innerText = '40%';
+                }
+                bgMusic.volume = settings.volume;
                 bgMusic.play().catch(e => console.log(e));
             } else {
                 bgMusic.pause();
             }
         }
+        saveUserSettings();
     }
     
     function toggleMuteInGame() {
@@ -920,10 +988,13 @@
         btn.innerHTML = settings.sfx ? ' 🔊 ' : ' 🔇 ';
         const bgMusic = document.getElementById('bg-music');
         if (settings.music) {
+            bgMusic.volume = settings.volume;
             bgMusic.play().catch(e => console.log(e));
         } else {
             bgMusic.pause();
         }
+        updateSettingsUI();
+        saveUserSettings();
     }
     
     function updateSettingsUI() {
@@ -1587,6 +1658,9 @@
     window.closeCustomModal = closeCustomModal;
     window.saveMateriLink = saveMateriLink;
     window.openMateri = openMateri;
+    window.startQuizFlow = startQuizFlow;
+    window.changeVolume = changeVolume;
+    window.saveUserSettings = saveUserSettings;
     
     // MULAI APLIKASI
     initApp();
