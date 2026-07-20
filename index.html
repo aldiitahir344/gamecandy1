@@ -281,7 +281,7 @@
     
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
-        <img src="https://placehold.co/150x150/ffdeeb/d81b60?text=MASKOT" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg rounded-full">
+        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">CERDIKIA<br>MATCH</h1>
         <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
@@ -301,7 +301,7 @@
     <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="https://placehold.co/150x150/ffdeeb/d81b60?text=MASKOT" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl rounded-full">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl">
             </div>
             
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">CERDIKIA<br>MATCH</h1>
@@ -323,7 +323,7 @@
         </div>
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="https://placehold.co/120x120/ffdeeb/d81b60?text=MASKOT" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl rounded-full">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl">
             </div>
             <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">MENU QUIZ</h1>
         </div>
@@ -1250,7 +1250,7 @@
         const prompt = `Buat 3 soal pilihan ganda tentang "${topic}" untuk siswa SD. Berikan output HANYA dalam format JSON array yang valid persis seperti contoh berikut tanpa tambahan blok markdown atau teks lain. Contoh output yang diminta: [{"q": "Pertanyaan?", "options": ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"], "answer": 0}]`;
 
         const payload = {
-            contents: [{ parts: [{ text: prompt }] }],
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
             generationConfig: {
                 responseMimeType: "application/json"
             }
@@ -1847,7 +1847,7 @@
 
         const systemPrompt = "Kamu adalah 'Tutor Cerdikia', asisten pintar dan ramah untuk siswa SD. Jawab pertanyaan seputar materi pelajaran sekolah dengan bahasa yang sangat sederhana, mudah dimengerti, ramah, dan selalu berikan semangat belajar. Usahakan jawaban tidak terlalu panjang.";
         const payload = {
-            contents: [{ parts: [{ text: msg }] }],
+            contents: [{ role: "user", parts: [{ text: msg }] }],
             systemInstruction: { parts: [{ text: systemPrompt }] }
         };
         const apiKey = ""; 
@@ -1866,6 +1866,7 @@
                 updateChatMessage(loadingId, reply);
                 playSound('pop');
             } else {
+                console.error("API Error:", result);
                 updateChatMessage(loadingId, 'Maaf, Tutor Cerdikia sedang bingung. Bisa ulangi pertanyaannya?');
             }
         } catch(e) {
