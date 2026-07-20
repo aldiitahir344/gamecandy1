@@ -408,6 +408,7 @@
                     <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow transition-transform duration-300"></div>
                 </button>
             </div>
+            
             <button class="btn-custom w-full mt-4" onclick="showScreen('screen-menu'); playSound('click')"> ⬅  KEMBALI</button>
         </div>
     </section>
@@ -907,6 +908,7 @@
             console.error("Gagal menyimpan pengaturan", e);
         }
     }
+    
     function loadSettingsFromCloud() {
         if (!currentUser) return;
         const docRef = doc(db, getQuestionsCollectionPath(), 'app_settings');
@@ -1252,10 +1254,22 @@
         const payload = {
             contents: [{ role: "user", parts: [{ text: prompt }] }],
             generationConfig: {
-                responseMimeType: "application/json"
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: "ARRAY",
+                    items: {
+                        type: "OBJECT",
+                        properties: {
+                            "q": { type: "STRING" },
+                            "options": { type: "ARRAY", items: { type: "STRING" } },
+                            "answer": { type: "INTEGER" }
+                        },
+                        required: ["q", "options", "answer"]
+                    }
+                }
             }
         };
-        const apiKey = ""; 
+        const apiKey = "AQ.Ab8RN6Juptgj9AxNlwUrmigL4DF2wzAyChVY7MVBJYi-P87orQ"; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
         try {
@@ -1266,6 +1280,14 @@
             });
             
             const result = await response.json();
+            
+            if (!response.ok) {
+                if (result.error && result.error.message.includes("API key not valid")) {
+                    showCustomAlert("⚠️ API Key Tidak Valid/Kosong!\n\nKarena di-hosting di luar (seperti GitHub Pages), Anda wajib memasukkan Gemini API Key di menu PENGATURAN agar fitur AI berfungsi.");
+                    return;
+                }
+                throw new Error(result.error?.message || "Unknown API Error");
+            }
             
             if (result.candidates && result.candidates[0].content.parts[0].text) {
                 const jsonText = result.candidates[0].content.parts[0].text;
@@ -1850,7 +1872,7 @@
             contents: [{ role: "user", parts: [{ text: msg }] }],
             systemInstruction: { parts: [{ text: systemPrompt }] }
         };
-        const apiKey = ""; 
+        const apiKey = "AQ.Ab8RN6Juptgj9AxNlwUrmigL4DF2wzAyChVY7MVBJYi-P87orQ"; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
         try {
@@ -1861,6 +1883,14 @@
             });
             const result = await response.json();
             
+            if (!response.ok) {
+                if (result.error && result.error.message.includes("API key not valid")) {
+                    updateChatMessage(loadingId, 'Ups! Sepertinya aplikasi berjalan di luar Canvas (di GitHub Pages). Kamu harus memasukkan API Key Gemini di menu PENGATURAN agar aku bisa menjawab ya! 🔑');
+                    return;
+                }
+                throw new Error(result.error?.message || "Unknown API Error");
+            }
+
             if (result.candidates && result.candidates[0].content.parts[0].text) {
                 const reply = result.candidates[0].content.parts[0].text;
                 updateChatMessage(loadingId, reply);
