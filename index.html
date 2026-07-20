@@ -13,7 +13,6 @@
     
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
     <style>
         :root {
             --primary: #4fc3f7;
@@ -225,41 +224,6 @@
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #93c5fd; border-radius: 10px; }
-        
-        /* Chat Bubble Styles */
-        .chat-bubble-user {
-            background-color: #e0e7ff;
-            color: #3730a3;
-            border-radius: 12px 12px 0 12px;
-            padding: 8px 12px;
-            align-self: flex-end;
-            max-width: 85%;
-            word-wrap: break-word;
-        }
-        .chat-bubble-ai {
-            background-color: #f3e8ff;
-            color: #6b21a8;
-            border-radius: 12px 12px 12px 0;
-            padding: 8px 12px;
-            align-self: flex-start;
-            max-width: 85%;
-            word-wrap: break-word;
-        }
-        .typing-indicator span {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background-color: #9333ea;
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out both;
-            margin: 0 2px;
-        }
-        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
-        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
     </style>
 </head>
 <body>
@@ -267,9 +231,11 @@
     
     <!-- Background Music -->
     <audio id="bg-music" loop>
-        <!-- Using placeholder since original file is not available locally in Canvas -->
-        <source src="https://cdn.freesound.org/previews/573/573610_11861866-lq.mp3" type="audio/mpeg">
+        <source src="The_Golden_Tally.mp3" type="audio/mpeg">
+        <!-- Audio Fallback if local file fails -->
+        <source src="https://assets.mixkit.co/music/preview/mixkit-game-level-music-689.mp3" type="audio/mpeg">
     </audio>
+
     <!-- Animated Background Elements -->
     <div class="bg-particles" id="bg-particles">
         <div class="floating-icon" style="top: 10%; left: 10%; animation-delay: 0s;"> 📚 </div>
@@ -296,7 +262,7 @@
             <p id="loading-tip" class="text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
         </div>
     </section>
-    
+
     <!-- SCREEN: LANDING PAGE -->
     <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
@@ -314,10 +280,9 @@
             <button class="btn-custom btn-primary" onclick="startQuizFlow(); playSound('click')"> 🎮 QUIZ</button>
         </div>
     </section>
-    
+
     <!-- SCREEN: MAIN MENU -->
     <section id="screen-menu" class="screen justify-start items-center py-8">
-        <!-- Tombol Kembali ke Landing Page -->
         <div class="absolute top-4 left-4 z-50">
             <button class="text-gray-400 hover:text-gray-600 text-2xl bg-white/50 w-10 h-10 rounded-full flex justify-center items-center backdrop-blur shadow-sm border border-gray-200" onclick="showScreen('screen-landing'); playSound('click')"> ⬅ </button>
         </div>
@@ -332,7 +297,7 @@
             <button class="btn-custom" onclick="showScreen('screen-tutorial'); playSound('click')"> 📖  CARA BERMAIN</button>
             <button class="btn-custom" onclick="showLeaderboard(); playSound('click')"> 🏆  NILAI</button>
             <button class="btn-custom" onclick="showScreen('screen-settings'); playSound('click')"> ⚙  PENGATURAN</button>
-            <button class="btn-custom btn-teacher" onclick="showScreen('screen-teacher-login'); playSound('click')"> 👩 ‍ 🏫  AKSES GURU</button>
+            <button class="btn-custom btn-teacher" onclick="showScreen('screen-teacher-login'); playSound('click')"> 👩‍🏫  AKSES GURU</button>
         </div>
     </section>
     
@@ -408,7 +373,6 @@
                     <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow transition-transform duration-300"></div>
                 </button>
             </div>
-            
             <button class="btn-custom w-full mt-4" onclick="showScreen('screen-menu'); playSound('click')"> ⬅  KEMBALI</button>
         </div>
     </section>
@@ -481,15 +445,15 @@
             </div>
         </div>
         
-        <!-- TAB SOAL -->
+        <!-- TAB SOAL (Ada Panel AI di Sini) -->
         <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
-            <!-- AI SOAL GENERATOR PANEL -->
-            <div class="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-4 shadow-sm font-sans">
-                <h3 class="font-bold text-purple-700 mb-2 flex items-center gap-2 text-sm">🤖 Pembuat Soal Otomatis (AI)</h3>
-                <p class="text-xs text-purple-600 mb-2">Ketik topik materi, AI akan membuatkan 3 soal baru.</p>
+            <!-- PANEL AI GENERATOR -->
+            <div class="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-4 font-sans">
+                <h4 class="font-bold text-purple-700 mb-2">🤖 Pembuat Soal Otomatis (AI)</h4>
+                <p class="text-xs text-purple-600 mb-2">Ketik materi untuk menghasilkan 3 soal pilihan ganda baru secara instan!</p>
                 <div class="flex gap-2">
-                    <input type="text" id="ai-topic-input" placeholder="Topik (misal: Tata Surya, Hewan)" class="flex-1 p-2 rounded-lg border border-purple-300 text-sm outline-none focus:border-purple-500">
-                    <button id="btn-generate-ai" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition-colors whitespace-nowrap" onclick="generateQuestionsAI()">✨ Buat</button>
+                    <input type="text" id="ai-topic-input" placeholder="Topik (misal: Tata Surya)" class="flex-1 p-2 rounded-lg border focus:outline-none focus:border-purple-500 text-sm">
+                    <button id="btn-generate-ai" onclick="generateQuestionsAI()" class="bg-purple-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow active:scale-95 transition-transform">Buat Soal</button>
                 </div>
             </div>
 
@@ -505,6 +469,7 @@
                 <button class="w-2/3 bg-purple-600 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition-transform text-sm" onclick="saveQuestions()"> 💾  SIMPAN KE CLOUD</button>
             </div>
         </div>
+
         <!-- TAB MATERI -->
         <div id="content-materi" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200 font-sans">
@@ -647,24 +612,29 @@
         </div>
     </div>
 
-    <!-- AI CHAT BUTTON (STUDENT) -->
-    <button id="ai-fab" class="absolute bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-lg flex justify-center items-center text-3xl z-[90] active:scale-90 transition-transform hidden border-2 border-white hover:shadow-xl" onclick="toggleAIChat()">🤖</button>
+    <!-- AI CHAT TUTOR (Floating) -->
+    <button onclick="toggleAIChat()" class="fixed bottom-4 right-4 z-50 w-14 h-14 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full shadow-2xl flex justify-center items-center text-3xl animate-bounce hover:scale-110 transition-transform border-2 border-white">
+        🤖
+    </button>
 
     <!-- AI CHAT PANEL -->
-    <div id="ai-chat-panel" class="absolute bottom-24 right-6 w-[320px] max-w-[calc(100vw-48px)] h-[400px] max-h-[60vh] bg-white rounded-2xl shadow-2xl z-[90] hidden flex-col border-2 border-purple-200 overflow-hidden transition-all transform origin-bottom-right">
-        <div class="bg-gradient-to-r from-blue-500 to-purple-500 p-3 flex justify-between items-center text-white">
-            <span class="font-bold flex items-center gap-2 font-sans">🤖 Tutor Cerdikia</span>
-            <button class="text-white hover:text-gray-200 text-2xl font-bold leading-none active:scale-90" onclick="toggleAIChat()">×</button>
+    <div id="ai-chat-panel" class="fixed bottom-20 right-4 w-80 max-w-[calc(100vw-2rem)] h-96 bg-white rounded-2xl shadow-2xl z-50 hidden flex-col border border-purple-200 overflow-hidden transform transition-all">
+        <div class="bg-gradient-to-r from-purple-500 to-indigo-500 p-3 flex justify-between items-center text-white">
+            <div class="font-bold flex items-center gap-2">🤖 Tutor Cerdikia</div>
+            <button onclick="toggleAIChat()" class="text-white hover:text-gray-200 font-bold text-xl">&times;</button>
         </div>
-        <div id="ai-chat-messages" class="flex-1 p-3 overflow-y-auto bg-gray-50 flex flex-col gap-3 text-sm font-sans custom-scrollbar">
-            <div class="chat-bubble-ai">Halo! Aku Tutor Cerdikia. Ada materi pelajaran yang ingin kamu tanyakan? 😊</div>
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-50 text-sm font-sans custom-scrollbar">
+            <div class="bg-purple-100 text-purple-800 p-2 rounded-lg rounded-tl-none inline-block max-w-[85%]">
+                Halo! Aku Tutor Cerdikia. Ada materi pelajaran sekolah yang ingin kamu tanyakan? 😊
+            </div>
         </div>
-        <div class="p-2 bg-white border-t flex gap-2 border-purple-100">
-            <input type="text" id="ai-chat-input" placeholder="Tanya sesuatu..." class="flex-1 p-2 border border-purple-200 rounded-xl text-sm outline-none focus:border-purple-500 bg-gray-50 font-sans" onkeypress="if(event.key==='Enter') sendChatAI()">
-            <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 rounded-xl font-bold active:scale-95 transition-transform" onclick="sendChatAI()">➤</button>
+        <div class="p-2 bg-white border-t flex gap-2">
+            <input type="text" id="ai-chat-input" placeholder="Tanya sesuatu..." class="flex-1 p-2 rounded-full border bg-gray-50 focus:outline-none focus:border-purple-500 text-sm font-sans" onkeypress="if(event.key === 'Enter') sendChatAI()">
+            <button onclick="sendChatAI()" class="w-10 h-10 bg-purple-600 text-white rounded-full flex justify-center items-center shadow active:scale-95">
+                ➤
+            </button>
         </div>
     </div>
-
 </div>
 
 <!-- FIREBASE SDK & APP LOGIC -->
@@ -688,12 +658,12 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'cerdikia-match-app';
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'cerdikia-match';
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
     
     // --- Constants & Defaults ---
-    const EMOJIS = [' 🌸 ', ' 🌼 ', ' 🐠 ', ' 🐢 ', ' 🦧 '];
+    const EMOJIS = ['🌸', '🌼', '🐠', '🐢', '🦧'];
     const ROWS = 7;
     const COLS = 7;
     
@@ -726,7 +696,6 @@
         currentShuffledQuestions: []
     };
     
-    // Setting tersimpan secara default di dalam memori, lalu akan ditimpa setting pengguna dari cloud
     let settings = { music: true, sfx: true, volume: 0.4 };
     
     // --- Custom Modal UI ---
@@ -802,17 +771,8 @@
         target.style.display = 'flex';
         void target.offsetWidth;
         target.classList.add('active');
-
-        // Manage AI FAB visibility (hide on loading, result, or teacher dashboard)
-        const fab = document.getElementById('ai-fab');
-        if(id === 'screen-loading' || id === 'screen-result' || id === 'screen-teacher-dashboard' || id === 'screen-teacher-login') {
-            fab.classList.add('hidden');
-            document.getElementById('ai-chat-panel').classList.add('hidden'); // close chat if open
-        } else {
-            fab.classList.remove('hidden');
-        }
     }
-    
+
     // --- APP INITIALIZATION ---
     function initApp() {
         showScreen('screen-loading');
@@ -869,12 +829,10 @@
         if (user) {
             loadActiveQuestionsFromCloud();
             listenToScoresFromCloud();
-            loadSettingsFromCloud(); // Memuat tautan dari Guru
-            loadUserSettings(); // Memuat preferensi pengguna (volume/SFX)
+            loadSettingsFromCloud(); 
+            loadUserSettings(); 
         }
     });
-    
-    // --- CLOUD FIREBASE FUNCTIONS ---
     
     function loadUserSettings() {
         if (!currentUser) return;
@@ -908,7 +866,6 @@
             console.error("Gagal menyimpan pengaturan", e);
         }
     }
-    
     function loadSettingsFromCloud() {
         if (!currentUser) return;
         const docRef = doc(db, getQuestionsCollectionPath(), 'app_settings');
@@ -1048,7 +1005,7 @@
         settings.music = !settings.music;
         playSound('click');
         const btn = document.querySelector('button[onclick="toggleMuteInGame()"]');
-        btn.innerHTML = settings.sfx ? ' 🔊 ' : ' 🔇 ';
+        btn.innerHTML = settings.sfx ? '🔊' : '🔇';
         const bgMusic = document.getElementById('bg-music');
         if (settings.music) {
             bgMusic.volume = settings.volume;
@@ -1142,7 +1099,6 @@
         }
     }
     
-    // --- Dynamic Question Editor ---
     function syncQuestionsFromDOM() {
         const items = document.querySelectorAll('.question-item');
         if (items.length === 0) return;
@@ -1162,7 +1118,7 @@
         });
         activeQuestions = synced;
     }
-    
+
     function renderTeacherQuestionsEditor() {
         const editor = document.getElementById('questions-editor');
         editor.innerHTML = '';
@@ -1192,6 +1148,7 @@
             editor.appendChild(div);
         });
     }
+    
     function addNewQuestion() {
         playSound('click');
         syncQuestionsFromDOM();
@@ -1202,6 +1159,7 @@
             el.scrollTop = el.scrollHeight;
         }, 50);
     }
+    
     function deleteQuestion(idx) {
         playSound('click');
         syncQuestionsFromDOM();
@@ -1212,6 +1170,7 @@
         activeQuestions.splice(idx, 1);
         renderTeacherQuestionsEditor();
     }
+    
     async function saveQuestions() {
         playSound('click');
         if (!currentUser) {
@@ -1230,95 +1189,6 @@
         }
     }
     
-    // --- AI Question Generation Logic ---
-    async function generateQuestionsAI() {
-        playSound('click');
-        const topicInput = document.getElementById('ai-topic-input');
-        const topic = topicInput.value.trim();
-        if (!topic) {
-            showCustomAlert("Silakan masukkan topik materi terlebih dahulu!");
-            return;
-        }
-
-        const btn = document.getElementById('btn-generate-ai');
-        const originalText = btn.innerText;
-        btn.innerText = "⏳ Memproses...";
-        btn.disabled = true;
-        btn.classList.add('opacity-50', 'cursor-not-allowed');
-
-        // Sync current work before fetching
-        syncQuestionsFromDOM();
-
-        const prompt = `Buat 3 soal pilihan ganda tentang "${topic}" untuk siswa SD. Berikan output HANYA dalam format JSON array yang valid persis seperti contoh berikut tanpa tambahan blok markdown atau teks lain. Contoh output yang diminta: [{"q": "Pertanyaan?", "options": ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"], "answer": 0}]`;
-
-        const payload = {
-            contents: [{ role: "user", parts: [{ text: prompt }] }],
-            generationConfig: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: "ARRAY",
-                    items: {
-                        type: "OBJECT",
-                        properties: {
-                            "q": { type: "STRING" },
-                            "options": { type: "ARRAY", items: { type: "STRING" } },
-                            "answer": { type: "INTEGER" }
-                        },
-                        required: ["q", "options", "answer"]
-                    }
-                }
-            }
-        };
-        const apiKey = "AQ.Ab8RN6Juptgj9AxNlwUrmigL4DF2wzAyChVY7MVBJYi-P87orQ"; 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            
-            const result = await response.json();
-            
-            if (!response.ok) {
-                if (result.error && result.error.message.includes("API key not valid")) {
-                    showCustomAlert("⚠️ API Key Tidak Valid/Kosong!\n\nKarena di-hosting di luar (seperti GitHub Pages), Anda wajib memasukkan Gemini API Key di menu PENGATURAN agar fitur AI berfungsi.");
-                    return;
-                }
-                throw new Error(result.error?.message || "Unknown API Error");
-            }
-            
-            if (result.candidates && result.candidates[0].content.parts[0].text) {
-                const jsonText = result.candidates[0].content.parts[0].text;
-                const newQuestions = JSON.parse(jsonText);
-                
-                // Append new questions
-                activeQuestions = [...activeQuestions, ...newQuestions];
-                renderTeacherQuestionsEditor();
-                
-                topicInput.value = '';
-                showCustomAlert(`✅ Berhasil membuat 3 soal AI tentang "${topic}"!\nSilakan periksa bagian bawah daftar soal.`);
-                
-                // Scroll to bottom
-                setTimeout(() => {
-                    const el = document.getElementById('content-soal');
-                    el.scrollTop = el.scrollHeight;
-                }, 100);
-
-            } else {
-                throw new Error("Invalid response format");
-            }
-        } catch(e) {
-            console.error("AI Generation Error:", e);
-            showCustomAlert("Gagal menghasilkan soal dengan AI. Coba ubah topik atau coba lagi nanti.");
-        } finally {
-            btn.innerText = originalText;
-            btn.disabled = false;
-            btn.classList.remove('opacity-50', 'cursor-not-allowed');
-        }
-    }
-
     function copyScoresToClipboard() {
         playSound('click');
         if(allScores.length === 0) {
@@ -1344,7 +1214,7 @@
         }
         document.body.removeChild(el);
     }
-    
+
     function startGame() {
         playSound('click');
         if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -1487,6 +1357,7 @@
         board[r1][c1] = board[r2][c2];
         board[r2][c2] = tempType;
         playSound('click');
+        
         setTimeout(() => {
             const matches = findMatches();
             if (matches.length > 0) {
@@ -1616,7 +1487,7 @@
     function createParticle(parent) {
         if(Math.random() > 0.5) return; 
         const p = document.createElement('div');
-        p.innerText = ' ✨ ';
+        p.innerText = '✨';
         p.style.position = 'absolute';
         p.style.fontSize = '1.5rem';
         p.style.animation = 'pop-out 0.5s ease-out forwards';
@@ -1653,7 +1524,7 @@
         qData.options.forEach((opt, idx) => {
             const btn = document.createElement('button');
             btn.className = 'w-full text-left bg-gray-50 border-2 border-gray-200 p-3 rounded-xl flex items-center gap-3 hover:bg-blue-50 hover:border-blue-300 transition-colors active:scale-95';
-            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 rounded-lg flex justify-center items-center shrink-0">${labels[idx]}</span> <span class="font-semibold text-gray-700">${opt}</span>`;
+            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 rounded-lg flex justify-center items-center shrink-0">${labels[idx]}</span> <span class="fontsemibold text-gray-700">${opt}</span>`;
             btn.onclick = () => submitAnswer(idx, qData.answer);
             optsContainer.appendChild(btn);
         });
@@ -1682,7 +1553,7 @@
         if (isCorrect) {
             playSound('correct');
             state.correct++;
-            icon.innerText = ' 🎉 ';
+            icon.innerText = '🎉';
             text.innerText = 'BENAR!';
             text.className = 'text-4xl font-extrabold text-white bg-green-500 px-6 py-2 rounded-full border-4 border-white';
             
@@ -1693,7 +1564,7 @@
         } else {
             playSound('wrong');
             state.wrong++;
-            icon.innerText = ' ❌ ';
+            icon.innerText = '❌';
             text.innerText = 'SALAH';
             text.className = 'text-4xl font-extrabold text-white bg-red-500 px-6 py-2 rounded-full border-4 border-white';
             scoreStr.style.display = 'none';
@@ -1747,7 +1618,6 @@
     
     async function saveScoreToCloud() {
         if (!currentUser) return;
-        
         try {
             const scoresRef = collection(db, getScoresCollectionPath());
             await addDoc(scoresRef, {
@@ -1777,7 +1647,7 @@
         if (allScores.length === 0) {
             list.innerHTML = '<p class="text-center text-gray-500 mt-10">Belum ada data nilai di Cloud.</p>';
         } else {
-            const medals = [' 🥇 ', ' 🥈 ', ' 🥉 '];
+            const medals = ['🥇', '🥈', '🥉'];
             allScores.slice(0, 10).forEach((s, i) => {
                 const m = i < 3 ? medals[i] : `<span class="w-6 inline-block text-center text-gray-400 font-bold">${i+1}</span>`;
                 const div = document.createElement('div');
@@ -1812,48 +1682,28 @@
         });
     }
 
-    // --- AI Student Chat Logic ---
+    // --- FITUR AI: TUTOR CERDIKIA ---
     function toggleAIChat() {
+        playSound('click');
         const panel = document.getElementById('ai-chat-panel');
-        if (panel.classList.contains('hidden')) {
-            panel.classList.remove('hidden');
-            setTimeout(() => document.getElementById('ai-chat-input').focus(), 100);
-            playSound('pop');
-        } else {
-            panel.classList.add('hidden');
-        }
+        panel.classList.toggle('hidden');
+        panel.classList.toggle('flex');
     }
 
     function appendChatMessage(sender, text) {
-        const container = document.getElementById('ai-chat-messages');
+        const chatBox = document.getElementById('chat-messages');
         const div = document.createElement('div');
-        const msgId = 'msg-' + Date.now();
-        div.id = msgId;
         
-        if(sender === 'user') {
-            div.className = 'chat-bubble-user';
-            div.innerText = text;
-        } else {
-            div.className = 'chat-bubble-ai';
-            if (text === 'loading') {
-                div.innerHTML = `<div class="typing-indicator"><span></span><span></span><span></span></div>`;
-            } else {
-                div.innerText = text;
-            }
+        if (sender === 'user') {
+            div.className = "bg-blue-100 text-blue-800 p-2 rounded-lg rounded-tr-none inline-block max-w-[85%] float-right clear-both mb-2";
+        } else if (sender === 'ai') {
+            div.className = "bg-purple-100 text-purple-800 p-2 rounded-lg rounded-tl-none inline-block max-w-[85%] float-left clear-both mb-2";
         }
         
-        container.appendChild(div);
-        container.scrollTop = container.scrollHeight;
-        return msgId;
-    }
-
-    function updateChatMessage(id, text) {
-        const el = document.getElementById(id);
-        if(el) {
-            el.innerText = text;
-            const container = document.getElementById('ai-chat-messages');
-            container.scrollTop = container.scrollHeight;
-        }
+        div.innerText = text;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return div;
     }
 
     async function sendChatAI() {
@@ -1864,44 +1714,105 @@
         appendChatMessage('user', msg);
         inputEl.value = '';
         
-        const loadingId = appendChatMessage('ai', 'loading');
+        const loadingMsg = appendChatMessage('ai', 'Tutor sedang mengetik...');
         playSound('click');
 
-        const systemPrompt = "Kamu adalah 'Tutor Cerdikia', asisten pintar dan ramah untuk siswa SD. Jawab pertanyaan seputar materi pelajaran sekolah dengan bahasa yang sangat sederhana, mudah dimengerti, ramah, dan selalu berikan semangat belajar. Usahakan jawaban tidak terlalu panjang.";
-        const payload = {
-            contents: [{ role: "user", parts: [{ text: msg }] }],
-            systemInstruction: { parts: [{ text: systemPrompt }] }
-        };
+        // Menggunakan API Key milik pengguna
         const apiKey = "AQ.Ab8RN6Juptgj9AxNlwUrmigL4DF2wzAyChVY7MVBJYi-P87orQ"; 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        
+        const systemInstruction = "Kamu adalah Tutor Cerdikia. Asisten pintar yang ramah dan asik untuk membimbing murid SD belajar. Gunakan bahasa yang mudah dipahami, ceria, dan memotivasi. Jawablah secara singkat dan jelas.";
+        
         try {
-            const response = await fetch(apiUrl, {
+            const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    contents: [{ role: "user", parts: [{ text: msg }] }],
+                    systemInstruction: { parts: [{ text: systemInstruction }] }
+                })
             });
-            const result = await response.json();
             
-            if (!response.ok) {
-                if (result.error && result.error.message.includes("API key not valid")) {
-                    updateChatMessage(loadingId, 'Ups! Sepertinya aplikasi berjalan di luar Canvas (di GitHub Pages). Kamu harus memasukkan API Key Gemini di menu PENGATURAN agar aku bisa menjawab ya! 🔑');
-                    return;
-                }
-                throw new Error(result.error?.message || "Unknown API Error");
+            if(!response.ok) {
+                // Jika error, lemparkan pesan error dari server untuk dicek
+                const errorData = await response.json();
+                throw new Error(errorData.error.message || "API Error");
             }
+            
+            const data = await response.json();
+            const aiResponse = data.candidates[0].content.parts[0].text;
+            
+            loadingMsg.innerText = aiResponse;
+        } catch (err) {
+            console.error(err);
+            loadingMsg.innerText = `Waduh, koneksi ke Tutor gagal: ${err.message}. Pastikan kunci API sudah benar dan aktif.`;
+        }
+    }
 
-            if (result.candidates && result.candidates[0].content.parts[0].text) {
-                const reply = result.candidates[0].content.parts[0].text;
-                updateChatMessage(loadingId, reply);
-                playSound('pop');
-            } else {
-                console.error("API Error:", result);
-                updateChatMessage(loadingId, 'Maaf, Tutor Cerdikia sedang bingung. Bisa ulangi pertanyaannya?');
+    // --- FITUR AI: PEMBUAT SOAL (DASHBOARD GURU) ---
+    async function generateQuestionsAI() {
+        playSound('click');
+        const topicInput = document.getElementById('ai-topic-input');
+        const topic = topicInput.value.trim();
+        if (!topic) {
+            showCustomAlert("Silakan masukkan topik materi terlebih dahulu!");
+            return;
+        }
+
+        const btn = document.getElementById('btn-generate-ai');
+        const originalText = btn.innerText;
+        btn.innerText = "⏳ Memproses...";
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        syncQuestionsFromDOM();
+        
+        const apiKey = "AQ.Ab8RN6Juptgj9AxNlwUrmigL4DF2wzAyChVY7MVBJYi-P87orQ";
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        
+        const prompt = `Buat 3 soal pilihan ganda tentang topik "${topic}" untuk siswa SD. Hasilkan OUTPUT HANYA DALAM BENTUK JSON ARRAY YANG VALID tanpa tambahan teks atau markdown backticks (\`\`\`). Format JSON persis seperti ini:
+        [
+            {"q": "Pertanyaan 1?", "options": ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"], "answer": 0},
+            {"q": "Pertanyaan 2?", "options": ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"], "answer": 1}
+        ]`;
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    contents: [{parts: [{text: prompt}]}]
+                })
+            });
+            
+            if(!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error.message || "API Error");
             }
-        } catch(e) {
-            console.error("AI Chat Error:", e);
-            updateChatMessage(loadingId, 'Waduh, koneksi ke Tutor terputus. Coba lagi nanti ya!');
+            
+            const data = await response.json();
+            let textResult = data.candidates[0].content.parts[0].text;
+            
+            // Membersihkan sisa-sisa markdown jikalau AI tetap menambahkannya
+            textResult = textResult.replace(/```json/g, "").replace(/```/g, "").trim();
+            
+            const newQuestions = JSON.parse(textResult);
+            
+            if(Array.isArray(newQuestions) && newQuestions.length > 0) {
+                activeQuestions = activeQuestions.concat(newQuestions);
+                renderTeacherQuestionsEditor();
+                showCustomAlert(`✅ Berhasil menghasilkan ${newQuestions.length} soal baru tentang ${topic}!\n\nJangan lupa klik tombol 'SIMPAN KE CLOUD' agar soal ini masuk ke database.`);
+                topicInput.value = '';
+            } else {
+                throw new Error("Format JSON dari AI tidak sesuai array.");
+            }
+        } catch (err) {
+            console.error(err);
+            showCustomAlert(`Gagal menghasilkan soal. Error: ${err.message}. Coba gunakan topik yang lebih spesifik.`);
+        } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
     }
     
@@ -1928,10 +1839,10 @@
     window.changeVolume = changeVolume;
     window.saveUserSettings = saveUserSettings;
     
-    // AI Functions exports
-    window.generateQuestionsAI = generateQuestionsAI;
+    // Ekspor fungsi AI ke window
     window.toggleAIChat = toggleAIChat;
     window.sendChatAI = sendChatAI;
+    window.generateQuestionsAI = generateQuestionsAI;
     
     // MULAI APLIKASI
     initApp();
