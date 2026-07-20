@@ -118,7 +118,6 @@
             border-color: #fbcfe8;
             box-shadow: 0 6px 0 #f472b6, 0 10px 15px -3px rgba(0,0,0,0.1);
         }
-        
         .btn-primary:active {
             box-shadow: 0 2px 0 #f472b6, 0 5px 5px -3px rgba(0,0,0,0.1);
         }
@@ -128,11 +127,9 @@
             border-color: #6ee7b7;
             box-shadow: 0 6px 0 #10b981, 0 10px 15px -3px rgba(0,0,0,0.1);
         }
-        
         .btn-materi:active {
             box-shadow: 0 2px 0 #10b981, 0 5px 5px -3px rgba(0,0,0,0.1);
         }
-        
         .btn-teacher {
             background: linear-gradient(135deg, #a78bfa 0%, #ddd6fe 100%);
             color: #4c1d95;
@@ -154,7 +151,6 @@
             animation: pulse-glow 3s infinite, float 4s infinite ease-in-out;
             transition: transform 0.2s;
         }
-        
         .emoticon:active {
             cursor: grabbing;
             transform: scale(0.9);
@@ -174,7 +170,6 @@
             pointer-events: none;
             z-index: 1;
         }
-        
         .floating-icon {
             position: absolute;
             opacity: 0.15;
@@ -231,8 +226,8 @@
     
     <!-- Background Music -->
     <audio id="bg-music" loop>
-        <source src="The_Golden_Tally.mp3" type="audio/mpeg">
         <source src="the_golden_tally.mp3" type="audio/mpeg">
+        <source src="The_Golden_Tally.mp3" type="audio/mpeg">
         <source src="https://assets.mixkit.co/music/preview/mixkit-game-level-music-689.mp3" type="audio/mpeg">
     </audio>
 
@@ -247,7 +242,8 @@
     
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
-        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg" onerror="this.src='https://placehold.co/200x200/transparent/374151?text=MASKOT'">
+        <!-- Maskot murni (tanpa onerror text placeholder agar tidak rusak) -->
+        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">CERDIKIA<br>MATCH</h1>
         <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
@@ -267,7 +263,7 @@
     <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/200x200/transparent/374151?text=MASKOT'">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl">
             </div>
             
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">CERDIKIA<br>MATCH</h1>
@@ -288,7 +284,7 @@
         </div>
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/200x200/transparent/374151?text=MASKOT'">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl">
             </div>
             <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">MENU QUIZ</h1>
         </div>
@@ -639,9 +635,8 @@
     // ====================================================================================
     // KONFIGURASI API GEMINI (AI)
     // ====================================================================================
-    
-    const GEMINI_API_KEY = "AQ.Ab8RN6JKlDWlwi2ff75f9MnJQoScDAFFuXU6Rmq8TV4YAoyfDA";
-    
+    // Kunci diambil LANGSUNG DARI SCREENSHOT ANDA
+    const GEMINI_API_KEY = "AQ.Ab8RN6Juptgj9AxNlwUrmigL4DF2wzAyChVY7MVBJYi-P87orQ";
     // ====================================================================================
 
     const isCanvas = typeof __firebase_config !== 'undefined';
@@ -1718,7 +1713,10 @@
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': GEMINI_API_KEY
+                },
                 body: JSON.stringify({
                     contents: [{ role: "user", parts: [{ text: msg }] }],
                     systemInstruction: { parts: [{ text: systemInstruction }] }
@@ -1727,7 +1725,7 @@
             
             if(!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error.message || "API Error");
+                throw new Error(errorData.error?.message || "API Error");
             }
             
             const data = await response.json();
@@ -1736,7 +1734,7 @@
             loadingMsg.innerText = aiResponse;
         } catch (err) {
             console.error(err);
-            loadingMsg.innerText = `Waduh, koneksi gagal: ${err.message}.`;
+            loadingMsg.innerText = `Waduh, koneksi gagal: ${err.message}`;
         }
     }
 
@@ -1769,7 +1767,10 @@
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': GEMINI_API_KEY
+                },
                 body: JSON.stringify({
                     contents: [{parts: [{text: prompt}]}]
                 })
@@ -1777,7 +1778,7 @@
             
             if(!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error.message || "API Error");
+                throw new Error(errorData.error?.message || "API Error");
             }
             
             const data = await response.json();
