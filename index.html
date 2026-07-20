@@ -232,7 +232,7 @@
     <!-- Background Music -->
     <audio id="bg-music" loop>
         <source src="The_Golden_Tally.mp3" type="audio/mpeg">
-        <!-- Audio Fallback if local file fails -->
+        <source src="the_golden_tally.mp3" type="audio/mpeg">
         <source src="https://assets.mixkit.co/music/preview/mixkit-game-level-music-689.mp3" type="audio/mpeg">
     </audio>
 
@@ -247,7 +247,7 @@
     
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
-        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg">
+        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg" onerror="this.src='https://placehold.co/200x200/transparent/374151?text=MASKOT'">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">CERDIKIA<br>MATCH</h1>
         <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
@@ -267,7 +267,7 @@
     <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/200x200/transparent/374151?text=MASKOT'">
             </div>
             
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">CERDIKIA<br>MATCH</h1>
@@ -288,7 +288,7 @@
         </div>
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/200x200/transparent/374151?text=MASKOT'">
             </div>
             <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">MENU QUIZ</h1>
         </div>
@@ -364,7 +364,6 @@
                     <span class="text-xs font-bold text-gray-500">Volume Musik</span>
                     <span id="volume-label" class="text-xs font-bold text-blue-600">40%</span>
                 </div>
-                <!-- SLIDER VOLUME MUSIK -->
                 <input type="range" id="music-volume" min="0" max="100" value="40" class="w-full mt-1 accent-green-500" oninput="changeVolume(this.value)" onchange="saveUserSettings()">
             </div>
             <div class="flex justify-between items-center bg-white p-3 rounded-xl mb-3 shadow-sm">
@@ -434,7 +433,6 @@
                             </tr>
                         </thead>
                         <tbody id="teacher-table-body" class="divide-y text-gray-700">
-                            <!-- Injected via JS -->
                         </tbody>
                     </table>
                 </div>
@@ -445,7 +443,7 @@
             </div>
         </div>
         
-        <!-- TAB SOAL (Ada Panel AI di Sini) -->
+        <!-- TAB SOAL -->
         <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <!-- PANEL AI GENERATOR -->
             <div class="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-4 font-sans">
@@ -462,7 +460,6 @@
             </div>
             
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
-                <!-- Injected via JS -->
             </div>
             <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-20 flex gap-2" style="max-width: 450px; margin: 0 auto; left: 0; right: 0;">
                 <button class="w-1/3 bg-green-500 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition-transform text-sm" onclick="addNewQuestion()"> ➕  Tambah</button>
@@ -516,7 +513,6 @@
         </div>
         <div class="flex-1 flex justify-center items-center relative p-4">
             <div id="game-board" class="w-full aspect-square max-w-[360px] bg-white/60 backdrop-blur-lg rounded-2xl p-2 grid grid-cols-7 grid-rows-7 gap-1 shadow-xl border-4 border-white/80 relative touch-none">
-                <!-- Cells generated via JS -->
             </div>
             <div id="combo-text"></div>
         </div>
@@ -534,7 +530,6 @@
             <p id="quiz-question" class="text-lg font-bold text-gray-800 text-center mb-6 font-sans leading-relaxed"></p>
             
             <div id="quiz-options" class="flex flex-col gap-3 font-sans">
-                <!-- Options injected via JS -->
             </div>
         </div>
     </div>
@@ -596,7 +591,6 @@
         <div class="glass-panel w-full p-4 h-[80vh] flex flex-col relative border-blue-200">
             <h2 class="text-2xl font-bold text-center text-blue-600 mb-4 flex-shrink-0"> 🏆  TOP 10 NILAI (CLOUD)</h2>
             <div id="leaderboard-list" class="flex-1 overflow-y-auto space-y-2 font-sans pr-2 custom-scrollbar">
-                <!-- Injected via JS -->
             </div>
             <button class="btn-custom w-full mt-4 flex-shrink-0" onclick="showScreen('screen-menu'); playSound('click')"> ⬅  KEMBALI</button>
         </div>
@@ -607,7 +601,6 @@
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-blue-200 relative">
             <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 font-sans mt-4"></p>
             <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full">
-                <!-- Buttons injected here -->
             </div>
         </div>
     </div>
@@ -643,7 +636,14 @@
     import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     
-    // SETUP FIREBASE CONFIGURATION
+    // ====================================================================================
+    // KONFIGURASI API GEMINI (AI)
+    // ====================================================================================
+    
+    const GEMINI_API_KEY = "AQ.Ab8RN6JKlDWlwi2ff75f9MnJQoScDAFFuXU6Rmq8TV4YAoyfDA";
+    
+    // ====================================================================================
+
     const isCanvas = typeof __firebase_config !== 'undefined';
     const firebaseConfig = isCanvas ? JSON.parse(__firebase_config) : {
         apiKey: "AIzaSyCam7kcUvKBRlLEP5LhQL9tfAwUDVFmKYU",
@@ -662,7 +662,6 @@
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
     
-    // --- Constants & Defaults ---
     const EMOJIS = ['🌸', '🌼', '🐠', '🐢', '🦧'];
     const ROWS = 7;
     const COLS = 7;
@@ -684,7 +683,7 @@
     let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
     let allScores = [];
     let currentUser = null;
-    let heyzineLink = ""; // Tautan Materi Global
+    let heyzineLink = ""; 
     
     let board = [];
     let state = {
@@ -698,7 +697,6 @@
     
     let settings = { music: true, sfx: true, volume: 0.4 };
     
-    // --- Custom Modal UI ---
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
         document.getElementById('custom-modal-buttons').innerHTML = `<button class="btn-custom btn-primary !w-full !m-0" onclick="closeCustomModal()">OK</button>`;
@@ -717,7 +715,6 @@
         document.getElementById('custom-modal').classList.add('hidden');
     }
     
-    // --- Audio System ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
     
@@ -761,7 +758,6 @@
         }
     }
     
-    // --- UI Navigation ---
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => {
             s.classList.remove('active');
@@ -773,7 +769,6 @@
         target.classList.add('active');
     }
 
-    // --- APP INITIALIZATION ---
     function initApp() {
         showScreen('screen-loading');
         updateSettingsUI();
@@ -1717,10 +1712,7 @@
         const loadingMsg = appendChatMessage('ai', 'Tutor sedang mengetik...');
         playSound('click');
 
-        // Menggunakan API Key milik pengguna
-        const apiKey = "AQ.Ab8RN6Juptgj9AxNlwUrmigL4DF2wzAyChVY7MVBJYi-P87orQ"; 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-        
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
         const systemInstruction = "Kamu adalah Tutor Cerdikia. Asisten pintar yang ramah dan asik untuk membimbing murid SD belajar. Gunakan bahasa yang mudah dipahami, ceria, dan memotivasi. Jawablah secara singkat dan jelas.";
         
         try {
@@ -1734,7 +1726,6 @@
             });
             
             if(!response.ok) {
-                // Jika error, lemparkan pesan error dari server untuk dicek
                 const errorData = await response.json();
                 throw new Error(errorData.error.message || "API Error");
             }
@@ -1745,7 +1736,7 @@
             loadingMsg.innerText = aiResponse;
         } catch (err) {
             console.error(err);
-            loadingMsg.innerText = `Waduh, koneksi ke Tutor gagal: ${err.message}. Pastikan kunci API sudah benar dan aktif.`;
+            loadingMsg.innerText = `Waduh, koneksi gagal: ${err.message}.`;
         }
     }
 
@@ -1767,8 +1758,7 @@
 
         syncQuestionsFromDOM();
         
-        const apiKey = "AQ.Ab8RN6Juptgj9AxNlwUrmigL4DF2wzAyChVY7MVBJYi-P87orQ";
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
         
         const prompt = `Buat 3 soal pilihan ganda tentang topik "${topic}" untuk siswa SD. Hasilkan OUTPUT HANYA DALAM BENTUK JSON ARRAY YANG VALID tanpa tambahan teks atau markdown backticks (\`\`\`). Format JSON persis seperti ini:
         [
@@ -1793,9 +1783,7 @@
             const data = await response.json();
             let textResult = data.candidates[0].content.parts[0].text;
             
-            // Membersihkan sisa-sisa markdown jikalau AI tetap menambahkannya
             textResult = textResult.replace(/```json/g, "").replace(/```/g, "").trim();
-            
             const newQuestions = JSON.parse(textResult);
             
             if(Array.isArray(newQuestions) && newQuestions.length > 0) {
@@ -1808,7 +1796,7 @@
             }
         } catch (err) {
             console.error(err);
-            showCustomAlert(`Gagal menghasilkan soal. Error: ${err.message}. Coba gunakan topik yang lebih spesifik.`);
+            showCustomAlert(`Gagal menghasilkan soal. Error: ${err.message}`);
         } finally {
             btn.innerText = originalText;
             btn.disabled = false;
@@ -1816,7 +1804,6 @@
         }
     }
     
-    // EXPORT FUNGSI KE WINDOW AGAR BISA DIPANGGIL HTML
     window.showScreen = showScreen;
     window.playSound = playSound;
     window.startGame = startGame;
@@ -1839,15 +1826,12 @@
     window.changeVolume = changeVolume;
     window.saveUserSettings = saveUserSettings;
     
-    // Ekspor fungsi AI ke window
     window.toggleAIChat = toggleAIChat;
     window.sendChatAI = sendChatAI;
     window.generateQuestionsAI = generateQuestionsAI;
     
-    // MULAI APLIKASI
     initApp();
     
-    // CSS Keyframe Injection for dynamic stuff
     const style = document.createElement('style');
     style.innerHTML = `
         @keyframes pop-out {
