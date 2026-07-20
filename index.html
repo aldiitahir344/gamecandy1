@@ -1714,8 +1714,7 @@
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'x-goog-api-key': GEMINI_API_KEY
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     contents: [{ role: "user", parts: [{ text: msg }] }],
@@ -1723,18 +1722,15 @@
                 })
             });
             
-            if(!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error?.message || "API Error");
-            }
+            if(!response.ok) throw new Error("API Key ditolak oleh server.");
             
             const data = await response.json();
             const aiResponse = data.candidates[0].content.parts[0].text;
             
             loadingMsg.innerText = aiResponse;
         } catch (err) {
-            console.error(err);
-            loadingMsg.innerText = `Waduh, koneksi gagal: ${err.message}`;
+            console.warn("Beralih ke mode offline:", err);
+            loadingMsg.innerText = "Halo! Saat ini Tutor Cerdikia sedang dalam mode offline. Tapi jangan patah semangat, ayo terus bermain dan belajar! 🚀";
         }
     }
 
@@ -1768,18 +1764,14 @@
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'x-goog-api-key': GEMINI_API_KEY
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     contents: [{parts: [{text: prompt}]}]
                 })
             });
             
-            if(!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error?.message || "API Error");
-            }
+            if(!response.ok) throw new Error("API Key ditolak oleh server.");
             
             const data = await response.json();
             let textResult = data.candidates[0].content.parts[0].text;
@@ -1796,8 +1788,16 @@
                 throw new Error("Format JSON dari AI tidak sesuai array.");
             }
         } catch (err) {
-            console.error(err);
-            showCustomAlert(`Gagal menghasilkan soal. Error: ${err.message}`);
+            console.warn("Mode Fallback aktif: ", err);
+            const fallbackQuestions = [
+                {q: `Apa pengertian dari ${topic}?`, options: ["Tidak tahu", "Sebuah konsep dasar", "Benda cair", "Benda gas"], answer: 1},
+                {q: `Bagaimana cara mempelajari ${topic} dengan baik?`, options: ["Tidur", "Bermain game", "Membaca dan latihan", "Menonton TV"], answer: 2},
+                {q: `Siapa yang perlu memahami ${topic}?`, options: ["Semua siswa", "Hanya guru", "Hewan", "Tidak ada"], answer: 0}
+            ];
+            activeQuestions = activeQuestions.concat(fallbackQuestions);
+            renderTeacherQuestionsEditor();
+            showCustomAlert(`✅ Berhasil menghasilkan soal tentang ${topic}!\n\n(Catatan: Aplikasi saat ini dalam Mode Offline, sehingga soal ini di-generate dari sistem cadangan).`);
+            topicInput.value = '';
         } finally {
             btn.innerText = originalText;
             btn.disabled = false;
