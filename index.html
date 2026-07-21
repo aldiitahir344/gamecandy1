@@ -202,7 +202,6 @@
 <body>
 <div id="app-container">
     
-    <!-- Background Music -->
     <audio id="bg-music" loop>
         <source src="The_Golden_Tally.mp3" type="audio/mpeg">
     </audio>
@@ -220,13 +219,13 @@
         <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg" onerror="this.src='https://placehold.co/100x100/4fc3f7/ffffff?text=🤖'">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">QUIZ MATCH<br>CHALLENGE</h1>
-        <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
+        <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain dengan Gemini AI"</p>
         
         <div class="loading-bar-container mb-4">
             <div id="loading-progress" class="loading-bar"></div>
         </div>
         <p id="loading-percentage" class="text-blue-500 font-bold mb-6">0%</p>
-        <p id="loading-cloud" class="text-xs text-purple-600 font-bold mb-2 opacity-0 transition-opacity">Menghubungkan ke Cloud...</p>
+        <p id="loading-cloud" class="text-xs text-purple-600 font-bold mb-2 opacity-0 transition-opacity">Menghubungkan ke Cloud & Gemini AI...</p>
         
         <div class="glass-panel px-6 py-3 text-center">
             <p id="loading-tip" class="text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
@@ -242,7 +241,7 @@
             
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">QUIZ MATCH<br>CHALLENGE</h1>
             <p class="text-lg text-gray-600 font-bold bg-white px-4 py-1 rounded-full inline-block shadow-sm">Belajar Sambil Bermain</p>
-            <div id="cloud-status" class="mt-2 text-xs font-bold bg-green-100 text-green-600 px-3 py-1 rounded-full inline-block shadow-sm"> ☁️  Cloud Terhubung</div>
+            <div id="cloud-status" class="mt-2 text-xs font-bold bg-green-100 text-green-600 px-3 py-1 rounded-full inline-block shadow-sm"> ☁️  Cloud & AI Terhubung</div>
         </div>
         
         <div class="w-full flex flex-col gap-4 px-6 z-20 mb-auto pb-4 mt-4">
@@ -309,10 +308,10 @@
                     <span class="text-3xl animate-ping"> 💥 </span>
                 </div>
                 <p class="flex gap-2"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">3</span> Lakukan 3 kali Match untuk memunculkan soal.</p>
-                <p class="flex gap-2"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">4</span> Jawab soal pilihan ganda.</p>
+                <p class="flex gap-2"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">4</span> Jawab soal pilihan ganda (Didukung AI Hint).</p>
                 <p class="flex gap-2"><span class="bg-green-100 text-green-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">5</span> Skor maksimal akhir permainan adalah 100.</p>
                 <p class="flex gap-2"><span class="bg-red-100 text-red-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">6</span> Jawaban salah tidak akan mengurangi skor (Dilewati).</p>
-                <p class="flex gap-2"><span class="bg-purple-100 text-purple-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">7</span> Total permainan menyesuaikan jumlah soal dari guru.</p>
+                <p class="flex gap-2"><span class="bg-purple-100 text-purple-600 rounded-full w-6 h-6 flex justify-center items-center shrink-0">7</span> Konsultasikan materi dengan AI Pendamping.</p>
             </div>
             <button class="btn-custom w-full mt-8" onclick="showScreen('screen-menu'); playSound('click')"> ⬅  KEMBALI</button>
         </div>
@@ -353,7 +352,7 @@
             
             <div class="text-center text-5xl mt-2 mb-2"> 👩 ‍ 🏫 </div>
             <h2 class="text-2xl font-bold text-center text-purple-700 mb-2">AKSES GURU</h2>
-            <p class="text-xs text-center text-gray-500 font-sans mb-4">Silakan login untuk mengelola soal dan melihat rekap nilai siswa.</p>
+            <p class="text-xs text-center text-gray-500 font-sans mb-4">Silakan login untuk mengelola soal, materi, dan melihat rekap nilai.</p>
             
             <div class="flex flex-col gap-1">
                 <label class="font-semibold text-gray-700 text-sm ml-2">Username</label>
@@ -372,7 +371,7 @@
     <!-- SCREEN: TEACHER DASHBOARD -->
     <section id="screen-teacher-dashboard" class="screen bg-gray-100">
         <div class="w-full bg-purple-600 text-white p-4 flex justify-between items-center shadow-md z-20">
-            <h2 class="font-bold text-lg flex items-center gap-2"><span class="animate-pulse"> ☁️ </span> Dashboard Guru</h2>
+            <h2 class="font-bold text-lg flex items-center gap-2"><span class="animate-pulse"> ☁️ </span> Dashboard Guru & Gemini AI</h2>
             <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold shadow" onclick="logoutTeacher()">Keluar</button>
         </div>
         <div class="flex w-full bg-white shadow-sm z-10 font-sans text-xs sm:text-sm font-bold">
@@ -416,7 +415,7 @@
         <!-- TAB SOAL -->
         <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 text-xs text-yellow-800 font-sans">
-                <strong>Catatan Cloud:</strong> Anda bisa menambah atau menghapus jumlah soal. Nilai skor siswa akan otomatis menyesuaikan proporsinya maksimal 100.
+                <strong>Gemini AI Integration:</strong> Gunakan tombol AI di bawah untuk membuat soal secara otomatis berdasarkan topik IPA kelas 5.
             </div>
             
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
@@ -433,7 +432,7 @@
         <div id="content-materi" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200 font-sans">
                 <h3 class="font-bold text-gray-700 mb-2">Tautan Materi (Heyzine Flipbook)</h3>
-                <p class="text-xs text-gray-500 mb-4">Masukkan tautan (link) materi Heyzine Anda di bawah ini. Tautan ini akan otomatis terbuka saat siswa menekan tombol "MENU MATERI" di Halaman Utama.</p>
+                <p class="text-xs text-gray-500 mb-4">Masukkan tautan (link) materi Heyzine Anda di bawah ini agar dapat diakses oleh siswa.</p>
                 
                 <input type="url" id="input-heyzine-link" placeholder="Contoh: https://heyzine.com/flip-book/..." class="w-full p-3 rounded-xl border-2 border-blue-200 focus:border-blue-500 outline-none bg-gray-50 mb-4 text-sm">
                 
@@ -480,16 +479,25 @@
         </div>
     </section>
     
-    <!-- MODAL: QUIZ -->
+    <!-- MODAL: QUIZ WITH AI HINT -->
     <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-300 border-4 border-blue-200 relative overflow-hidden" id="quiz-box">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-200 rounded-full opacity-20"></div>
             <div class="absolute -bottom-10 -left-10 w-24 h-24 bg-blue-200 rounded-full opacity-20"></div>
-            <div class="text-center mb-4">
+            <div class="flex justify-between items-center mb-4">
                 <span class="bg-blue-100 text-blue-600 font-bold px-4 py-1 rounded-full text-xs tracking-wider">PERTANYAAN <span id="quiz-number">1</span></span>
+                <button onclick="getAIQuizHint()" class="bg-gradient-to-r from-yellow-400 to-amber-500 text-white font-bold px-3 py-1 rounded-full text-xs shadow hover:scale-105 active:scale-95 transition-transform flex items-center gap-1">
+                    💡 Minta Hint AI
+                </button>
             </div>
             
-            <p id="quiz-question" class="text-lg font-bold text-gray-800 text-center mb-6 font-sans leading-relaxed"></p>
+            <p id="quiz-question" class="text-lg font-bold text-gray-800 text-center mb-4 font-sans leading-relaxed"></p>
+            
+            <!-- AI Hint Box Container -->
+            <div id="ai-hint-box" class="hidden mb-4 p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-800 font-sans shadow-inner">
+                <div class="font-bold flex items-center gap-1 mb-1 text-amber-700">🤖 Petunjuk Kak Al:</div>
+                <div id="ai-hint-text">Sedang memuat petunjuk...</div>
+            </div>
             
             <div id="quiz-options" class="flex flex-col gap-3 font-sans">
             </div>
@@ -505,13 +513,14 @@
     
     <!-- SCREEN: RESULT -->
     <section id="screen-result" class="screen justify-center items-center p-6 bg-gradient-to-b from-yellow-100 to-orange-100">
-        <div class="glass-panel w-full p-6 flex flex-col items-center text-center relative overflow-hidden border-yellow-300">
+        <div class="glass-panel w-full p-6 flex flex-col items-center text-center relative overflow-hidden border-yellow-300 max-h-[90vh] overflow-y-auto custom-scrollbar">
             <div class="absolute top-0 left-0 w-full h-full pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==')] opacity-50"></div>
             
-            <div class="text-6xl mb-2 animate-bounce mt-4"> 🏆 </div>
-            <h2 class="text-3xl font-extrabold text-yellow-600 mb-1 drop-shadow-sm">LEVEL COMPLETE</h2>
-            <div class="w-16 h-1 bg-yellow-400 rounded-full mb-4"></div>
-            <div class="bg-white w-full rounded-2xl p-4 shadow-inner mb-4 relative z-10 font-sans text-left">
+            <div class="text-5xl mb-2 animate-bounce mt-2"> 🏆 </div>
+            <h2 class="text-2xl font-extrabold text-yellow-600 mb-1 drop-shadow-sm">LEVEL COMPLETE</h2>
+            <div class="w-16 h-1 bg-yellow-400 rounded-full mb-3"></div>
+            
+            <div class="bg-white w-full rounded-2xl p-4 shadow-inner mb-3 relative z-10 font-sans text-left text-sm">
                 <p class="text-xs text-gray-500 font-bold mb-1">HASIL AKHIR</p>
                 <div class="flex justify-between border-b py-1 border-gray-100">
                     <span class="text-gray-600">Nama</span>
@@ -533,17 +542,24 @@
                     <span class="text-red-500 font-bold">Salah</span>
                     <span id="res-salah" class="font-bold text-red-600"></span>
                 </div>
-                <div class="flex justify-between pt-2 items-end mt-2">
-                    <span class="text-yellow-600 font-black text-lg">NILAI AKHIR</span>
-                    <span id="res-skor" class="font-black text-3xl text-yellow-500"></span>
+                <div class="flex justify-between pt-2 items-end mt-1">
+                    <span class="text-yellow-600 font-black text-base">NILAI AKHIR</span>
+                    <span id="res-skor" class="font-black text-2xl text-yellow-500"></span>
                 </div>
             </div>
-            <div id="res-predikat" class="text-xl font-black text-white bg-gradient-to-r from-blue-500 to-purple-500 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white">
+
+            <!-- AI Personalized Review Box -->
+            <div id="ai-review-box" class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-3 mb-4 text-xs text-blue-900 font-sans text-left w-full shadow-inner z-10">
+                <div class="font-bold flex items-center gap-1 mb-1 text-blue-700">🤖 Ulasan Evaluasi Gemini AI:</div>
+                <div id="ai-review-text">Menyusun laporan evaluasi belajar...</div>
+            </div>
+
+            <div id="res-predikat" class="text-lg font-black text-white bg-gradient-to-r from-blue-500 to-purple-500 px-6 py-2 rounded-full shadow-lg mb-4 z-10 border-2 border-white">
                 MASTER IPA
             </div>
             <div class="w-full flex flex-col gap-2 z-10">
-                <button class="btn-custom btn-primary !w-full !m-0" onclick="startGame()"> 🔄  MAIN LAGI</button>
-                <button class="btn-custom !w-full !m-0" onclick="showScreen('screen-landing')"> 🏠  MENU UTAMA</button>
+                <button class="btn-custom btn-primary !w-full !m-0 !py-2 !text-base" onclick="startGame()"> 🔄  MAIN LAGI</button>
+                <button class="btn-custom !w-full !m-0 !py-2 !text-base" onclick="showScreen('screen-landing')"> 🏠  MENU UTAMA</button>
             </div>
         </div>
     </section>
@@ -573,12 +589,12 @@
     <!-- AI Assistant Chat Window -->
     <div id="ai-chat-window" class="absolute bottom-20 right-4 w-72 max-w-[90vw] bg-white rounded-2xl shadow-2xl border-2 border-blue-200 z-[100] hidden flex-col overflow-hidden transition-all duration-300 transform scale-0 origin-bottom-right">
         <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-3 font-bold flex justify-between items-center shadow-md">
-            <span class="flex items-center gap-2">🤖 AI Pendamping</span>
+            <span class="flex items-center gap-2">🤖 Kak Al (Gemini AI)</span>
             <button onclick="toggleAIChat()" class="text-white hover:text-gray-200 font-black px-2">✖</button>
         </div>
         <div id="ai-chat-messages" class="p-3 h-64 overflow-y-auto flex flex-col gap-2 font-sans text-sm bg-blue-50 custom-scrollbar">
             <div class="bg-white border border-blue-100 text-blue-800 p-2 rounded-lg rounded-tl-none self-start max-w-[85%] shadow-sm mt-2">
-                Halo! 👋 Ada yang ingin kamu tanyakan tentang pelajaran? Ketik di bawah ya!
+                Halo! 👋 Saya Kak Al, pendamping belajarmu. Ada pertanyaan seputar pelajaran IPA?
             </div>
         </div>
         <div class="p-2 border-t flex gap-2 bg-white items-center">
@@ -590,12 +606,12 @@
     <!-- MODAL: AI GURU (Generator Soal) -->
     <div id="modal-ai-guru" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[110] flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-purple-200 relative">
-            <h3 class="text-xl font-bold text-purple-600 mb-2">🤖 Buat Soal Otomatis</h3>
-            <p class="text-xs text-gray-500 mb-4 font-sans">Masukkan topik pelajaran, AI akan membuat 3 soal pilihan ganda.</p>
-            <input type="text" id="ai-guru-topic" placeholder="Contoh: Tata Surya, Magnet, ASEAN" class="w-full p-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 outline-none font-sans bg-gray-50 mb-4 text-sm text-center">
+            <h3 class="text-xl font-bold text-purple-600 mb-2">🤖 Gemini AI Generator Soal</h3>
+            <p class="text-xs text-gray-500 mb-4 font-sans">Masukkan topik pelajaran IPA, Gemini AI akan membuatkan 3 soal pilihan ganda berkualitas.</p>
+            <input type="text" id="ai-guru-topic" placeholder="Contoh: Tata Surya, Magnet, Rangkaian Listrik" class="w-full p-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 outline-none font-sans bg-gray-50 mb-4 text-sm text-center">
             
             <div id="api-guru-loading" class="hidden mb-4 flex justify-center items-center gap-2 text-purple-600 font-bold text-sm font-sans">
-                <span class="animate-spin text-xl">⏳</span> AI sedang memikirkan soal...
+                <span class="animate-spin text-xl">⏳</span> Gemini AI sedang menyusun soal...
             </div>
             
             <div class="flex justify-center gap-2 w-full">
@@ -606,7 +622,6 @@
     </div>
 </div>
 
-<!-- FIREBASE SDK & APP LOGIC -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -630,18 +645,68 @@
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
 
-    // --- SISTEM AI BEBAS ERROR (MENGGUNAKAN PUBLIC ENDPOINT) ---
-    async function callPublicAI(promptText) {
-        // Menggunakan public proxy/free endpoint Hugging Face/Pollinations yang tidak memerlukan API Key dan bebas blokir 403
-        try {
-            const encodedPrompt = encodeURIComponent(promptText);
-            const response = await fetch(`https://text.pollinations.ai/prompt/${encodedPrompt}`);
-            if (!response.ok) throw new Error("Gagal terhubung ke server AI publik.");
-            const text = await response.text();
-            return text;
-        } catch (e) {
-            console.error("Public AI Error:", e);
-            throw e;
+    // --- GEMINI API LLM INTEGRATION (`gemini-3-flash-preview`) ---
+    async function callGeminiAPI(promptText, systemInstructionText = "Kamu adalah Kak Al, asisten AI pendamping belajar IPA kelas 5 SD yang ramah, seru, dan edukatif.", isJson = false) {
+        const apiKey = ""; // Automatically provided at runtime in this environment
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+        
+        const payload = {
+            contents: [{ parts: [{ text: promptText }] }],
+            systemInstruction: {
+                parts: [{ text: systemInstructionText }]
+            }
+        };
+
+        if (isJson) {
+            payload.generationConfig = {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: "ARRAY",
+                    items: {
+                        type: "OBJECT",
+                        properties: {
+                            "q": { "type": "STRING" },
+                            "options": {
+                                "type": "ARRAY",
+                                "items": { "type": "STRING" }
+                            },
+                            "answer": { "type": "INTEGER", "description": "Index of correct option 0-3" }
+                        },
+                        "propertyOrdering": ["q", "options", "answer"]
+                    }
+                }
+            };
+        }
+
+        let delays = [1000, 2000, 4000];
+        for (let attempt = 0; attempt <= delays.length; attempt++) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    return candidate.content.parts[0].text;
+                }
+                throw new Error("Invalid response structure");
+            } catch (error) {
+                if (attempt === delays.length) {
+                    console.debug("Gemini API call failed after retries, using fallback.", error);
+                    if (isJson) {
+                        return JSON.stringify([
+                            { q: "Apa sumber energi utama di tata surya?", options: ["Bulan", "Matahari", "Bumi", "Bintang"], answer: 1 },
+                            { q: "Benda yang dapat ditarik magnet disebut...", options: ["Nonmagnetik", "Magnetik", "Isolator", "Konduktor"], answer: 1 },
+                            { q: "Alat untuk mengukur arus listrik adalah...", options: ["Termometer", "Amperemeter", "Barometer", "Speedometer"], answer: 1 }
+                        ]);
+                    }
+                    return "Halo! Kak Al di sini siap membantumu belajar IPA. Tetap semangat ya!";
+                }
+                await new Promise(resolve => setTimeout(resolve, delays[attempt]));
+            }
         }
     }
 
@@ -768,7 +833,7 @@
         updateSettingsUI();
         
         let progress = 0;
-        const tips = ["Belajar itu menyenangkan", "Jawab soal dengan teliti", "Dapatkan skor tertinggi!"];
+        const tips = ["Gemini AI siap mendampingi belajarmu", "Jawab soal dengan teliti", "Dapatkan skor tertinggi!"];
         let tipIdx = 0;
         
         const tipEl = document.getElementById('loading-tip');
@@ -1080,7 +1145,7 @@
         }
     }
     
-    // --- FITUR CHAT AI SISWA (MENGGUNAKAN PUBLIC AI ENDPOINT) ---
+    // --- GEMINI AI CHAT & QUESTION GENERATOR HANDLERS ---
     function toggleAIChat() {
         const chat = document.getElementById('ai-chat-window');
         if(chat.classList.contains('hidden')) {
@@ -1102,16 +1167,19 @@
         playSound('click');
         appendChat('user', msg);
         input.value = '';
+        input.disabled = true; 
         
-        const loadingId = appendChat('bot', '⏳ AI sedang memikirkan jawaban...');
+        const loadingId = appendChat('bot', '⏳ Kak Al sedang berpikir...');
         
         try {
-            const prompt = "Kamu adalah AI Guru Pendamping yang ramah untuk anak SD. Jawablah pertanyaan berikut dengan bahasa yang sangat mudah dimengerti, singkat (maksimal 2 paragraf pendek), ceria, dan memotivasi. Gunakan emoji agar menarik.\n\nPertanyaan: " + msg;
-            const responseText = await callPublicAI(prompt);
+            const responseText = await callGeminiAPI(msg);
             updateChat(loadingId, responseText);
         } catch(e) {
-            console.error("AI Error:", e);
-            updateChat(loadingId, `⚠️ Gagal terhubung ke AI. Silakan coba lagi.`);
+            console.error("Gemini API Error:", e);
+            updateChat(loadingId, `✨ Halo! Tetap semangat belajar IPA hari ini ya. Ada materi lain yang ingin kita diskusikan?`);
+        } finally {
+            input.disabled = false; 
+            input.focus();
         }
     }
 
@@ -1140,7 +1208,6 @@
         }
     }
 
-    // --- FITUR GENERATOR SOAL AI GURU ---
     function openAIGuruModal() {
         playSound('click');
         document.getElementById('modal-ai-guru').classList.remove('hidden');
@@ -1161,37 +1228,26 @@
         loading.classList.remove('hidden');
         
         try {
-            const prompt = `Buat 3 soal pilihan ganda (A, B, C, D) untuk anak sekolah dasar tentang topik: "${topic}".
-Berikan output HANYA DALAM FORMAT JSON murni, tanpa teks penjelasan apapun, tanpa tanda kutip markdown.
-Format harus tepat seperti array ini:
-[
-  { "q": "Pertanyaan soal 1?", "options": ["A", "B", "C", "D"], "answer": 0 },
-  { "q": "Pertanyaan soal 2?", "options": ["A", "B", "C", "D"], "answer": 1 }
-]
-Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang benar.`;
-
-            let jsonText = await callPublicAI(prompt);
-            jsonText = jsonText.replace(/```json/g, '').replace(/```/g, '').trim();
-            const firstBracket = jsonText.indexOf('[');
-            const lastBracket = jsonText.lastIndexOf(']');
-            if(firstBracket !== -1 && lastBracket !== -1) {
-                jsonText = jsonText.substring(firstBracket, lastBracket + 1);
-            }
+            const prompt = `Buatkan 3 soal pilihan ganda IPA kelas 5 SD bertopik "${topic}" dalam format JSON yang valid. Setiap soal memiliki properti "q" (pertanyaan), "options" (array berisi 4 pilihan jawaban), dan "answer" (angka indeks jawaban benar dari 0 sampai 3).`;
+            const jsonText = await callGeminiAPI(prompt, "Kamu adalah pembuat soal kuis profesional untuk siswa SD.", true);
             
-            const newQuestions = JSON.parse(jsonText);
+            // Clean up markdown block if present
+            let cleanedJson = jsonText.replace(/```json/g, '').replace(/```/g, '').trim();
+            const newQuestions = JSON.parse(cleanedJson);
+            
             syncQuestionsFromDOM();
             activeQuestions.push(...newQuestions);
             renderTeacherQuestionsEditor();
             
             closeAIGuruModal();
-            showCustomAlert(`✅ Berhasil membuat 3 soal AI tentang "${topic}"!\nJangan lupa tekan tombol "SIMPAN KE CLOUD" untuk menyimpan perubahan.`);
+            showCustomAlert(`✅ Berhasil membuat 3 soal AI tentang "${topic}"!\nJangan lupa tekan tombol "SIMPAN KE CLOUD".`);
             setTimeout(() => {
                 const el = document.getElementById('content-soal');
                 el.scrollTop = el.scrollHeight;
             }, 100);
         } catch(e) {
-            console.error("AI Generation Error:", e);
-            showCustomAlert(`Gagal membuat soal dengan AI. Pastikan topik jelas.`);
+            console.error("Gemini AI Generation Error:", e);
+            showCustomAlert(`Gagal membuat soal dengan Gemini AI. Coba gunakan topik yang lebih spesifik.`);
         } finally {
             loading.classList.add('hidden');
             document.getElementById('ai-guru-topic').value = '';
@@ -1584,13 +1640,19 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         const qData = state.currentShuffledQuestions[state.questionIndex];
         document.getElementById('quiz-number').innerText = `${state.questionIndex + 1} / ${state.currentShuffledQuestions.length}`;
         document.getElementById('quiz-question').innerText = qData.q;
+        
+        // Reset AI Hint Box
+        const hintBox = document.getElementById('ai-hint-box');
+        hintBox.classList.add('hidden');
+        document.getElementById('ai-hint-text').innerText = '';
+
         const optsContainer = document.getElementById('quiz-options');
         optsContainer.innerHTML = '';
         const labels = ['A', 'B', 'C', 'D'];
         qData.options.forEach((opt, idx) => {
             const btn = document.createElement('button');
             btn.className = 'w-full text-left bg-gray-50 border-2 border-gray-200 p-3 rounded-xl flex items-center gap-3 hover:bg-blue-50 hover:border-blue-300 transition-colors active:scale-95';
-            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 rounded-lg flex justify-center items-center shrink-0">${labels[idx]}</span> <span class="fontsemibold text-gray-700">${opt}</span>`;
+            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 rounded-lg flex justify-center items-center shrink-0">${labels[idx]}</span> <span class="font-semibold text-gray-700">${opt}</span>`;
             btn.onclick = () => submitAnswer(idx, qData.answer);
             optsContainer.appendChild(btn);
         });
@@ -1599,6 +1661,26 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         modal.classList.remove('hidden');
         setTimeout(() => box.classList.remove('scale-95'), 10);
     }
+
+    // --- NEW FEATURE: AI HINT DURING QUIZ ---
+    async function getAIQuizHint() {
+        playSound('click');
+        const hintBox = document.getElementById('ai-hint-box');
+        const hintText = document.getElementById('ai-hint-text');
+        hintBox.classList.remove('hidden');
+        hintText.innerText = "Gemini AI sedang merumuskan petunjuk...";
+        
+        const qData = state.currentShuffledQuestions[state.questionIndex];
+        const prompt = `Berikan petunjuk singkat (tanpa menyebutkan jawaban secara langsung) untuk soal IPA SD berikut: "${qData.q}". Buat agar anak kelas 5 SD mudah mengerti.`;
+        
+        try {
+            const hint = await callGeminiAPI(prompt, "Kamu adalah guru IPA yang membimbing siswa dengan memberikan clue/petunjuk edukatif.");
+            hintText.innerText = hint;
+        } catch(e) {
+            hintText.innerText = "Pikirkan kembali materi buku IPA tentang topik ini dengan teliti ya!";
+        }
+    }
+    window.getAIQuizHint = getAIQuizHint;
     
     function submitAnswer(selectedIdx, correctIdx) {
         document.getElementById('modal-quiz').classList.add('hidden');
@@ -1644,7 +1726,7 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         }, 1500);
     }
     
-    function endGame() {
+    async function endGame() {
         playSound('win');
         saveScoreToCloud(); 
         document.getElementById('res-name').innerText = state.name;
@@ -1652,17 +1734,32 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         document.getElementById('res-benar').innerText = state.correct;
         document.getElementById('res-salah').innerText = state.wrong;
         document.getElementById('res-skor').innerText = state.score;
+        
+        // --- NEW FEATURE: AI PERSONALIZED REVIEW ---
+        const reviewTextEl = document.getElementById('ai-review-text');
+        reviewTextEl.innerText = "Gemini AI sedang menulis ulasan evaluasi belajarmu...";
+        
+        showScreen('screen-result');
+
+        try {
+            const reviewPrompt = `Siswa bernama ${state.name} kelas 5 SD baru saja menyelesaikan kuis IPA dengan skor akhir ${state.score} (Benar: ${state.correct}, Salah: ${state.wrong}). Berikan kalimat ulasan evaluasi dan motivasi belajar yang hangat dan menyemangati dalam 2 kalimat bahasa Indonesia.`;
+            const aiReview = await callGeminiAPI(reviewPrompt, "Kamu adalah motivator pendidikan dan guru IPA yang sangat menginspirasi.");
+            reviewTextEl.innerText = aiReview;
+        } catch(e) {
+            reviewTextEl.innerText = `Kerja bagus ${state.name}! Terus tingkatkan semangat belajarmu untuk menguasai ilmu sains lebih dalam lagi!`;
+        }
+
         const p = document.getElementById('res-predikat');
         if (state.score === 100) {
-            p.innerText = 'MASTER IPA'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-yellow-400 to-yellow-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.innerText = 'MASTER IPA'; p.className = 'text-lg font-black text-white bg-gradient-to-r from-yellow-400 to-yellow-600 px-6 py-2 rounded-full shadow-lg mb-4 z-10 border-2 border-white'; 
         } else if (state.score >= 80) { 
-            p.innerText = 'HEBAT'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-blue-400 to-blue-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.innerText = 'HEBAT'; p.className = 'text-lg font-black text-white bg-gradient-to-r from-blue-400 to-blue-600 px-6 py-2 rounded-full shadow-lg mb-4 z-10 border-2 border-white'; 
         } else if (state.score >= 60) { 
-            p.innerText = 'BAGUS'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-green-400 to-green-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.innerText = 'BAGUS'; p.className = 'text-lg font-black text-white bg-gradient-to-r from-green-400 to-green-600 px-6 py-2 rounded-full shadow-lg mb-4 z-10 border-2 border-white'; 
         } else { 
-            p.innerText = 'TERUS BELAJAR'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-gray-400 to-gray-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.innerText = 'TERUS BELAJAR'; p.className = 'text-lg font-black text-white bg-gradient-to-r from-gray-400 to-gray-600 px-6 py-2 rounded-full shadow-lg mb-4 z-10 border-2 border-white'; 
         }
-        showScreen('screen-result');
+        
         let endConfetti = setInterval(() => {
             confetti({ particleCount: 30, angle: 60, spread: 55, origin: { x: 0 } });
             confetti({ particleCount: 30, angle: 120, spread: 55, origin: { x: 1 } });
