@@ -19,7 +19,6 @@
             --secondary: #81c784;
             --text-color: #374151;
         }
-        /* Responsivitas Desktop & Mobile */
         body {
             font-family: 'Baloo 2', cursive;
             background-color: #0f172a;
@@ -41,7 +40,6 @@
             overflow: hidden;
             box-shadow: 0 0 40px rgba(0,0,0,0.8);
         }
-        
         @media (min-width: 451px) {
             #app-container {
                 height: 95vh;
@@ -68,10 +66,8 @@
         }
         .screen {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             display: none;
             flex-direction: column;
             z-index: 10;
@@ -118,43 +114,29 @@
             border-color: #fbcfe8;
             box-shadow: 0 6px 0 #f472b6, 0 10px 15px -3px rgba(0,0,0,0.1);
         }
-        
-        .btn-primary:active {
-            box-shadow: 0 2px 0 #f472b6, 0 5px 5px -3px rgba(0,0,0,0.1);
-        }
         .btn-materi {
             background: linear-gradient(135deg, #a7f3d0 0%, #34d399 100%);
             color: #064e3b;
             border-color: #6ee7b7;
             box-shadow: 0 6px 0 #10b981, 0 10px 15px -3px rgba(0,0,0,0.1);
         }
-        
-        .btn-materi:active {
-            box-shadow: 0 2px 0 #10b981, 0 5px 5px -3px rgba(0,0,0,0.1);
-        }
-        
         .btn-teacher {
             background: linear-gradient(135deg, #a78bfa 0%, #ddd6fe 100%);
             color: #4c1d95;
             border-color: #c4b5fd;
             box-shadow: 0 6px 0 #8b5cf6, 0 10px 15px -3px rgba(0,0,0,0.1);
         }
-        .btn-teacher:active {
-            box-shadow: 0 2px 0 #8b5cf6, 0 5px 5px -3px rgba(0,0,0,0.1);
-        }
         .emoticon {
             font-size: 2.5rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             user-select: none;
             cursor: grab;
             animation: pulse-glow 3s infinite, float 4s infinite ease-in-out;
             transition: transform 0.2s;
         }
-        
         .emoticon:active {
             cursor: grabbing;
             transform: scale(0.9);
@@ -174,7 +156,6 @@
             pointer-events: none;
             z-index: 1;
         }
-        
         .floating-icon {
             position: absolute;
             opacity: 0.15;
@@ -188,10 +169,8 @@
             border-radius: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        /* Loading Bar */
         .loading-bar-container {
-            width: 80%;
-            height: 20px;
+            width: 80%; height: 20px;
             background: #e5e7eb;
             border-radius: 10px;
             overflow: hidden;
@@ -199,44 +178,26 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
         .loading-bar {
-            height: 100%;
-            width: 0%;
+            height: 100%; width: 0%;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             border-radius: 10px;
             transition: width 0.1s linear;
         }
         #combo-text {
             position: absolute;
-            top: 40%;
-            left: 50%;
+            top: 40%; left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 3rem;
-            font-weight: 900;
+            font-size: 3rem; font-weight: 900;
             color: #ffeb3b;
             text-shadow: 0 4px 10px rgba(0,0,0,0.5), 2px 2px 0 #f57f17;
-            z-index: 50;
-            pointer-events: none;
-            opacity: 0;
-            text-align: center;
-            line-height: 1;
+            z-index: 50; pointer-events: none; opacity: 0;
+            text-align: center; line-height: 1;
         }
-        /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #93c5fd; border-radius: 10px; }
-        
-        /* Tambahan CSS untuk AI Fitur */
         .animate-bounce-soft { animation: bounce-soft 3s infinite; }
     </style>
-    
-    <!-- Import Script SDK Generative AI Resmi -->
-    <script type="importmap">
-      {
-        "imports": {
-          "@google/generative-ai": "https://esm.run/@google/generative-ai"
-        }
-      }
-    </script>
 </head>
 <body>
 <div id="app-container">
@@ -245,7 +206,7 @@
     <audio id="bg-music" loop>
         <source src="The_Golden_Tally.mp3" type="audio/mpeg">
     </audio>
-    <!-- Animated Background Elements -->
+
     <div class="bg-particles" id="bg-particles">
         <div class="floating-icon" style="top: 10%; left: 10%; animation-delay: 0s;"> 📚 </div>
         <div class="floating-icon" style="top: 20%; left: 80%; animation-delay: 1s;"> 💡 </div>
@@ -271,6 +232,7 @@
             <p id="loading-tip" class="text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
         </div>
     </section>
+
     <!-- SCREEN: LANDING PAGE -->
     <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
@@ -288,9 +250,9 @@
             <button class="btn-custom btn-primary" onclick="startQuizFlow(); playSound('click')"> 🎮 QUIZ</button>
         </div>
     </section>
+
     <!-- SCREEN: MAIN MENU -->
     <section id="screen-menu" class="screen justify-start items-center py-8">
-        <!-- Tombol Kembali ke Landing Page -->
         <div class="absolute top-4 left-4 z-50">
             <button class="text-gray-400 hover:text-gray-600 text-2xl bg-white/50 w-10 h-10 rounded-full flex justify-center items-center backdrop-blur shadow-sm border border-gray-200" onclick="showScreen('screen-landing'); playSound('click')"> ⬅ </button>
         </div>
@@ -372,7 +334,6 @@
                     <span class="text-xs font-bold text-gray-500">Volume Musik</span>
                     <span id="volume-label" class="text-xs font-bold text-blue-600">40%</span>
                 </div>
-                <!-- SLIDER VOLUME MUSIK -->
                 <input type="range" id="music-volume" min="0" max="100" value="40" class="w-full mt-1 accent-green-500" oninput="changeVolume(this.value)" onchange="saveUserSettings()">
             </div>
             <div class="flex justify-between items-center bg-white p-3 rounded-xl mb-3 shadow-sm">
@@ -442,7 +403,6 @@
                             </tr>
                         </thead>
                         <tbody id="teacher-table-body" class="divide-y text-gray-700">
-                            <!-- Injected via JS -->
                         </tbody>
                     </table>
                 </div>
@@ -460,7 +420,6 @@
             </div>
             
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
-                <!-- Injected via JS -->
             </div>
             <div class="fixed bottom-0 left-0 w-full p-4 bg-white border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-20 flex gap-2" style="max-width: 450px; margin: 0 auto; left: 0; right: 0;">
                 <div class="flex gap-1 w-1/3">
@@ -516,7 +475,6 @@
         </div>
         <div class="flex-1 flex justify-center items-center relative p-4">
             <div id="game-board" class="w-full aspect-square max-w-[360px] bg-white/60 backdrop-blur-lg rounded-2xl p-2 grid grid-cols-7 grid-rows-7 gap-1 shadow-xl border-4 border-white/80 relative touch-none">
-                <!-- Cells generated via JS -->
             </div>
             <div id="combo-text"></div>
         </div>
@@ -534,12 +492,11 @@
             <p id="quiz-question" class="text-lg font-bold text-gray-800 text-center mb-6 font-sans leading-relaxed"></p>
             
             <div id="quiz-options" class="flex flex-col gap-3 font-sans">
-                <!-- Options injected via JS -->
             </div>
         </div>
     </div>
     
-    <!-- Feedback Banner (Benar/Salah) -->
+    <!-- Feedback Banner -->
     <div id="feedback-banner" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[60] flex flex-col items-center pointer-events-none opacity-0">
         <div id="feedback-icon" class="text-7xl drop-shadow-xl mb-2"> 🎉 </div>
         <div id="feedback-text" class="text-4xl font-extrabold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)] bg-green-500 px-6 py-2 rounded-full border-4 border-white">BENAR!</div>
@@ -596,7 +553,6 @@
         <div class="glass-panel w-full p-4 h-[80vh] flex flex-col relative border-blue-200">
             <h2 class="text-2xl font-bold text-center text-blue-600 mb-4 flex-shrink-0"> 🏆  TOP 10 NILAI (CLOUD)</h2>
             <div id="leaderboard-list" class="flex-1 overflow-y-auto space-y-2 font-sans pr-2 custom-scrollbar">
-                <!-- Injected via JS -->
             </div>
             <button class="btn-custom w-full mt-4 flex-shrink-0" onclick="showScreen('screen-menu'); playSound('click')"> ⬅  KEMBALI</button>
         </div>
@@ -607,7 +563,6 @@
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-blue-200 relative">
             <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 font-sans mt-4"></p>
             <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full">
-                <!-- Buttons injected here -->
             </div>
         </div>
     </div>
@@ -639,7 +594,7 @@
             <p class="text-xs text-gray-500 mb-4 font-sans">Masukkan topik pelajaran, AI akan membuat 3 soal pilihan ganda.</p>
             <input type="text" id="ai-guru-topic" placeholder="Contoh: Tata Surya, Magnet, ASEAN" class="w-full p-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 outline-none font-sans bg-gray-50 mb-4 text-sm text-center">
             
-            <div id="ai-guru-loading" class="hidden mb-4 flex justify-center items-center gap-2 text-purple-600 font-bold text-sm font-sans">
+            <div id="api-guru-loading" class="hidden mb-4 flex justify-center items-center gap-2 text-purple-600 font-bold text-sm font-sans">
                 <span class="animate-spin text-xl">⏳</span> AI sedang memikirkan soal...
             </div>
             
@@ -657,7 +612,6 @@
     import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     
-    // SETUP FIREBASE CONFIGURATION
     const isCanvas = typeof __firebase_config !== 'undefined';
     const firebaseConfig = isCanvas ? JSON.parse(__firebase_config) : {
         apiKey: "AIzaSyCam7kcUvKBRlLEP5LhQL9tfAwUDVFmKYU",
@@ -672,20 +626,25 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     
-    // Updated app id default to match the new name logic
     const appId = typeof __app_id !== 'undefined' ? __app_id : 'quiz-match-challenge';
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
-    
-    // --- KONFIGURASI GEMINI API ---
-    import { GoogleGenerativeAI } from "@google/generative-ai";
-    
-    // 🔥 KUNCI AQ DARI AKUN PRIBADI ANDA (PASTI BERHASIL) 🔥
-    const geminiApiKey = "AQ.Ab8RN6LeidRVmtd86c79e7Xgq8t1y_zaPmg7FWFOh7F80jfLMA"; 
-    
-    const genAI = new GoogleGenerativeAI(geminiApiKey);
 
-    // --- Constants & Defaults ---
+    // --- SISTEM AI BEBAS ERROR (MENGGUNAKAN PUBLIC ENDPOINT) ---
+    async function callPublicAI(promptText) {
+        // Menggunakan public proxy/free endpoint Hugging Face/Pollinations yang tidak memerlukan API Key dan bebas blokir 403
+        try {
+            const encodedPrompt = encodeURIComponent(promptText);
+            const response = await fetch(`https://text.pollinations.ai/prompt/${encodedPrompt}`);
+            if (!response.ok) throw new Error("Gagal terhubung ke server AI publik.");
+            const text = await response.text();
+            return text;
+        } catch (e) {
+            console.error("Public AI Error:", e);
+            throw e;
+        }
+    }
+
     const EMOJIS = [' 🌸 ', ' 🌼 ', ' 🐠 ', ' 🐢 ', ' 🦧 '];
     const ROWS = 7;
     const COLS = 7;
@@ -707,7 +666,7 @@
     let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
     let allScores = [];
     let currentUser = null;
-    let heyzineLink = ""; // Tautan Materi Global
+    let heyzineLink = "";
     
     let board = [];
     let state = {
@@ -719,10 +678,8 @@
         currentShuffledQuestions: []
     };
     
-    // Setting tersimpan secara default di dalam memori, lalu akan ditimpa setting pengguna dari cloud
     let settings = { music: true, sfx: true, volume: 0.4 };
     
-    // --- Custom Modal UI ---
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
         document.getElementById('custom-modal-buttons').innerHTML = `<button class="btn-custom btn-primary !w-full !m-0" onclick="closeCustomModal()">OK</button>`;
@@ -741,7 +698,6 @@
         document.getElementById('custom-modal').classList.add('hidden');
     }
     
-    // --- Audio System ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
     
@@ -785,7 +741,6 @@
         }
     }
     
-    // --- UI Navigation ---
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => {
             s.classList.remove('active');
@@ -796,20 +751,18 @@
         void target.offsetWidth;
         target.classList.add('active');
 
-        // Manage AI FAB Visibility
         const aiFab = document.getElementById('ai-fab');
         const aiChat = document.getElementById('ai-chat-window');
         if(aiFab) {
             if(id === 'screen-teacher-dashboard' || id === 'screen-teacher-login' || id === 'screen-loading') {
                 aiFab.style.display = 'none';
-                if(aiChat && !aiChat.classList.contains('hidden')) toggleAIChat(); // hide chat if open
+                if(aiChat && !aiChat.classList.contains('hidden')) toggleAIChat();
             } else {
                 aiFab.style.display = 'flex';
             }
         }
     }
     
-    // --- APP INITIALIZATION ---
     function initApp() {
         showScreen('screen-loading');
         updateSettingsUI();
@@ -841,7 +794,6 @@
             if (progress >= 100) {
                 clearInterval(intv);
                 clearInterval(tipInterval);
-                // Langsung arahkan ke Layar Landing (bukan layar menu langsung)
                 setTimeout(() => { showScreen('screen-landing'); }, 500);
             }
         }, 60); 
@@ -866,12 +818,10 @@
         if (user) {
             loadActiveQuestionsFromCloud();
             listenToScoresFromCloud();
-            loadSettingsFromCloud(); // Memuat tautan dari Guru
-            loadUserSettings(); // Memuat preferensi pengguna (volume/SFX)
+            loadSettingsFromCloud();
+            loadUserSettings();
         }
     });
-    
-    // --- CLOUD FIREBASE FUNCTIONS ---
     
     function loadUserSettings() {
         if (!currentUser) return;
@@ -890,7 +840,6 @@
                 
                 const bgMusic = document.getElementById('bg-music');
                 bgMusic.volume = settings.volume;
-                
                 updateSettingsUI();
             }
         }, (error) => console.error("Error muat pengaturan user:", error));
@@ -905,6 +854,7 @@
             console.error("Gagal menyimpan pengaturan", e);
         }
     }
+    
     function loadSettingsFromCloud() {
         if (!currentUser) return;
         const docRef = doc(db, getQuestionsCollectionPath(), 'app_settings');
@@ -934,9 +884,7 @@
         }
     }
     
-    // --- Lading Page Handlers ---
     function openMateri() {
-        // Matikan BGM ketika memilih Materi
         const bgMusic = document.getElementById('bg-music');
         bgMusic.pause(); 
         if (heyzineLink && heyzineLink.trim() !== "") {
@@ -949,9 +897,9 @@
             showCustomAlert("Tautan materi belum ditambahkan oleh Guru. Silakan hubungi Guru Anda.");
         }
     }
+    
     function startQuizFlow() {
         showScreen('screen-menu');
-        // Aktifkan BGM saat memilih Quiz (jika diaktifkan pada pengaturan)
         const bgMusic = document.getElementById('bg-music');
         if (settings.music && settings.volume > 0) {
             bgMusic.volume = settings.volume;
@@ -962,7 +910,6 @@
     function loadActiveQuestionsFromCloud() {
         if (!currentUser) return;
         const qRef = collection(db, getQuestionsCollectionPath());
-        
         onSnapshot(qRef, (snapshot) => {
             let loaded = false;
             snapshot.forEach(doc => {
@@ -983,7 +930,6 @@
     function listenToScoresFromCloud() {
         if (!currentUser) return;
         const scoresRef = collection(db, getScoresCollectionPath());
-        
         onSnapshot(scoresRef, (snapshot) => {
             allScores = [];
             snapshot.forEach(doc => {
@@ -998,10 +944,6 @@
             }
         }, (error) => {
             console.error("Error membaca data skor: ", error);
-            const list = document.getElementById('teacher-table-body');
-            if (list) {
-                list.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-red-500 font-bold">Error: Database Terkunci!<br><span class="text-sm font-normal text-gray-500">Ubah Firestore Rules Anda</span></td></tr>`;
-            }
         });
     }
     
@@ -1021,6 +963,7 @@
             bgMusic.pause();
         }
     }
+    
     function toggleSetting(type) {
         settings[type] = !settings[type];
         updateSettingsUI();
@@ -1076,7 +1019,6 @@
         toggleClass('toggle-sfx', settings.sfx);
     }
     
-    // --- Akses Guru Logic ---
     function loginTeacher() {
         const user = document.getElementById('teacher-username').value;
         const pass = document.getElementById('teacher-password').value;
@@ -1087,7 +1029,6 @@
             document.getElementById('teacher-username').value = '';
             document.getElementById('teacher-password').value = '';
             err.style.opacity = 0;
-            
             renderTeacherDashboardTable();
             renderTeacherQuestionsEditor();
             showScreen('screen-teacher-dashboard');
@@ -1105,12 +1046,10 @@
     function switchTeacherTab(tab) {
         playSound('click');
         const tabs = ['nilai', 'soal', 'materi'];
-        
         tabs.forEach(t => {
             const isMatch = (tab === t);
             const btn = document.getElementById(`tab-${t}`);
             const content = document.getElementById(`content-${t}`);
-            
             if (isMatch) {
                 btn.className = "flex-1 py-3 font-bold text-purple-600 border-b-4 border-purple-600";
                 content.classList.remove('hidden');
@@ -1124,7 +1063,6 @@
     function renderTeacherDashboardTable() {
         const list = document.getElementById('teacher-table-body');
         list.innerHTML = '';
-        
         if(allScores.length === 0) {
             list.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-gray-400">Belum ada data nilai di Cloud</td></tr>';
         } else {
@@ -1142,9 +1080,7 @@
         }
     }
     
-    // --- FITUR AI (GEMINI) ---
-
-    // AI Siswa (Asisten Chat)
+    // --- FITUR CHAT AI SISWA (MENGGUNAKAN PUBLIC AI ENDPOINT) ---
     function toggleAIChat() {
         const chat = document.getElementById('ai-chat-window');
         if(chat.classList.contains('hidden')) {
@@ -1170,17 +1106,12 @@
         const loadingId = appendChat('bot', '⏳ AI sedang memikirkan jawaban...');
         
         try {
-            // Memanggil AI menggunakan model standar terbaru
-            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
             const prompt = "Kamu adalah AI Guru Pendamping yang ramah untuk anak SD. Jawablah pertanyaan berikut dengan bahasa yang sangat mudah dimengerti, singkat (maksimal 2 paragraf pendek), ceria, dan memotivasi. Gunakan emoji agar menarik.\n\nPertanyaan: " + msg;
-            
-            const result = await model.generateContent(prompt);
-            const responseText = result.response.text();
-            
+            const responseText = await callPublicAI(prompt);
             updateChat(loadingId, responseText);
         } catch(e) {
             console.error("AI Error:", e);
-            updateChat(loadingId, `⚠️ Gagal memuat AI. Pesan Error: ${e.message}`);
+            updateChat(loadingId, `⚠️ Gagal terhubung ke AI. Silakan coba lagi.`);
         }
     }
 
@@ -1189,9 +1120,7 @@
         const container = document.getElementById('ai-chat-messages');
         const div = document.createElement('div');
         div.id = id;
-        
         let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        
         if(sender === 'user') {
             div.className = "bg-white border border-green-200 text-green-800 p-2 rounded-lg rounded-tr-none self-end max-w-[85%] shadow-sm";
         } else {
@@ -1211,7 +1140,7 @@
         }
     }
 
-    // AI Guru (Pembuat Soal)
+    // --- FITUR GENERATOR SOAL AI GURU ---
     function openAIGuruModal() {
         playSound('click');
         document.getElementById('modal-ai-guru').classList.remove('hidden');
@@ -1220,7 +1149,7 @@
     function closeAIGuruModal() {
         playSound('click');
         document.getElementById('modal-ai-guru').classList.add('hidden');
-        document.getElementById('ai-guru-loading').classList.add('hidden');
+        document.getElementById('api-guru-loading').classList.add('hidden');
     }
     
     async function generateQuestionsAI() {
@@ -1228,15 +1157,12 @@
         const topic = document.getElementById('ai-guru-topic').value.trim();
         if(!topic) return showCustomAlert('Tolong masukkan topik pelajaran terlebih dahulu!');
         
-        const loading = document.getElementById('ai-guru-loading');
+        const loading = document.getElementById('api-guru-loading');
         loading.classList.remove('hidden');
         
         try {
-            // Memanggil AI menggunakan model standar terbaru
-            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-            
             const prompt = `Buat 3 soal pilihan ganda (A, B, C, D) untuk anak sekolah dasar tentang topik: "${topic}".
-Berikan output HANYA DALAM FORMAT JSON murni, tanpa teks penjelasan apapun, tanpa tanda kutip markdown (seperti \`\`\`json).
+Berikan output HANYA DALAM FORMAT JSON murni, tanpa teks penjelasan apapun, tanpa tanda kutip markdown.
 Format harus tepat seperti array ini:
 [
   { "q": "Pertanyaan soal 1?", "options": ["A", "B", "C", "D"], "answer": 0 },
@@ -1244,36 +1170,34 @@ Format harus tepat seperti array ini:
 ]
 Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang benar.`;
 
-            const result = await model.generateContent(prompt);
-            let jsonText = result.response.text();
-            
-            // Membersihkan teks dari markdown jika AI menyelipkannya
+            let jsonText = await callPublicAI(prompt);
             jsonText = jsonText.replace(/```json/g, '').replace(/```/g, '').trim();
+            const firstBracket = jsonText.indexOf('[');
+            const lastBracket = jsonText.lastIndexOf(']');
+            if(firstBracket !== -1 && lastBracket !== -1) {
+                jsonText = jsonText.substring(firstBracket, lastBracket + 1);
+            }
             
             const newQuestions = JSON.parse(jsonText);
-            
             syncQuestionsFromDOM();
             activeQuestions.push(...newQuestions);
             renderTeacherQuestionsEditor();
             
             closeAIGuruModal();
             showCustomAlert(`✅ Berhasil membuat 3 soal AI tentang "${topic}"!\nJangan lupa tekan tombol "SIMPAN KE CLOUD" untuk menyimpan perubahan.`);
-            
             setTimeout(() => {
                 const el = document.getElementById('content-soal');
                 el.scrollTop = el.scrollHeight;
             }, 100);
-
         } catch(e) {
             console.error("AI Generation Error:", e);
-            showCustomAlert(`Gagal memanggil AI. Pastikan topik jelas. Error: ${e.message}`);
+            showCustomAlert(`Gagal membuat soal dengan AI. Pastikan topik jelas.`);
         } finally {
             loading.classList.add('hidden');
             document.getElementById('ai-guru-topic').value = '';
         }
     }
 
-    // --- Dynamic Question Editor ---
     function syncQuestionsFromDOM() {
         const items = document.querySelectorAll('.question-item');
         if (items.length === 0) return;
@@ -1293,14 +1217,13 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         });
         activeQuestions = synced;
     }
+    
     function renderTeacherQuestionsEditor() {
         const editor = document.getElementById('questions-editor');
         editor.innerHTML = '';
-        
         activeQuestions.forEach((q, idx) => {
             const div = document.createElement('div');
             div.className = 'question-item bg-white p-4 rounded-xl border border-gray-200 shadow-sm relative';
-            
             let optionsHTML = '';
             const labels = ['A', 'B', 'C', 'D'];
             for(let i=0; i<4; i++) {
@@ -1322,6 +1245,7 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             editor.appendChild(div);
         });
     }
+    
     function addNewQuestion() {
         playSound('click');
         syncQuestionsFromDOM();
@@ -1332,6 +1256,7 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             el.scrollTop = el.scrollHeight;
         }, 50);
     }
+    
     function deleteQuestion(idx) {
         playSound('click');
         syncQuestionsFromDOM();
@@ -1342,6 +1267,7 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         activeQuestions.splice(idx, 1);
         renderTeacherQuestionsEditor();
     }
+    
     async function saveQuestions() {
         playSound('click');
         if (!currentUser) {
@@ -1349,16 +1275,16 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             return;
         }
         syncQuestionsFromDOM();
-        
         try {
             const docRef = doc(db, getQuestionsCollectionPath(), 'active_questions');
             await setDoc(docRef, { questions: activeQuestions });
-            showCustomAlert(` ✅  ${activeQuestions.length} Soal berhasil disimpan ke Cloud!\nSiswa akan memainkan jumlah soal baru secara real-time.`);
+            showCustomAlert(` ✅  ${activeQuestions.length} Soal berhasil disimpan ke Cloud!`);
         } catch (e) {
             console.error("Gagal menyimpan ke Cloud", e);
             showCustomAlert('Gagal menyimpan soal ke Cloud. Periksa koneksi.');
         }
     }
+    
     function copyScoresToClipboard() {
         playSound('click');
         if(allScores.length === 0) {
@@ -1378,20 +1304,19 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         el.select();
         try {
             document.execCommand('copy');
-            showCustomAlert(' ✅  Data berhasil disalin!\nSilakan buka file Excel Anda lalu tekan Ctrl+V (Paste).');
+            showCustomAlert(' ✅  Data berhasil disalin! Silakan tekan Ctrl+V di Excel.');
         } catch(e) {
-            showCustomAlert('Gagal menyalin data. Browser Anda mungkin tidak mendukung fitur ini.');
+            showCustomAlert('Gagal menyalin data.');
         }
         document.body.removeChild(el);
     }
+    
     function startGame() {
         playSound('click');
         if(audioCtx.state === 'suspended') audioCtx.resume();
-        
         const name = document.getElementById('input-name').value.trim();
         const absen = document.getElementById('input-absen').value.trim();
         const err = document.getElementById('identity-error');
-        
         if (!name || !absen) {
             err.style.opacity = 1;
             setTimeout(() => err.style.opacity = 0, 2000);
@@ -1409,19 +1334,19 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         createBoard();
         showScreen('screen-game');
     }
+    
     function updateHUD() {
         const totalQ = state.currentShuffledQuestions.length;
         document.getElementById('hud-name').innerText = state.name;
         document.getElementById('hud-absen').innerText = state.absen;
-        
         let currentDisplayScore = Math.round((state.correct / totalQ) * 100);
         document.getElementById('hud-score').innerText = isNaN(currentDisplayScore) ? 0 : currentDisplayScore;
-        
         document.getElementById('hud-progress').innerText = Math.min(state.questionIndex + 1, totalQ) + "/" + totalQ;
         if(document.getElementById('hud-match-progress')) {
             document.getElementById('hud-match-progress').innerText = state.matchesSinceLastQuiz;
         }
     }
+    
     function createBoard() {
         board = [];
         const boardEl = document.getElementById('game-board');
@@ -1437,28 +1362,24 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
                     (r >= 2 && board[r-1][c] === emoji && board[r-2][c] === emoji)
                 );
                 row.push(emoji);
-                
                 const cell = document.createElement('div');
                 cell.className = 'grid-cell';
-                
                 const span = document.createElement('span');
                 span.className = 'emoticon pop-in-anim';
                 span.innerText = emoji;
                 span.dataset.r = r;
                 span.dataset.c = c;
-                
                 span.addEventListener('mousedown', handleDragStart);
                 span.addEventListener('touchstart', handleDragStart, {passive: false});
-                
                 cell.appendChild(span);
                 boardEl.appendChild(cell);
             }
             board.push(row);
         }
-        
         document.addEventListener('mouseup', handleDragEnd);
         document.addEventListener('touchend', handleDragEnd);
     }
+    
     function getDOMCell(r, c) {
         return document.querySelector(`.emoticon[data-r="${r}"][data-c="${c}"]`);
     }
@@ -1467,29 +1388,23 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
     function handleDragStart(e) {
         if (state.isAnimating) return;
         if(e.type === 'touchstart') e.preventDefault(); 
-        
         state.dragElement = e.target;
         state.dragStart = {
             r: parseInt(e.target.dataset.r),
             c: parseInt(e.target.dataset.c)
         };
-        
         dragOrigin.x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
         dragOrigin.y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-        
         e.target.style.transform = 'scale(0.8)';
     }
+    
     function handleDragEnd(e) {
         if (!state.dragElement || state.isAnimating) return;
-        
         state.dragElement.style.transform = '';
-        
         let endX = e.type.includes('mouse') ? e.clientX : e.changedTouches[0].clientX;
         let endY = e.type.includes('mouse') ? e.clientY : e.changedTouches[0].clientY;
-        
         let dx = endX - dragOrigin.x;
         let dy = endY - dragOrigin.y;
-        
         if (Math.abs(dx) < 20 && Math.abs(dy) < 20) {
             state.dragElement = null;
             return; 
@@ -1504,15 +1419,13 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         if (targetR >= 0 && targetR < ROWS && targetC >= 0 && targetC < COLS) {
             attemptSwap(state.dragStart.r, state.dragStart.c, targetR, targetC);
         }
-        
         state.dragElement = null;
     }
+    
     function attemptSwap(r1, c1, r2, c2) {
         state.isAnimating = true;
-        
         const el1 = getDOMCell(r1, c1);
         const el2 = getDOMCell(r2, c2);
-        
         const tempText = el1.innerText;
         el1.innerText = el2.innerText;
         el2.innerText = tempText;
@@ -1535,6 +1448,7 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             }
         }, 200);
     }
+    
     function findMatches() {
         let matchedSet = new Set();
         for (let r = 0; r < ROWS; r++) {
@@ -1564,10 +1478,10 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             return {r: parseInt(parts[0]), c: parseInt(parts[1])};
         });
     }
+    
     function processMatches(matches, showQuizTrigger) {
         state.comboCount++;
         playSound('pop');
-        
         if (state.comboCount > 1) {
             playSound('combo');
             showComboText();
@@ -1583,7 +1497,6 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             if (showQuizTrigger && state.questionIndex < state.currentShuffledQuestions.length) {
                 state.matchesSinceLastQuiz++;
                 updateHUD();
-                
                 if (state.matchesSinceLastQuiz >= 3) {
                     state.matchesSinceLastQuiz = 0;
                     showQuizModal(() => {
@@ -1598,8 +1511,8 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             }
         }, 300);
     }
+    
     function applyGravity() {
-        let moved = false;
         for (let c = 0; c < COLS; c++) {
             for (let r = ROWS - 1; r >= 0; r--) {
                 if (board[r][c] === null) {
@@ -1607,7 +1520,6 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
                         if (board[k][c] !== null) {
                             board[r][c] = board[k][c];
                             board[k][c] = null;
-                            moved = true;
                             break;
                         }
                     }
@@ -1618,7 +1530,6 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             for (let r = 0; r < ROWS; r++) {
                 if (board[r][c] === null) {
                     board[r][c] = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
-                    moved = true;
                 }
             }
         }
@@ -1642,6 +1553,7 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             }
         }, 300);
     }
+    
     function createParticle(parent) {
         if(Math.random() > 0.5) return; 
         const p = document.createElement('div');
@@ -1652,6 +1564,7 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         parent.appendChild(p);
         setTimeout(() => p.remove(), 500);
     }
+    
     function showComboText() {
         const texts = ["", "", "GOOD!", "AMAZING!", "SUPER!", "FANTASTIC!"];
         const t = document.getElementById('combo-text');
@@ -1659,7 +1572,6 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         t.style.opacity = 1;
         t.style.transform = 'translate(-50%, -50%) scale(1.2)';
         t.style.transition = 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-        
         setTimeout(() => {
             t.style.opacity = 0;
             t.style.transform = 'translate(-50%, -50%) scale(0.5)';
@@ -1670,13 +1582,10 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
     function showQuizModal(callback) {
         postQuizCallback = callback;
         const qData = state.currentShuffledQuestions[state.questionIndex];
-        
         document.getElementById('quiz-number').innerText = `${state.questionIndex + 1} / ${state.currentShuffledQuestions.length}`;
         document.getElementById('quiz-question').innerText = qData.q;
-        
         const optsContainer = document.getElementById('quiz-options');
         optsContainer.innerHTML = '';
-        
         const labels = ['A', 'B', 'C', 'D'];
         qData.options.forEach((opt, idx) => {
             const btn = document.createElement('button');
@@ -1690,20 +1599,20 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
         modal.classList.remove('hidden');
         setTimeout(() => box.classList.remove('scale-95'), 10);
     }
+    
     function submitAnswer(selectedIdx, correctIdx) {
         document.getElementById('modal-quiz').classList.add('hidden');
         document.getElementById('quiz-box').classList.add('scale-95');
-        
         const isCorrect = selectedIdx === correctIdx;
         state.questionIndex++;
         showFeedback(isCorrect);
     }
+    
     function showFeedback(isCorrect) {
         const banner = document.getElementById('feedback-banner');
         const icon = document.getElementById('feedback-icon');
         const text = document.getElementById('feedback-text');
         const scoreStr = document.getElementById('feedback-score');
-        
         const totalQ = state.currentShuffledQuestions.length;
         if (isCorrect) {
             playSound('correct');
@@ -1711,7 +1620,6 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             icon.innerText = ' 🎉 ';
             text.innerText = 'BENAR!';
             text.className = 'text-4xl font-extrabold text-white bg-green-500 px-6 py-2 rounded-full border-4 border-white';
-            
             const pointsPerItem = Math.round((1 / totalQ) * 100);
             scoreStr.innerText = `+${pointsPerItem} NILAI`;
             scoreStr.style.display = 'block';
@@ -1724,7 +1632,6 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             text.className = 'text-4xl font-extrabold text-white bg-red-500 px-6 py-2 rounded-full border-4 border-white';
             scoreStr.style.display = 'none';
         }
-        
         state.score = Math.round((state.correct / totalQ) * 100);
         updateHUD();
         banner.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
@@ -1736,10 +1643,10 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             if(postQuizCallback) postQuizCallback();
         }, 1500);
     }
+    
     function endGame() {
         playSound('win');
         saveScoreToCloud(); 
-        
         document.getElementById('res-name').innerText = state.name;
         document.getElementById('res-absen').innerText = state.absen;
         document.getElementById('res-benar').innerText = state.correct;
@@ -1756,21 +1663,21 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             p.innerText = 'TERUS BELAJAR'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-gray-400 to-gray-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         }
         showScreen('screen-result');
-        
         let endConfetti = setInterval(() => {
             confetti({ particleCount: 30, angle: 60, spread: 55, origin: { x: 0 } });
             confetti({ particleCount: 30, angle: 120, spread: 55, origin: { x: 1 } });
         }, 1000);
         setTimeout(() => clearInterval(endConfetti), 4000);
     }
+    
     function quitGame() {
         showCustomConfirm("Yakin ingin keluar? Progres di game saat ini tidak akan tersimpan.", () => {
             showScreen('screen-landing');
         });
     }
+    
     async function saveScoreToCloud() {
         if (!currentUser) return;
-        
         try {
             const scoresRef = collection(db, getScoresCollectionPath());
             await addDoc(scoresRef, {
@@ -1782,19 +1689,19 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
                 date: new Date().getTime(),
                 userId: currentUser.uid
             });
-            console.log("Nilai berhasil tersimpan ke Cloud");
         } catch(e) {
             console.error("Gagal menyimpan nilai", e);
         }
     }
+    
     function showLeaderboard() {
         renderLeaderboardUI();
         showScreen('screen-leaderboard');
     }
+    
     function renderLeaderboardUI() {
         const list = document.getElementById('leaderboard-list');
         list.innerHTML = '';
-        
         if (allScores.length === 0) {
             list.innerHTML = '<p class="text-center text-gray-500 mt-10">Belum ada data nilai di Cloud.</p>';
         } else {
@@ -1817,9 +1724,10 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
             });
         }
     }
+    
     async function resetData() {
         if (!currentUser) return;
-        showCustomConfirm("Apakah Anda yakin ingin menghapus SEMUA data nilai siswa dari Cloud? Data yang dihapus tidak dapat dikembalikan.", async () => {
+        showCustomConfirm("Apakah Anda yakin ingin menghapus SEMUA data nilai siswa dari Cloud?", async () => {
             try {
                 for(let s of allScores) {
                     await deleteDoc(doc(db, getScoresCollectionPath(), s.id));
@@ -1827,12 +1735,11 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
                 showCustomAlert("Semua Data Nilai Berhasil Dihapus dari Cloud!");
             } catch(e) {
                 console.error(e);
-                showCustomAlert("Gagal menghapus data. Periksa koneksi.");
+                showCustomAlert("Gagal menghapus data.");
             }
         });
     }
     
-    // EXPORT FUNGSI KE WINDOW AGAR BISA DIPANGGIL HTML
     window.showScreen = showScreen;
     window.playSound = playSound;
     window.startGame = startGame;
@@ -1854,18 +1761,14 @@ Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang 
     window.startQuizFlow = startQuizFlow;
     window.changeVolume = changeVolume;
     window.saveUserSettings = saveUserSettings;
-    
-    // EXPORT FUNGSI AI
     window.toggleAIChat = toggleAIChat;
     window.sendAIMessage = sendAIMessage;
     window.openAIGuruModal = openAIGuruModal;
     window.closeAIGuruModal = closeAIGuruModal;
     window.generateQuestionsAI = generateQuestionsAI;
     
-    // MULAI APLIKASI
     initApp();
     
-    // CSS Keyframe Injection for dynamic stuff
     const style = document.createElement('style');
     style.innerHTML = `
         @keyframes pop-out {
