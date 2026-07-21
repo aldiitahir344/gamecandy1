@@ -1161,13 +1161,11 @@
         const loadingId = appendChat('bot', '⏳ AI sedang memikirkan jawaban...');
         
         try {
-            // Memanggil AI menggunakan SDK Resmi
-            const model = genAI.getGenerativeModel({ 
-                model: "gemini-1.5-flash",
-                systemInstruction: "Kamu adalah AI Guru Pendamping yang ramah untuk anak SD. Jawablah pertanyaan seputar pelajaran (seperti IPA, IPS, Matematika) dengan bahasa yang sangat mudah dimengerti, singkat (maksimal 2 paragraf pendek), ceria, dan memotivasi. Gunakan emoji agar menarik." 
-            });
+            // Memanggil AI menggunakan model standar (gemini-pro) yang didukung semua akun
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+            const prompt = "Kamu adalah AI Guru Pendamping yang ramah untuk anak SD. Jawablah pertanyaan berikut dengan bahasa yang sangat mudah dimengerti, singkat (maksimal 2 paragraf pendek), ceria, dan memotivasi. Gunakan emoji agar menarik.\n\nPertanyaan: " + msg;
             
-            const result = await model.generateContent(msg);
+            const result = await model.generateContent(prompt);
             const responseText = result.response.text();
             
             updateChat(loadingId, responseText);
@@ -1225,34 +1223,23 @@
         loading.classList.remove('hidden');
         
         try {
-            // Memanggil AI menggunakan SDK Resmi
-            const model = genAI.getGenerativeModel({ 
-                model: "gemini-1.5-flash",
-                systemInstruction: "Kamu adalah sistem pembuat soal. Hasilkan soal yang sesuai fakta, logis, dan level kesulitan untuk anak SD. Berikan output HANYA DALAM FORMAT JSON.",
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: "ARRAY",
-                        items: {
-                            type: "OBJECT",
-                            properties: {
-                                "q": { "type": "STRING", "description": "Pertanyaan soal" },
-                                "options": {
-                                    "type": "ARRAY",
-                                    "items": { "type": "STRING" },
-                                    "description": "4 pilihan jawaban"
-                                },
-                                "answer": { "type": "INTEGER", "description": "Index jawaban benar (0-3)" }
-                            },
-                            "propertyOrdering": ["q", "options", "answer"]
-                        }
-                    }
-                }
-            });
+            // Memanggil AI menggunakan model standar (gemini-pro)
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
             
-            const prompt = `Buat 3 soal pilihan ganda (A, B, C, D) untuk anak sekolah dasar tentang topik: "${topic}".`;
+            const prompt = `Buat 3 soal pilihan ganda (A, B, C, D) untuk anak sekolah dasar tentang topik: "${topic}".
+Berikan output HANYA DALAM FORMAT JSON murni, tanpa teks penjelasan apapun, tanpa tanda kutip markdown (seperti \`\`\`json).
+Format harus tepat seperti array ini:
+[
+  { "q": "Pertanyaan soal 1?", "options": ["A", "B", "C", "D"], "answer": 0 },
+  { "q": "Pertanyaan soal 2?", "options": ["A", "B", "C", "D"], "answer": 1 }
+]
+Catatan: 'answer' adalah angka 0, 1, 2, atau 3 yang mewakili letak jawaban yang benar.`;
+
             const result = await model.generateContent(prompt);
-            const jsonText = result.response.text();
+            let jsonText = result.response.text();
+            
+            // Membersihkan teks dari markdown jika AI menyelipkannya
+            jsonText = jsonText.replace(/```json/g, '').replace(/```/g, '').trim();
             
             const newQuestions = JSON.parse(jsonText);
             
@@ -1270,7 +1257,7 @@
 
         } catch(e) {
             console.error("AI Generation Error:", e);
-            showCustomAlert(`Gagal memanggil AI. Error: ${e.message}`);
+            showCustomAlert(`Gagal memanggil AI. Pastikan topik jelas. Error: ${e.message}`);
         } finally {
             loading.classList.add('hidden');
             document.getElementById('ai-guru-topic').value = '';
