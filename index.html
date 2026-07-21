@@ -641,6 +641,7 @@
         </div>
     </div>
 </div>
+
 <!-- FIREBASE SDK & APP LOGIC -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -667,11 +668,8 @@
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
     
-    // Konfigurasi Gemini API untuk AI Guru dan AI Siswa
-    // API Key Anda dimasukkan di bawah ini:
+    // Konfigurasi Gemini API 
     const geminiApiKey = "AQ.Ab8RN6JXRnpNLaGCN12-a8gDrZfdel605BWgYJIQ1UYmZKsVCg"; 
-    
-    // Menggunakan model publik gemini-1.5-flash agar bisa diakses di GitHub
     const geminiUrlText = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
 
     // --- Constants & Defaults ---
@@ -724,7 +722,7 @@
             <button class="btn-custom btn-primary !w-full !m-0" onclick="closeCustomModal(); window._confirmAction()">Ya</button>
         `;
         window._confirmAction = onConfirm;
-        document.getElementById('custom-modal').classList.remove('hidden');
+        document.getElementById('custom-modal').classList.add('hidden');
     }
     function closeCustomModal() {
         document.getElementById('custom-modal').classList.add('hidden');
@@ -1171,6 +1169,12 @@
             });
             const data = await response.json();
             
+            if(data.error) {
+                console.error("Error API Google:", data.error);
+                updateChat(loadingId, `⚠️ Gagal: ${data.error.message || 'Key tipe AQ. tidak didukung untuk Direct API. Silakan buat key standar.'}`);
+                return;
+            }
+            
             if(data.candidates && data.candidates.length > 0) {
                 const text = data.candidates[0].content.parts[0].text;
                 updateChat(loadingId, text);
@@ -1189,7 +1193,6 @@
         const div = document.createElement('div');
         div.id = id;
         
-        // Memformat Markdown sederhana menjadi HTML (bold)
         let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         
         if(sender === 'user') {
@@ -1264,11 +1267,16 @@
             
             const result = await response.json();
             
+            if(result.error) {
+                console.error("Error API Google:", result.error);
+                showCustomAlert(`Gagal membuat soal.\n\nPesan Error: ${result.error.message || 'Key tipe AQ. tidak didukung untuk API publik.'}`);
+                return;
+            }
+            
             if(result.candidates && result.candidates.length > 0) {
                 const jsonText = result.candidates[0].content.parts[0].text;
                 const newQuestions = JSON.parse(jsonText);
                 
-                // Simpan state input saat ini lalu tambahkan soal baru
                 syncQuestionsFromDOM();
                 activeQuestions.push(...newQuestions);
                 renderTeacherQuestionsEditor();
@@ -1347,7 +1355,6 @@
         syncQuestionsFromDOM();
         activeQuestions.push({q: "Tulis pertanyaan di sini", options: ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"], answer: 0});
         renderTeacherQuestionsEditor();
-        // Scroll to bottom
         setTimeout(() => {
             const el = document.getElementById('content-soal');
             el.scrollTop = el.scrollHeight;
