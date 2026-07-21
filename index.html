@@ -668,8 +668,11 @@
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
     
     // Konfigurasi Gemini API untuk AI Guru dan AI Siswa
-    const geminiApiKey = ""; // Disediakan otomatis oleh environment Canvas saat runtime
-    const geminiUrlText = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`;
+    // API Key Anda dimasukkan di bawah ini:
+    const geminiApiKey = "AQ.Ab8RN6JXRnpNLaGCN12-a8gDrZfdel605BWgYJIQ1UYmZKsVCg"; 
+    
+    // Menggunakan model publik gemini-1.5-flash agar bisa diakses di GitHub
+    const geminiUrlText = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
 
     // --- Constants & Defaults ---
     const EMOJIS = [' 🌸 ', ' 🌼 ', ' 🐠 ', ' 🐢 ', ' 🦧 '];
