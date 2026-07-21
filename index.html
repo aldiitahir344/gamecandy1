@@ -228,6 +228,15 @@
         /* Tambahan CSS untuk AI Fitur */
         .animate-bounce-soft { animation: bounce-soft 3s infinite; }
     </style>
+    
+    <!-- Import Script SDK Generative AI Resmi -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
 </head>
 <body>
 <div id="app-container">
@@ -668,11 +677,11 @@
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
     
-    // --- KONFIGURASI GEMINI API (MENGGUNAKAN SDK RESMI GOOGLE) ---
-    import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+    // --- KONFIGURASI GEMINI API ---
+    import { GoogleGenerativeAI } from "@google/generative-ai";
     
-    // MASUKKAN KUNCI AQ. ANDA DI SINI
-    const geminiApiKey = "AQ.Ab8RN6Ik08i7gh51Iaf-J8ebsFGT8cl-JhJ8xbDKhVHhbdXKKA"; 
+    // 🔥 KUNCI AIZA ASLI MILIK ANDA 🔥
+    const geminiApiKey = "AIzaSyC9VPoDo2yf3MqREUmujDHiGF4MfPSOiB0"; 
     
     const genAI = new GoogleGenerativeAI(geminiApiKey);
 
@@ -1161,7 +1170,7 @@
         const loadingId = appendChat('bot', '⏳ AI sedang memikirkan jawaban...');
         
         try {
-            // Memanggil AI menggunakan model standar (gemini-pro) yang didukung semua akun
+            // Memanggil AI menggunakan model standar (gemini-pro)
             const model = genAI.getGenerativeModel({ model: "gemini-pro" });
             const prompt = "Kamu adalah AI Guru Pendamping yang ramah untuk anak SD. Jawablah pertanyaan berikut dengan bahasa yang sangat mudah dimengerti, singkat (maksimal 2 paragraf pendek), ceria, dan memotivasi. Gunakan emoji agar menarik.\n\nPertanyaan: " + msg;
             
