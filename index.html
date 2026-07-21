@@ -668,9 +668,13 @@
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
     
-    // Konfigurasi Gemini API 
-    const geminiApiKey = "AQ.Ab8RN6JXRnpNLaGCN12-a8gDrZfdel605BWgYJIQ1UYmZKsVCg"; 
-    const geminiUrlText = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
+    // --- KONFIGURASI GEMINI API (MENGGUNAKAN SDK RESMI GOOGLE) ---
+    import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+    
+    // MASUKKAN KUNCI AQ. ANDA DI SINI
+    const geminiApiKey = "AQ.Ab8RN6Ik08i7gh51Iaf-J8ebsFGT8cl-JhJ8xbDKhVHhbdXKKA"; 
+    
+    const genAI = new GoogleGenerativeAI(geminiApiKey);
 
     // --- Constants & Defaults ---
     const EMOJIS = [' 🌸 ', ' 🌼 ', ' 🐠 ', ' 🐢 ', ' 🦧 '];
@@ -1157,33 +1161,19 @@
         const loadingId = appendChat('bot', '⏳ AI sedang memikirkan jawaban...');
         
         try {
-            const payload = {
-                contents: [{ parts: [{ text: msg }] }],
-                systemInstruction: { parts: [{ text: "Kamu adalah AI Guru Pendamping yang ramah untuk anak SD. Jawablah pertanyaan seputar pelajaran (seperti IPA, IPS, Matematika) dengan bahasa yang sangat mudah dimengerti, singkat (maksimal 2 paragraf pendek), ceria, dan memotivasi. Gunakan emoji agar menarik." }] }
-            };
-            
-            const response = await fetch(geminiUrlText, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+            // Memanggil AI menggunakan SDK Resmi
+            const model = genAI.getGenerativeModel({ 
+                model: "gemini-1.5-flash",
+                systemInstruction: "Kamu adalah AI Guru Pendamping yang ramah untuk anak SD. Jawablah pertanyaan seputar pelajaran (seperti IPA, IPS, Matematika) dengan bahasa yang sangat mudah dimengerti, singkat (maksimal 2 paragraf pendek), ceria, dan memotivasi. Gunakan emoji agar menarik." 
             });
-            const data = await response.json();
             
-            if(data.error) {
-                console.error("Error API Google:", data.error);
-                updateChat(loadingId, `⚠️ Gagal: ${data.error.message || 'Key tipe AQ. tidak didukung untuk Direct API. Silakan buat key standar.'}`);
-                return;
-            }
+            const result = await model.generateContent(msg);
+            const responseText = result.response.text();
             
-            if(data.candidates && data.candidates.length > 0) {
-                const text = data.candidates[0].content.parts[0].text;
-                updateChat(loadingId, text);
-            } else {
-                updateChat(loadingId, 'Maaf, AI gagal memproses jawaban. Coba tanyakan hal lain ya! 😔');
-            }
+            updateChat(loadingId, responseText);
         } catch(e) {
             console.error("AI Error:", e);
-            updateChat(loadingId, 'Maaf, koneksi ke AI sedang terputus. Coba lagi nanti ya! 😔');
+            updateChat(loadingId, `⚠️ Gagal memuat AI. Pesan Error: ${e.message}`);
         }
     }
 
@@ -1235,9 +1225,10 @@
         loading.classList.remove('hidden');
         
         try {
-            const payload = {
-                contents: [{ parts: [{ text: `Buat 3 soal pilihan ganda (A, B, C, D) untuk anak sekolah dasar tentang topik: "${topic}".` }] }],
-                systemInstruction: { parts: [{ text: "Kamu adalah sistem pembuat soal. Hasilkan soal yang sesuai fakta, logis, dan level kesulitan untuk anak SD. Berikan output HANYA DALAM FORMAT JSON." }] },
+            // Memanggil AI menggunakan SDK Resmi
+            const model = genAI.getGenerativeModel({ 
+                model: "gemini-1.5-flash",
+                systemInstruction: "Kamu adalah sistem pembuat soal. Hasilkan soal yang sesuai fakta, logis, dan level kesulitan untuk anak SD. Berikan output HANYA DALAM FORMAT JSON.",
                 generationConfig: {
                     responseMimeType: "application/json",
                     responseSchema: {
@@ -1257,44 +1248,29 @@
                         }
                     }
                 }
-            };
-            
-            const response = await fetch(geminiUrlText, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
             });
             
-            const result = await response.json();
+            const prompt = `Buat 3 soal pilihan ganda (A, B, C, D) untuk anak sekolah dasar tentang topik: "${topic}".`;
+            const result = await model.generateContent(prompt);
+            const jsonText = result.response.text();
             
-            if(result.error) {
-                console.error("Error API Google:", result.error);
-                showCustomAlert(`Gagal membuat soal.\n\nPesan Error: ${result.error.message || 'Key tipe AQ. tidak didukung untuk API publik.'}`);
-                return;
-            }
+            const newQuestions = JSON.parse(jsonText);
             
-            if(result.candidates && result.candidates.length > 0) {
-                const jsonText = result.candidates[0].content.parts[0].text;
-                const newQuestions = JSON.parse(jsonText);
-                
-                syncQuestionsFromDOM();
-                activeQuestions.push(...newQuestions);
-                renderTeacherQuestionsEditor();
-                
-                closeAIGuruModal();
-                showCustomAlert(`✅ Berhasil membuat 3 soal AI tentang "${topic}"!\nJangan lupa tekan tombol "SIMPAN KE CLOUD" untuk menyimpan perubahan.`);
-                
-                setTimeout(() => {
-                    const el = document.getElementById('content-soal');
-                    el.scrollTop = el.scrollHeight;
-                }, 100);
-            } else {
-                showCustomAlert('AI gagal membuat soal. Silakan coba lagi.');
-            }
+            syncQuestionsFromDOM();
+            activeQuestions.push(...newQuestions);
+            renderTeacherQuestionsEditor();
+            
+            closeAIGuruModal();
+            showCustomAlert(`✅ Berhasil membuat 3 soal AI tentang "${topic}"!\nJangan lupa tekan tombol "SIMPAN KE CLOUD" untuk menyimpan perubahan.`);
+            
+            setTimeout(() => {
+                const el = document.getElementById('content-soal');
+                el.scrollTop = el.scrollHeight;
+            }, 100);
 
         } catch(e) {
             console.error("AI Generation Error:", e);
-            showCustomAlert('Gagal memanggil AI. Periksa koneksi internet Anda atau coba lagi nanti.');
+            showCustomAlert(`Gagal memanggil AI. Error: ${e.message}`);
         } finally {
             loading.classList.add('hidden');
             document.getElementById('ai-guru-topic').value = '';
