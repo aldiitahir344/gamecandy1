@@ -596,18 +596,23 @@
     </section>
     
     <!-- MODAL: QUIZ -->
-    <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center items-center p-6 hidden">
-        <div class="bg-white w-full rounded-3xl p-6 shadow-2xl transform scale-95 transition-transform duration-300 border-4 border-blue-200 relative overflow-hidden" id="quiz-box">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-200 rounded-full opacity-20"></div>
-            <div class="absolute -bottom-10 -left-10 w-24 h-24 bg-blue-200 rounded-full opacity-20"></div>
-            <div class="text-center mb-4">
-                <span class="bg-blue-100 text-blue-600 font-bold px-4 py-1 rounded-full text-xs tracking-wider">PERTANYAAN <span id="quiz-number">1</span></span>
-            </div>
+    <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-50 flex flex-col justify-center items-center p-4 hidden">
+        <div class="bg-white w-full max-h-[90vh] flex flex-col rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 border-4 border-blue-200 relative overflow-hidden" id="quiz-box">
+            <!-- Hiasan Lingkaran (Tidak ikut terscroll) -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-200 rounded-full opacity-20 pointer-events-none"></div>
+            <div class="absolute -bottom-10 -left-10 w-24 h-24 bg-blue-200 rounded-full opacity-20 pointer-events-none"></div>
             
-            <p id="quiz-question" class="text-lg font-bold text-gray-800 text-center mb-6 font-sans leading-relaxed"></p>
-            
-            <div id="quiz-options" class="flex flex-col gap-3 font-sans">
-                <!-- Options injected via JS -->
+            <!-- Area Konten yang Bisa di-Scroll -->
+            <div class="p-6 overflow-y-auto custom-scrollbar relative z-10 w-full">
+                <div class="text-center mb-4">
+                    <span class="bg-blue-100 text-blue-600 font-bold px-4 py-1 rounded-full text-xs tracking-wider">PERTANYAAN <span id="quiz-number">1</span></span>
+                </div>
+                
+                <p id="quiz-question" class="text-lg font-bold text-gray-800 text-center mb-6 font-sans leading-relaxed"></p>
+                
+                <div id="quiz-options" class="flex flex-col gap-3 font-sans pb-2">
+                    <!-- Options injected via JS -->
+                </div>
             </div>
         </div>
     </div>
