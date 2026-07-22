@@ -645,10 +645,11 @@
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
 
-    // --- GEMINI API LLM INTEGRATION (`gemini-3-flash-preview`) ---
+    // --- GEMINI API LLM INTEGRATION (`gemini-1.5-flash`) ---
     async function callGeminiAPI(promptText, systemInstructionText = "Kamu adalah Kak Al, asisten AI pendamping belajar IPA kelas 5 SD yang ramah, seru, dan edukatif.", isJson = false) {
-        const apiKey = ""; // Automatically provided at runtime in this environment
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+        // 👇 KUNCI API AQ ANDA YANG PERMANEN AGAR BERFUNGSI SEMPURNA DI GITHUB
+        const apiKey = "AQ.Ab8RN6LeidRVmtd86c79e7Xgq8t1y_zaPmg7FWFOh7F80jfLMA"; 
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
         
         const payload = {
             contents: [{ parts: [{ text: promptText }] }],
@@ -703,7 +704,7 @@
                             { q: "Alat untuk mengukur arus listrik adalah...", options: ["Termometer", "Amperemeter", "Barometer", "Speedometer"], answer: 1 }
                         ]);
                     }
-                    return "Halo! Kak Al di sini siap membantumu belajar IPA. Tetap semangat ya!";
+                    return "Halo! Kak Al di sini siap membantumu belajar IPA. Namun sepertinya koneksi kita sedang terganggu. Tetap semangat ya!";
                 }
                 await new Promise(resolve => setTimeout(resolve, delays[attempt]));
             }
