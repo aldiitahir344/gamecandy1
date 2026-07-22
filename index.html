@@ -509,7 +509,7 @@
                         <option value="bab2">Bab 2 - Buku Jendela Dunia (Unsur Cerita, Majas)</option>
                         <option value="bab3">Bab 3 - Ekspresi Diri Melalui Hobi (Teks Prosedur)</option>
                         <option value="bab4">Bab 4 - Belajar Berwirausaha (Wawancara, Ide Pokok)</option>
-                        <option value="bab5">Bab 5 - Menjadi Warga Dunia (Singkatan, Fakta, Opini)</option>
+                        <option value="bab5">Bab 5 - Menjadi Warga Dunia (Fakta, Opini)</option>
                         <option value="bab6">Bab 6 - Cinta Indonesia (Kalimat Perintah, Pengumuman)</option>
                     </select>
                 </div>
@@ -620,8 +620,8 @@
     </div>
     
     <!-- SCREEN: RESULT -->
-    <section id="screen-result" class="screen justify-center items-center p-6 bg-gradient-to-b from-yellow-100 to-orange-100">
-        <div class="glass-panel w-full p-6 flex flex-col items-center text-center relative overflow-hidden border-yellow-300">
+    <section id="screen-result" class="screen justify-start items-center p-6 bg-gradient-to-b from-yellow-100 to-orange-100 overflow-y-auto custom-scrollbar">
+        <div class="glass-panel w-full p-6 flex flex-col items-center text-center relative overflow-hidden border-yellow-300 mt-10 mb-10 flex-shrink-0">
             <div class="absolute top-0 left-0 w-full h-full pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==')] opacity-50"></div>
             
             <div class="text-6xl mb-2 animate-bounce mt-4"> 🏆 </div>
@@ -804,6 +804,7 @@
             progressBar.style.width = '0%';
         }
     }
+
     function generateQuestionsByChapter(chapterId, chapterName, jumlahSoal) {
         let finalQuestions = [];
         let usedQ = new Set();
@@ -821,10 +822,10 @@
             let ansIdx = mapped.findIndex(m => m.isCorrect);
             return { q: qText, options: mapped.map(m => m.text), answer: ansIdx };
         }
+        
         // Kamus Data untuk AI
         const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
         const getWrongs = (arr, correct) => arr.filter(x => x !== correct).sort(() => 0.5 - Math.random()).slice(0, 3);
-        
         const names = ["Andi", "Budi", "Siti", "Bela", "Edo", "Lani", "Dayu", "Udin", "Rani", "Dika", "Ayu", "Rio"];
         
         // --- DATABASE KAMUS KELAS 5 ---
@@ -840,18 +841,18 @@
             {w:"Sedih", s:"Duka"}, {w:"Ulet", s:"Gigih"}, {w:"Kawan", s:"Teman"}, {w:"Matahari", s:"Mentari"}
         ];
         const sifatList = [
-            {desc:"selalu berkata apa adanya, mengakui kesalahan, dan tidak suka menyembunyikan kebenaran", word:"Jujur"},
-            {desc:"suka menyisihkan uang jajannya untuk diberikan kepada pengemis atau teman yang kesusahan", word:"Dermawan"},
-            {desc:"tidak pernah menyimpan dendam meskipun temannya sering mengejeknya berulang kali", word:"Pemaaf"},
-            {desc:"lebih suka menyendiri di kelas dan jarang mengobrol kecuali jika ditanya", word:"Pendiam"},
-            {desc:"selalu menarik napas panjang dan tetap tersenyum meski adiknya sering merusak mainannya", word:"Penyabar"},
-            {desc:"selalu ingin menang sendiri saat bermain dan tidak mau meminjamkan barangnya kepada orang lain", word:"Egois"}
+            {desc:"selalu berkata apa adanya dan tidak berbohong", word:"Jujur"},
+            {desc:"suka memberi dan menolong orang lain yang kesusahan", word:"Dermawan"},
+            {desc:"mudah memaafkan kesalahan orang lain tanpa dendam", word:"Pemaaf"},
+            {desc:"tidak banyak bicara namun banyak bertindak", word:"Pendiam"},
+            {desc:"selalu bersikap tenang dan tidak mudah marah", word:"Penyabar"},
+            {desc:"hanya memikirkan kepentingan diri sendiri", word:"Egois"}
         ];
         const majasList = [
-            {type:"Personifikasi", ex:["Angin malam menari-nari dan membisikkan lagu rindu di telingaku.", "Bulan tersenyum ramah menatap bumi yang terlelap.", "Ombak berkejaran dan saling berpelukan di tepi pantai.", "Pena itu menari-nari di atas kertas putih, merangkai kisah sedih."]},
-            {type:"Hiperbola", ex:["Suaranya saat berteriak sungguh menggelegar hingga membelah bumi.", "Ia berlari secepat kilat menyusul temannya yang sudah jauh.", "Air matanya menganak sungai setelah mendengar kabar buruk itu.", "Tumpukan tugas dari sekolah hari ini setinggi gunung."]},
-            {type:"Metafora", ex:["Raja siang telah bangkit dari peraduannya di ufuk timur.", "Meskipun pendiam, dia adalah bintang kelas di sekolah kami.", "Sejak kecil, ayah selalu bekerja keras karena ia adalah tulang punggung keluarga.", "Berhati-hatilah dengan orang itu, ia dikenal sebagai lintah darat."]},
-            {type:"Simile", ex:["Mendengar berita mengejutkan itu, wajahnya pucat bagai mayat.", "Anak itu keras kepala seperti batu, sulit sekali dinasihati.", "Senyumannya bersinar terang laksana bintang di malam hari.", "Berita itu menyebar sangat cepat bagai angin yang berhembus."]}
+            {type:"Personifikasi", ex:["Angin menari-nari ditiup badai", "Bulan tersenyum menatap bumi", "Ombak berkejaran di tepi pantai", "Pena itu menari-nari di atas kertas"]},
+            {type:"Hiperbola", ex:["Suaranya menggelegar membelah bumi", "Berlari secepat kilat", "Air matanya menganak sungai", "Tumpukan tugas setinggi gunung"]},
+            {type:"Metafora", ex:["Raja siang telah terbit di timur", "Dia adalah bintang kelas kami", "Ayah adalah tulang punggung keluarga", "Si kutu buku yang cerdas"]},
+            {type:"Simile", ex:["Wajahnya pucat bagai mayat", "Keras kepala seperti batu", "Bersinar laksana bintang", "Cepat bagai angin"]}
         ];
         const imbuhanMeList = [
             {dasar:"sapu", jadi:"menyapu"}, {dasar:"tulis", jadi:"menulis"}, {dasar:"baca", jadi:"membaca"}, 
@@ -860,24 +861,12 @@
             {dasar:"suara", jadi:"menyuarakan"}, {dasar:"tonton", jadi:"menonton"}, {dasar:"pakai", jadi:"memakai"}
         ];
         const idiomList = [
-            {id:"Banting tulang", m:"Bekerja sangat keras tak kenal lelah"}, {id:"Gulung tikar", m:"Mengalami kebangkrutan hingga usahanya tutup"},
-            {id:"Buah tangan", m:"Oleh-oleh atau barang bawaan dari bepergian"}, {id:"Buah bibir", m:"Menjadi bahan pembicaraan banyak orang"},
-            {id:"Bintang lapangan", m:"Pemain yang sangat hebat dan menjadi andalan"}, {id:"Ringan tangan", m:"Suka menolong orang lain dengan ikhlas"},
-            {id:"Kepala dingin", m:"Menghadapi masalah dengan tenang dan sabar"}, {id:"Besar kepala", m:"Sombong dan merasa paling pintar"}
-        ];
-        const singkatanList = [
-            {s:"DPR", p:"Dewan Perwakilan Rakyat"}, {s:"KTP", p:"Kartu Tanda Penduduk"},
-            {s:"SD", p:"Sekolah Dasar"}, {s:"SMP", p:"Sekolah Menengah Pertama"},
-            {s:"SIM", p:"Surat Izin Mengemudi"}, {s:"KK", p:"Kartu Keluarga"},
-            {s:"PBB", p:"Perserikatan Bangsa-Bangsa"}, {s:"TNI", p:"Tentara Nasional Indonesia"}
-        ];
-        const akronimList = [
-            {a:"Puskesmas", p:"Pusat Kesehatan Masyarakat"}, {a:"Posyandu", p:"Pos Pelayanan Terpadu"},
-            {a:"Pemilu", p:"Pemilihan Umum"}, {a:"Sinetron", p:"Sinema Elektronik"},
-            {a:"Tilang", p:"Bukti Pelanggaran"}, {a:"Bulog", p:"Badan Urusan Logistik"}
+            {id:"Banting tulang", m:"Bekerja keras"}, {id:"Gulung tikar", m:"Bangkrut atau Rugi"},
+            {id:"Buah tangan", m:"Oleh-oleh"}, {id:"Buah bibir", m:"Bahan pembicaraan"},
+            {id:"Bintang lapangan", m:"Pemain andalan"}, {id:"Ringan tangan", m:"Suka menolong"},
+            {id:"Kepala dingin", m:"Tenang dan Sabar"}, {id:"Besar kepala", m:"Sombong"}
         ];
         
-        // LOGIKA PENYUSUNAN SOAL DINAMIS (HOTS / BERBOBOT)
         let templates = [];
         
         if (chapterId === 'bab1') {
@@ -885,22 +874,22 @@
                 let pair = rand(antonimList);
                 let wrongs = getWrongs(antonimList.map(x=>x.a), pair.a);
                 let name = rand(names);
-                return buildQ(`Bacalah kalimat berikut dengan cermat!\n"Sebelumnya, ${name} dikenal sebagai anak yang sangat ${pair.w.toLowerCase()} di kelasnya, namun setelah ditegur gurunya, ia bertekad mengubah sikapnya menjadi kebalikannya."\nSikap yang diharapkan dari ${name} sekarang adalah...`, pair.a, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Bacalah kalimat berikut!\n"Sebelumnya, ${name} dikenal sebagai anak yang sangat ${pair.w.toLowerCase()} di kelasnya, namun setelah dinasihati, ia bertekad mengubah sikapnya menjadi kebalikannya."\nSikap yang diharapkan dari ${name} sekarang adalah...`, pair.a, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let pair = rand(sinonimList);
                 let wrongs = getWrongs(sinonimList.map(x=>x.s), pair.s);
-                return buildQ(`Di dalam sebuah cerita tertulis: "Raja itu sangat ${pair.w.toLowerCase()} dan selalu disegani rakyatnya."\nJika penulis ingin mengganti kata '${pair.w}' tanpa mengubah makna aslinya, kata yang paling tepat dipilih adalah...`, pair.s, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Di dalam sebuah cerita tertulis: "Raja itu sangat ${pair.w.toLowerCase()} dan selalu memikirkan jalan keluar yang baik."\nJika penulis ingin mengganti kata '${pair.w}' tanpa mengubah makna aslinya, kata yang paling tepat dipilih adalah...`, pair.s, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let pair = rand(sifatList);
                 let wrongs = getWrongs(sifatList.map(x=>x.word), pair.word);
                 let name = rand(names);
-                return buildQ(`Perhatikan ilustrasi berikut:\n"Setiap hari, ${name} ${pair.desc}."\nDari ilustrasi tersebut, kita dapat menyimpulkan bahwa ${name} memiliki karakter...`, pair.word, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Perhatikan ilustrasi berikut:\n"Setiap hari, ${name} ${pair.desc}."\nDari kebiasaan tersebut, kita dapat menyimpulkan bahwa ${name} memiliki karakter...`, pair.word, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let obj = rand(["Pemalu", "Pemaaf", "Pemarah", "Penyabar"]);
-                return buildQ(`Kata '${obj}' terbentuk dari kata dasar yang mendapat awalan 'pe-'. Jika dianalisis, awalan 'pe-' pada kata tersebut berfungsi untuk menyatakan...`, `Orang yang memiliki sifat atau karakter ${obj.replace('Pe','').toLowerCase()}`, "Alat yang digunakan untuk melakukan pekerjaan", "Proses terjadinya suatu peristiwa", "Lokasi atau tempat kejadian");
+                return buildQ(`Kata '${obj}' terbentuk dari kata dasar yang mendapat awalan 'pe-'. Jika dianalisis secara tata bahasa, awalan 'pe-' pada kata tersebut berfungsi untuk menyatakan...`, `Seseorang yang memiliki sifat/karakter ${obj.replace('Pe','').toLowerCase()}`, "Sebuah alat yang digunakan untuk bekerja", "Proses terjadinya sebuah peristiwa alam", "Tempat berlangsungnya sebuah kejadian");
             });
         }
         else if (chapterId === 'bab2') {
@@ -908,40 +897,35 @@
                 let m = rand(majasList);
                 let kalimat = rand(m.ex);
                 let wrongs = getWrongs(majasList.map(x=>x.type), m.type);
-                return buildQ(`Analisislah gaya bahasa pada penggalan puisi berikut!\n"${kalimat}"\nPenulis menggunakan gaya bahasa tersebut untuk memberikan kesan dramatis atau imajinatif. Majas yang terkandung di dalamnya adalah majas...`, m.type, wrongs[0], wrongs[1], wrongs[2]);
-            });
-            templates.push(() => {
-                let m = rand(majasList);
-                let name = rand(names);
-                return buildQ(`${name} mendapat tugas untuk membuat kalimat yang mengandung majas ${m.type}. Namun ia masih bingung. Di antara pilihan berikut, manakah kalimat yang benar-benar mewakili majas tersebut?`, rand(m.ex), rand(majasList.find(x=>x.type!==m.type).ex), "Buku itu dibeli di pasar pada pagi hari yang cerah.", "Kemarin sore, pamanku baru saja pulang dari luar kota.");
+                return buildQ(`Analisislah gaya bahasa pada penggalan cerita berikut!\n"${kalimat}"\nPenulis menggunakan kalimat kiasan tersebut untuk memberikan kesan tertentu. Majas yang terkandung di dalamnya adalah...`, m.type, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let unsur = rand(["Latar (Setting)", "Tema", "Tokoh", "Amanat", "Alur (Plot)"]);
                 let deskripsi = "";
-                if(unsur === "Latar (Setting)") deskripsi = "untuk mengetahui kapan, di mana, dan bagaimana suasana saat peristiwa terjadi";
-                if(unsur === "Tema") deskripsi = "untuk menemukan inti atau ide pokok yang mendasari seluruh kejadian cerita";
-                if(unsur === "Tokoh") deskripsi = "untuk mengenali siapa saja karakter yang menggerakkan jalan cerita";
-                if(unsur === "Amanat") deskripsi = "untuk memetik pesan moral atau pelajaran hidup yang disisipkan oleh penulis";
-                if(unsur === "Alur (Plot)") deskripsi = "untuk memahami rangkaian sebab-akibat peristiwa dari awal, konflik, hingga penyelesaian";
+                if(unsur === "Latar (Setting)") deskripsi = "menemukan petunjuk mengenai lokasi, waktu, dan suasana saat peristiwa terjadi";
+                if(unsur === "Tema") deskripsi = "menemukan inti, pokok pikiran, atau ide dasar yang mendasari seluruh kejadian cerita";
+                if(unsur === "Tokoh") deskripsi = "menganalisis siapa saja pelaku yang memiliki sifat dan menggerakkan jalan cerita";
+                if(unsur === "Amanat") deskripsi = "memetik pesan moral atau pelajaran berharga yang sengaja disisipkan oleh penulis";
+                if(unsur === "Alur (Plot)") deskripsi = "memahami rangkaian sebab-akibat dan urutan peristiwa dari awal, konflik, hingga akhir";
                 
                 let wrongs = getWrongs(["Latar (Setting)", "Tema", "Tokoh", "Amanat", "Alur (Plot)", "Sudut Pandang"], unsur);
-                return buildQ(`Saat membaca sebuah dongeng, sangat penting bagi kita ${deskripsi}. Unsur intrinsik yang dimaksud dalam penjelasan ini disebut...`, unsur, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Saat membaca sebuah dongeng fabel, pembaca perlu melakukan analisis untuk ${deskripsi}. Unsur intrinsik yang dicari oleh pembaca tersebut disebut...`, unsur, wrongs[0], wrongs[1], wrongs[2]);
+            });
+            templates.push(() => {
+                return buildQ(`Bacalah kutipan cerita ini:\n"Matahari menyengat tajam. Keringat bercucuran di dahi Kancil saat ia menyusuri gurun pasir yang gersang dan sunyi."\nUnsur intrinsik yang paling menonjol pada kutipan tersebut adalah...`, "Latar tempat dan suasana", "Amanat cerita", "Tema persahabatan", "Alur penyelesaian (resolusi)");
             });
         }
         else if (chapterId === 'bab3') {
             templates.push(() => {
                 let pair = rand(imbuhanMeList);
-                let name = rand(names);
                 let wrongs = [ `me${pair.dasar}`, `mem${pair.dasar}`, `meng${pair.dasar}`, `men${pair.dasar}`, `pe${pair.dasar}`].filter(x => x !== pair.jadi).sort(()=>0.5-Math.random()).slice(0,3);
-                return buildQ(`Dalam aturan bahasa Indonesia, awalan 'me-' akan meleburkan (meluluhkan) huruf pertama dari beberapa kata dasar tertentu. Jika kata dasar '${pair.dasar}' diberi awalan 'me-', bentuk baku yang paling tepat adalah...`, pair.jadi, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Dalam aturan bahasa Indonesia, awalan 'me-' dapat meluluhkan huruf pertama pada kata dasar yang berawalan huruf K, T, S, P. Jika kata dasar '${pair.dasar}' diberi awalan 'me-', bentuk baku yang benar adalah...`, pair.jadi, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
-                let benda = rand(["layang-layang", "nasi goreng", "origami", "jus apel"]);
-                return buildQ(`Perhatikan ciri teks berikut:\n1. Memiliki tujuan akhir.\n2. Terdapat rincian alat dan bahan.\n3. Memuat langkah-langkah yang harus dilakukan secara berurutan.\nJika teks tersebut membahas tentang cara membuat ${benda}, maka teks itu digolongkan sebagai teks...`, "Prosedur", "Deskripsi", "Narasi", "Eksposisi");
+                return buildQ(`Perhatikan urutan acak cara memasak mi instan berikut:\n(1) Masukkan mi ke dalam air yang sedang mendidih.\n(2) Siapkan piring dan tuangkan bumbu ke dalamnya.\n(3) Rebus air di dalam panci hingga mendidih.\n(4) Angkat mi, campurkan dengan bumbu, dan aduk rata.\nSusunan langkah yang tepat agar menjadi teks prosedur yang logis adalah...`, "(3)-(1)-(2)-(4)", "(1)-(3)-(2)-(4)", "(3)-(2)-(1)-(4)", "(2)-(1)-(3)-(4)");
             });
             templates.push(() => {
-                let kata = rand(["Pertama", "Kemudian", "Setelah itu", "Langkah terakhir"]);
-                return buildQ(`Bacalah kutipan berikut: "(1) Masukkan teh ke dalam gelas. (2) ... tuangkan air panas perlahan-lahan."\nKata hubung (konjungsi) urutan waktu yang paling logis untuk mengisi bagian rumpang agar teks prosedur tersebut padu adalah...`, kata, "Sedangkan", "Karena", "Atau");
+                return buildQ(`Bacalah kalimat prosedur berikut yang rumpang:\n"Peganglah kertas lipat di kedua ujungnya. (...), lipat bagian bawah ke atas hingga membentuk segitiga sama kaki."\nKata hubung (konjungsi) penanda urutan waktu yang paling tepat untuk mengisi titik-titik tersebut adalah...`, "Setelah itu", "Sedangkan", "Namun demikian", "Meskipun");
             });
         }
         else if (chapterId === 'bab4') {
@@ -949,61 +933,44 @@
                 let idm = rand(idiomList);
                 let wrongs = getWrongs(idiomList.map(x=>x.m), idm.m);
                 let name = rand(names);
-                return buildQ(`Bacalah kalimat berikut: "Karena peristiwa itu, keluarga Pak ${name} akhirnya harus ${idm.id}."\nBerdasarkan konteks kalimat tersebut, makna ungkapan kiasan yang digunakan penulis adalah...`, idm.m, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Perhatikan kalimat berikut: "Kesuksesan Pak ${name} tidak diraih secara instan, beliau harus ${idm.id} merintis usahanya dari nol."\nBerdasarkan konteks kalimat tersebut, ungkapan kiasan yang digunakan memiliki arti...`, idm.m, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
-                let tanya = rand([{k:"Siapa", m:"Menanyakan sosok atau orang yang terlibat", ex:"... penemu mesin uap?"}, {k:"Di mana", m:"Menanyakan lokasi kejadian peristiwa", ex:"... barang itu kamu temukan?"}, {k:"Kapan", m:"Menanyakan waktu atau momen", ex:"... kemerdekaan Indonesia diumumkan?"}, {k:"Bagaimana", m:"Menanyakan cara, proses, atau keadaan", ex:"... proses terjadinya hujan?"}, {k:"Mengapa", m:"Menanyakan alasan atau sebab", ex:"... kamu tidak datang kemarin?"}]);
-                let wrongs = getWrongs(["Menanyakan sosok atau orang yang terlibat", "Menanyakan lokasi kejadian peristiwa", "Menanyakan waktu atau momen", "Menanyakan cara, proses, atau keadaan", "Menanyakan alasan atau sebab"], tanya.m);
-                return buildQ(`Dalam wawancara, wartawan menggunakan pertanyaan: "${tanya.ex}"\nKata tanya yang tepat untuk melengkapi kalimat tersebut berfungsi untuk...`, tanya.m, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Siswa kelas 5 mendapati sungai di desa mereka penuh dengan sampah dan sering menyebabkan banjir. Jika mereka ditugaskan untuk melakukan wawancara mencari tahu penyebab utamanya, narasumber yang paling tepat dan ahli untuk diwawancarai adalah...`, "Ketua RT atau Petugas Kebersihan Lingkungan", "Dokter di Puskesmas terdekat", "Kepala Sekolah Dasar", "Polisi Lalu Lintas");
             });
             templates.push(() => {
-                let name = rand(names);
-                return buildQ(`Siswa kelas 5 mendapat tugas mewawancarai Pak ${name} selaku Kepala Desa mengenai kebersihan lingkungan. Dalam kegiatan komunikasi tersebut, posisi Pak ${name} berperan sebagai...`, "Narasumber", "Pewawancara", "Wartawan", "Audien/Pendengar");
+                return buildQ(`Seorang wartawan bertanya, "Bagaimana proses evakuasi warga saat gunung meletus terjadi?"\nPertanyaan tersebut menggunakan kata tanya "Bagaimana" yang secara spesifik bertujuan untuk menggali informasi tentang...`, "Cara, proses, atau keadaan suatu peristiwa", "Sosok atau pihak yang bertanggung jawab", "Waktu dan tanggal pasti kejadian", "Lokasi atau tempat titik pengungsian");
             });
         }
         else if (chapterId === 'bab5') {
             templates.push(() => {
-                let name = rand(names);
-                let opini = `Menurutku, ${name} akan menjadi juara kelas tahun ini karena ia sangat rajin.`;
-                let fakta1 = "Ibukota negara Republik Indonesia saat ini berlokasi di Jakarta.";
-                let fakta2 = "Air mendidih dan menguap pada suhu 100 derajat Celcius.";
-                let fakta3 = "Proklamasi kemerdekaan Indonesia dibacakan oleh Ir. Soekarno.";
-                return buildQ("Kalimat opini adalah pernyataan yang masih berupa pendapat atau perkiraan pribadi. Dari keempat kalimat di bawah ini, manakah yang merupakan kalimat OPINI?", opini, fakta1, fakta2, fakta3);
+                return buildQ(`Bacalah paragraf berikut dengan teliti!\n"Hutan bakau memiliki peran yang sangat penting dalam menjaga keseimbangan ekosistem pesisir. Akar-akarnya yang kuat terbukti mampu menahan hantaman ombak dan mencegah abrasi air laut. Selain itu, hutan ini menjadi habitat yang aman bagi kepiting dan udang kecil."\nIde pokok (gagasan utama) dari paragraf di atas adalah...`, "Peran penting hutan bakau bagi ekosistem", "Akar hutan bakau mampu menahan abrasi laut", "Biota laut hidup berdampingan di hutan bakau", "Kepiting dan udang sangat menyukai akar bakau");
             });
             templates.push(() => {
-                let fakta = "Indonesia memiliki dasar negara yang disebut Pancasila.";
-                let opini1 = "Pantai itu sepertinya adalah tempat wisata terbaik di provinsi ini.";
-                let opini2 = "Menurut para ahli, makan sayur setiap hari membuat wajah lebih berseri.";
-                let opini3 = "Kue buatan ibu terasa jauh lebih enak dibandingkan kue dari toko.";
-                return buildQ("Fakta adalah pernyataan yang benar-benar terjadi dan dapat dibuktikan kebenarannya oleh siapa saja. Manakah kalimat berikut yang mutlak berisi FAKTA?", fakta, opini1, opini2, opini3);
+                return buildQ(`Bacalah paragraf ini:\n(1) Jeruk merupakan buah yang kaya akan vitamin C. (2) Kandungan vitamin C sangat baik untuk menjaga daya tahan tubuh. (3) Menurut banyak orang, jeruk bali adalah jeruk yang rasanya paling enak di dunia. (4) Pohon jeruk banyak tumbuh di daerah beriklim tropis.\nDari paragraf tersebut, manakah kalimat yang murni mengandung unsur OPINI (pendapat pribadi)?`, "Kalimat nomor (3)", "Kalimat nomor (1)", "Kalimat nomor (2)", "Kalimat nomor (4)");
             });
             templates.push(() => {
-                let s = rand(singkatanList);
-                let wrongs = getWrongs(singkatanList.map(x=>x.p), s.p);
-                return buildQ(`Dalam membaca berita di koran, sering dijumpai istilah '${s.s}'. Kepanjangan resmi dari singkatan tersebut adalah...`, s.p, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Perhatikan penggalan teks surat di bawah ini:\n"Yth. Bapak/Ibu Wali Murid Kelas V,\nBersama surat ini, kami mengharap kehadiran Bapak/Ibu pada rapat pembagian hasil belajar siswa yang akan dilaksanakan pada hari Sabtu ini."\nDilihat dari bahasa dan strukturnya, penggalan teks tersebut diklasifikasikan sebagai jenis...`, "Surat resmi (Dinas)", "Surat pribadi (Keluarga)", "Surat pembaca", "Surat lamaran pekerjaan");
             });
             templates.push(() => {
-                let a = rand(akronimList);
-                let wrongs = getWrongs(akronimList.map(x=>x.p), a.p);
-                return buildQ(`Kata '${a.a}' bukanlah sebuah kata dasar, melainkan sebuah akronim (gabungan huruf/suku kata). Akronim tersebut terbentuk dari kalimat...`, a.p, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Berikut ini adalah kalimat: "Ibukota Provinsi Jawa Timur adalah Surabaya."\nKalimat tersebut merupakan sebuah fakta karena...`, "Informasinya benar-benar ada dan dapat dibuktikan kebenarannya", "Merupakan pendapat dari para ahli geografi", "Terdengar sangat meyakinkan dan bagus untuk dibaca", "Banyak orang yang setuju dengan kalimat tersebut");
             });
         }
         else if (chapterId === 'bab6') {
             templates.push(() => {
-                return buildQ(`Bacalah kalimat berikut: "Tolong ambilkan buku itu di atas meja (...)"\nUntuk mengubahnya menjadi kalimat perintah yang sopan namun tegas, tanda baca yang paling tepat digunakan di akhir kalimat adalah...`, "Tanda seru (!)", "Tanda titik (.)", "Tanda koma (,)", "Tanda tanya (?)");
+                return buildQ(`Perhatikan struktur kalimat berikut:\n"Budi, tolong tutup kembali pintu kelas itu setelah kamu keluar (...)"\nAgar kalimat tersebut sah menjadi kalimat perintah yang sopan namun tegas, tanda baca yang wajib diletakkan di bagian akhir adalah...`, "Tanda seru (!)", "Tanda titik (.)", "Tanda koma (,)", "Tanda tanya (?)");
             });
             templates.push(() => {
-                let name = rand(names);
-                return buildQ(`Pak Guru berkata: "Jangan pernah membuang sampah sembarangan di area sekolah!"\nKalimat perintah yang diucapkan Pak Guru tersebut diklasifikasikan sebagai jenis kalimat perintah...`, "Larangan", "Ajakan", "Permintaan", "Informasi/Berita");
+                return buildQ(`Bacalah pengumuman berikut!\n"Diberitahukan kepada seluruh siswa kelas 5, kegiatan ekstrakurikuler renang pada hari Jumat ini DITIADAKAN sementara karena kolam sedang dikuras dan dibersihkan."\nInformasi paling penting (inti) yang disampaikan dari pengumuman tersebut adalah...`, "Ekstrakurikuler renang libur sementara karena kolam dikuras", "Siswa kelas 5 diwajibkan menguras kolam renang", "Ekstrakurikuler renang dipindahkan ke hari lain", "Seluruh siswa kelas 5 dilarang berenang selamanya");
             });
             templates.push(() => {
-                let name = rand(names);
-                return buildQ(`"Mari kita bersihkan selokan ini agar tidak terjadi banjir saat hujan turun."\nKalimat di atas menggunakan kata penanda 'Mari' yang menunjukkan bahwa kalimat ini adalah jenis kalimat perintah...`, "Ajakan", "Larangan", "Paksaan", "Syarat");
+                return buildQ(`"Mari kita bersihkan lingkungan sekolah ini bersama-sama agar terhindar dari penyakit demam berdarah!"\nPenggunaan kata penanda "Mari" pada kalimat di atas menunjukkan bahwa ini adalah variasi kalimat perintah berbentuk...`, "Ajakan atau himbauan", "Larangan keras", "Paksaan", "Syarat dan ketentuan");
             });
         }
         else {
-            templates.push(() => buildQ("Soal Kritis Umum: Jika sebuah roda gigi besar yang memiliki 20 gigi memutar roda gigi kecil yang memiliki 10 gigi, apa yang akan terjadi pada putaran roda gigi kecil?", "Berputar 2 kali lebih cepat dari roda gigi besar", "Berputar lebih lambat dari roda gigi besar", "Berputar dengan kecepatan yang sama", "Roda gigi kecil tidak akan bisa berputar"));
+            templates.push(() => buildQ("Soal Kritis Analisis: Jika kamu melihat seorang teman membuang bungkus makanannya di taman sekolah yang baru saja dibersihkan, tindakan paling tepat yang harus kamu lakukan adalah...", "Menegurnya dengan sopan agar mengambil dan membuangnya ke tempat sampah", "Membentaknya di depan teman-teman lain agar ia merasa malu", "Mendiamkannya saja karena itu bukan urusanmu", "Ikut membuang sampah sembarangan di tempat tersebut"));
         }
+        
         // GENERATE SOAL SAMPAI JUMLAH YANG DIMINTA
         for(let i = 0; i < jumlahSoal; i++) {
             let attempt = 0;
@@ -1026,16 +993,19 @@
             usedQ.add(generated.q);
             finalQuestions.push(generated);
         }
+        
         activeQuestions = finalQuestions;
         renderTeacherQuestionsEditor();
         showCustomAlert(`🎉 Selesai!\n\nKAK AL berhasil mengekstrak materi ${chapterName} dan meracik ${jumlahSoal} Soal Pilihan Ganda berkualitas tinggi (HOTS).\n\nSemua soal dipastikan BEDA dan memiliki variasi unik.\nJangan lupa tekan 'SIMPAN KE CLOUD' agar soal ini masuk ke permainan siswa!`);
     }
+
     // --- Custom Modal UI ---
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
         document.getElementById('custom-modal-buttons').innerHTML = `<button class="btn-custom btn-primary !w-full !m-0" onclick="closeCustomModal()">OK</button>`;
         document.getElementById('custom-modal').classList.remove('hidden');
     }
+    
     function showCustomConfirm(message, onConfirm) {
         document.getElementById('custom-modal-text').innerText = message;
         document.getElementById('custom-modal-buttons').innerHTML = `
@@ -1045,6 +1015,7 @@
         window._confirmAction = onConfirm;
         document.getElementById('custom-modal').classList.remove('hidden');
     }
+    
     function closeCustomModal() {
         document.getElementById('custom-modal').classList.add('hidden');
     }
@@ -1067,6 +1038,7 @@
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
     }
+    
     function playSound(type) {
         if (!settings.sfx) return;
         switch(type) {
@@ -1240,6 +1212,7 @@
             showCustomAlert("Tautan materi belum ditambahkan oleh Guru. Silakan hubungi Guru Anda.");
         }
     }
+    
     function startQuizFlow() {
         showScreen('screen-menu');
         const bgMusic = document.getElementById('bg-music');
@@ -1453,6 +1426,7 @@
         });
         activeQuestions = synced;
     }
+    
     function renderTeacherQuestionsEditor() {
         const editor = document.getElementById('questions-editor');
         editor.innerHTML = '';
@@ -1493,6 +1467,7 @@
             el.scrollTop = el.scrollHeight;
         }, 50);
     }
+    
     function deleteQuestion(idx) {
         playSound('click');
         syncQuestionsFromDOM();
@@ -1503,6 +1478,7 @@
         activeQuestions.splice(idx, 1);
         renderTeacherQuestionsEditor();
     }
+    
     async function saveQuestions() {
         playSound('click');
         if (!currentUser) {
@@ -1520,6 +1496,7 @@
             showCustomAlert('Gagal menyimpan soal ke Cloud. Periksa koneksi.');
         }
     }
+    
     function copyScoresToClipboard() {
         playSound('click');
         if(allScores.length === 0) {
@@ -1545,6 +1522,7 @@
         }
         document.body.removeChild(el);
     }
+    
     function startGame() {
         playSound('click');
         if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -1584,6 +1562,7 @@
             document.getElementById('hud-match-progress').innerText = state.matchesSinceLastQuiz;
         }
     }
+    
     function createBoard() {
         board = [];
         const boardEl = document.getElementById('game-board');
@@ -1621,9 +1600,11 @@
         document.addEventListener('mouseup', handleDragEnd);
         document.addEventListener('touchend', handleDragEnd);
     }
+    
     function getDOMCell(r, c) {
         return document.querySelector(`.emoticon[data-r="${r}"][data-c="${c}"]`);
     }
+    
     let dragOrigin = {x:0, y:0};
     
     function handleDragStart(e) {
@@ -1641,6 +1622,7 @@
         
         e.target.style.transform = 'scale(0.8)';
     }
+    
     function handleDragEnd(e) {
         if (!state.dragElement || state.isAnimating) return;
         
@@ -1698,6 +1680,7 @@
             }
         }, 200);
     }
+    
     function findMatches() {
         let matchedSet = new Set();
         for (let r = 0; r < ROWS; r++) {
@@ -1727,6 +1710,7 @@
             return {r: parseInt(parts[0]), c: parseInt(parts[1])};
         });
     }
+    
     function processMatches(matches, showQuizTrigger) {
         state.comboCount++;
         playSound('pop');
@@ -1806,6 +1790,7 @@
             }
         }, 300);
     }
+    
     function createParticle(parent) {
         if(Math.random() > 0.5) return; 
         const p = document.createElement('div');
@@ -1816,6 +1801,7 @@
         parent.appendChild(p);
         setTimeout(() => p.remove(), 500);
     }
+    
     function showComboText() {
         const texts = ["", "", "GOOD!", "AMAZING!", "SUPER!", "FANTASTIC!"];
         const t = document.getElementById('combo-text');
@@ -1829,6 +1815,7 @@
             t.style.transform = 'translate(-50%, -50%) scale(0.5)';
         }, 1000);
     }
+    
     let postQuizCallback = null;
     function showQuizModal(callback) {
         postQuizCallback = callback;
@@ -1862,6 +1849,7 @@
         state.questionIndex++;
         showFeedback(isCorrect);
     }
+    
     function showFeedback(isCorrect) {
         const banner = document.getElementById('feedback-banner');
         const icon = document.getElementById('feedback-icon');
@@ -1900,6 +1888,7 @@
             if(postQuizCallback) postQuizCallback();
         }, 1500);
     }
+    
     function endGame() {
         playSound('win');
         saveScoreToCloud(); 
@@ -1927,11 +1916,13 @@
         }, 1000);
         setTimeout(() => clearInterval(endConfetti), 4000);
     }
+    
     function quitGame() {
         showCustomConfirm("Yakin ingin keluar? Progres di game saat ini tidak akan tersimpan.", () => {
             showScreen('screen-landing');
         });
     }
+    
     async function saveScoreToCloud() {
         if (!currentUser) return;
         
@@ -1951,10 +1942,12 @@
             console.error("Gagal menyimpan nilai", e);
         }
     }
+    
     function showLeaderboard() {
         renderLeaderboardUI();
         showScreen('screen-leaderboard');
     }
+    
     function renderLeaderboardUI() {
         const list = document.getElementById('leaderboard-list');
         list.innerHTML = '';
@@ -1981,6 +1974,7 @@
             });
         }
     }
+    
     async function resetData() {
         if (!currentUser) return;
         showCustomConfirm("Apakah Anda yakin ingin menghapus SEMUA data nilai siswa dari Cloud? Data yang dihapus tidak dapat dikembalikan.", async () => {
@@ -1995,30 +1989,6 @@
             }
         });
     }
-    
-    // EXPORT FUNGSI KE WINDOW AGAR BISA DIPANGGIL HTML
-    window.showScreen = showScreen;
-    window.playSound = playSound;
-    window.startGame = startGame;
-    window.showLeaderboard = showLeaderboard;
-    window.loginTeacher = loginTeacher;
-    window.logoutTeacher = logoutTeacher;
-    window.switchTeacherTab = switchTeacherTab;
-    window.copyScoresToClipboard = copyScoresToClipboard;
-    window.resetData = resetData;
-    window.saveQuestions = saveQuestions;
-    window.addNewQuestion = addNewQuestion;
-    window.deleteQuestion = deleteQuestion;
-    window.toggleSetting = toggleSetting;
-    window.toggleMuteInGame = toggleMuteInGame;
-    window.quitGame = quitGame;
-    window.closeCustomModal = closeCustomModal;
-    window.saveMateriLink = saveMateriLink;
-    window.openMateri = openMateri;
-    window.startQuizFlow = startQuizFlow;
-    window.changeVolume = changeVolume;
-    window.saveUserSettings = saveUserSettings;
-    window.processAIChapter = processAIChapter;
     
     // --- Video Intro System ---
     window.startIntroVideo = function() {
@@ -2043,9 +2013,32 @@
                 vid.currentTime = 0;
             }
         }
-        // Mulai loading app
-        initApp();
+        initApp(); // Mulai loading app
     };
+    
+    // EXPORT FUNGSI KE WINDOW AGAR BISA DIPANGGIL HTML
+    window.showScreen = showScreen;
+    window.playSound = playSound;
+    window.startGame = startGame;
+    window.showLeaderboard = showLeaderboard;
+    window.loginTeacher = loginTeacher;
+    window.logoutTeacher = logoutTeacher;
+    window.switchTeacherTab = switchTeacherTab;
+    window.copyScoresToClipboard = copyScoresToClipboard;
+    window.resetData = resetData;
+    window.saveQuestions = saveQuestions;
+    window.addNewQuestion = addNewQuestion;
+    window.deleteQuestion = deleteQuestion;
+    window.toggleSetting = toggleSetting;
+    window.toggleMuteInGame = toggleMuteInGame;
+    window.quitGame = quitGame;
+    window.closeCustomModal = closeCustomModal;
+    window.saveMateriLink = saveMateriLink;
+    window.openMateri = openMateri;
+    window.startQuizFlow = startQuizFlow;
+    window.changeVolume = changeVolume;
+    window.saveUserSettings = saveUserSettings;
+    window.processAIChapter = processAIChapter;
     
     // CSS Keyframe Injection for dynamic stuff
     const style = document.createElement('style');
