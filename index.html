@@ -94,6 +94,7 @@
             display: flex;
             animation: fadeIn 0.3s ease-out;
         }
+        
         .btn-custom {
             background: white;
             color: var(--text-color);
@@ -242,8 +243,23 @@
         <div class="floating-icon" style="top: 50%; left: 50%; animation-delay: 4s; font-size: 4rem; opacity: 0.05;"> 🌸 </div>
     </div>
     
+    <!-- SCREEN: SPLASH VIDEO (NEW) -->
+    <section id="screen-splash-video" class="screen active justify-center items-center z-[100] bg-black">
+        <video id="intro-video" class="w-full h-full object-contain max-w-md mx-auto" playsinline>
+            <source src="opening.mp4" type="video/mp4">
+            Browser Anda tidak mendukung tag video.
+        </video>
+        <button id="skip-video-btn" class="absolute top-4 right-4 bg-white/30 hover:bg-white/50 text-white font-bold px-4 py-2 rounded-full text-sm backdrop-blur z-20 transition-all shadow-md" onclick="finishIntroVideo()">Lewati ⏭</button>
+        
+        <div id="start-video-overlay" class="absolute inset-0 flex flex-col justify-center items-center bg-[#0f172a] z-10">
+            <img src="MASKOT.png" alt="Maskot" class="h-36 mb-4 animate-bounce drop-shadow-2xl" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=M'">
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 filter drop-shadow-sm mb-10 text-center" style="line-height: 1.2;">CERDIAKIA<br>MATCH</h1>
+            <button class="bg-gradient-to-r from-blue-500 to-green-500 text-white font-black py-4 px-10 rounded-full text-xl shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-95 transition-transform" onclick="startIntroVideo()">▶ MULAI APLIKASI</button>
+        </div>
+    </section>
+
     <!-- SCREEN: LOADING -->
-    <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
+    <section id="screen-loading" class="screen justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
         <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=M'">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">CERDIAKIA<br>MATCH</h1>
@@ -259,7 +275,7 @@
             <p id="loading-tip" class="text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
         </div>
     </section>
-
+    
     <!-- SCREEN: LANDING PAGE -->
     <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
@@ -277,7 +293,7 @@
             <button class="btn-custom btn-primary" onclick="startQuizFlow(); playSound('click')"> 🎮 QUIZ</button>
         </div>
     </section>
-
+    
     <!-- SCREEN: MAIN MENU -->
     <section id="screen-menu" class="screen justify-start items-center py-8">
         <!-- Tombol Kembali ke Landing Page -->
@@ -451,12 +467,10 @@
                 <div class="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-black px-3 py-1 rounded-bl-lg shadow-sm">
                     ✨ KAK AL (AI)
                 </div>
-
                 <h3 class="font-bold text-blue-800 mb-1 flex items-center gap-2 text-base">
                     🤖 Buat Soal B. Indonesia Kelas 5
                 </h3>
                 <p class="text-xs text-blue-600 mb-4">Sistem akan otomatis menyesuaikan soal sesuai referensi buku <b>Indonesia_BS_KLS_V_Rev.pdf</b> (GitHub).</p>
-
                 <!-- MENU PILIH BAB -->
                 <div class="mb-3">
                     <label class="text-xs font-extrabold text-blue-700 mb-1 block">Pilih Bab Materi (Berdasarkan Buku)</label>
@@ -469,17 +483,14 @@
                         <option value="bab6">Bab 6 - Cinta Indonesia (Kalimat Perintah, Pengumuman)</option>
                     </select>
                 </div>
-
                 <!-- MENU INPUT JUMLAH SOAL -->
                 <div class="mb-3">
                     <label class="text-xs font-extrabold text-blue-700 mb-1 block">Jumlah Soal yang Dibuat (Maksimal 50)</label>
                     <input type="number" id="ai-num-questions" min="1" max="50" value="10" class="w-full p-3 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 shadow-inner font-bold text-gray-700 bg-white">
                 </div>
-
                 <button onclick="processAIChapter()" id="btn-ai-generate" class="w-full bg-green-500 text-white px-4 py-3 rounded-lg text-sm font-bold shadow-md hover:bg-green-600 active:scale-95 transition-transform flex items-center justify-center gap-2 mt-2 border-b-4 border-green-700">
                     ✨ BUAT SOAL SEKARANG
                 </button>
-
                 <!-- Animasi Loading KAK AL -->
                 <div id="ai-loading-container" class="hidden mt-4 bg-white p-3 rounded-lg border border-blue-100 shadow-inner text-center">
                     <img src="MASKOT.png" alt="Maskot KAK AL" class="h-12 mx-auto animate-bounce mb-2" onerror="this.src='https://placehold.co/50x50/transparent/blue?text=AI'">
@@ -644,12 +655,12 @@
         </div>
     </div>
 </div>
-
 <!-- FIREBASE SDK & APP LOGIC -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    
     // SETUP FIREBASE CONFIGURATION
     const isCanvas = typeof __firebase_config !== 'undefined';
     const firebaseConfig = isCanvas ? JSON.parse(__firebase_config) : {
@@ -690,7 +701,6 @@
         { q: "Sebuah kereta api melaju dari kota A ke kota B yang berjarak 120 km. Jika kereta tersebut berangkat pukul 08.00 dan tiba pukul 10.00, berapakah kecepatan rata-ratanya?", options: ["40 km/jam", "50 km/jam", "60 km/jam", "80 km/jam"], answer: 2 },
         { q: "Paragraf yang kalimat utamanya terletak di awal paragraf kemudian diikuti oleh kalimat-kalimat penjelas disebut paragraf...", options: ["Deduktif", "Induktif", "Campuran", "Naratif"], answer: 0 }
     ];
-
     let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
     let allScores = [];
     let currentUser = null;
@@ -765,7 +775,7 @@
             progressBar.style.width = '0%';
         }
     }
-
+    
     function generateQuestionsByChapter(chapterId, chapterName, jumlahSoal) {
         let finalQuestions = [];
         let usedQ = new Set();
@@ -783,7 +793,6 @@
             let ansIdx = mapped.findIndex(m => m.isCorrect);
             return { q: qText, options: mapped.map(m => m.text), answer: ansIdx };
         }
-
         // Kamus Data untuk AI
         const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
         const getWrongs = (arr, correct) => arr.filter(x => x !== correct).sort(() => 0.5 - Math.random()).slice(0, 3);
@@ -839,7 +848,6 @@
             {a:"Pemilu", p:"Pemilihan Umum"}, {a:"Sinetron", p:"Sinema Elektronik"},
             {a:"Tilang", p:"Bukti Pelanggaran"}, {a:"Bulog", p:"Badan Urusan Logistik"}
         ];
-
         // LOGIKA PENYUSUNAN SOAL DINAMIS (Tidak ada yang terulang)
         let templates = [];
         
@@ -968,7 +976,6 @@
         else {
             templates.push(() => buildQ("Pertanyaan Umum: Siapakah penemu bola lampu yang terkenal?", "Thomas Edison", "Albert Einstein", "Nikola Tesla", "Isaac Newton"));
         }
-
         // GENERATE SOAL SAMPAI JUMLAH YANG DIMINTA
         for(let i = 0; i < jumlahSoal; i++) {
             let attempt = 0;
@@ -991,12 +998,11 @@
             usedQ.add(generated.q);
             finalQuestions.push(generated);
         }
-
         activeQuestions = finalQuestions;
         renderTeacherQuestionsEditor();
         showCustomAlert(`🎉 Selesai!\n\nKAK AL berhasil mengekstrak materi ${chapterName} dan meracik ${jumlahSoal} Soal Pilihan Ganda berkualitas tinggi (HOTS).\n\nSemua soal dipastikan BEDA dan memiliki variasi unik.\nJangan lupa tekan 'SIMPAN KE CLOUD' agar soal ini masuk ke permainan siswa!`);
     }
-
+    
     // --- Custom Modal UI ---
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
@@ -1963,6 +1969,33 @@
         });
     }
     
+    // --- Video Intro System ---
+    function startIntroVideo() {
+        playSound('click');
+        document.getElementById('start-video-overlay').style.display = 'none';
+        const vid = document.getElementById('intro-video');
+        vid.play().catch(e => {
+            console.log("Autoplay ditolak browser:", e);
+            finishIntroVideo(); // Lanjut jika browser memblokir video
+        });
+        vid.onended = finishIntroVideo;
+    }
+
+    function finishIntroVideo() {
+        const vidScreen = document.getElementById('screen-splash-video');
+        if (vidScreen) {
+            vidScreen.classList.remove('active');
+            vidScreen.style.display = 'none';
+            const vid = document.getElementById('intro-video');
+            if (vid) {
+                vid.pause();
+                vid.currentTime = 0;
+            }
+        }
+        // Mulai loading app
+        initApp();
+    }
+    
     // EXPORT FUNGSI KE WINDOW AGAR BISA DIPANGGIL HTML
     window.showScreen = showScreen;
     window.playSound = playSound;
@@ -1986,9 +2019,8 @@
     window.changeVolume = changeVolume;
     window.saveUserSettings = saveUserSettings;
     window.processAIChapter = processAIChapter;
-    
-    // MULAI APLIKASI
-    initApp();
+    window.startIntroVideo = startIntroVideo;
+    window.finishIntroVideo = finishIntroVideo;
     
     // CSS Keyframe Injection for dynamic stuff
     const style = document.createElement('style');
