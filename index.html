@@ -73,6 +73,17 @@
             to { opacity: 1; }
         }
         
+        @keyframes splash-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .bg-splash-bright {
+            background: linear-gradient(-45deg, #38bdf8, #818cf8, #a78bfa, #34d399);
+            background-size: 400% 400%;
+            animation: splash-gradient 10s ease infinite;
+        }
+        
         .screen {
             position: absolute;
             top: 0;
@@ -94,7 +105,6 @@
             display: flex;
             animation: fadeIn 0.3s ease-out;
         }
-        
         .btn-custom {
             background: white;
             color: var(--text-color);
@@ -243,18 +253,38 @@
         <div class="floating-icon" style="top: 50%; left: 50%; animation-delay: 4s; font-size: 4rem; opacity: 0.05;"> 🌸 </div>
     </div>
     
-    <!-- SCREEN: SPLASH VIDEO (NEW) -->
-    <section id="screen-splash-video" class="screen active justify-center items-center z-[100] bg-black">
+    <!-- SCREEN: SPLASH VIDEO (NEW BRIGHT & COLORFUL) -->
+    <section id="screen-splash-video" class="screen active justify-center items-center z-[100] bg-white">
         <video id="intro-video" class="w-full h-full object-contain max-w-md mx-auto" playsinline>
             <source src="opening.mp4" type="video/mp4">
             Browser Anda tidak mendukung tag video.
         </video>
-        <button id="skip-video-btn" class="absolute top-4 right-4 bg-white/30 hover:bg-white/50 text-white font-bold px-4 py-2 rounded-full text-sm backdrop-blur z-20 transition-all shadow-md" onclick="finishIntroVideo()">Lewati ⏭</button>
+        <button id="skip-video-btn" class="absolute top-4 right-4 bg-black/20 hover:bg-black/40 text-white font-bold px-4 py-2 rounded-full text-sm backdrop-blur z-20 transition-all shadow-md" onclick="finishIntroVideo()">Lewati ⏭</button>
         
-        <div id="start-video-overlay" class="absolute inset-0 flex flex-col justify-center items-center bg-[#0f172a] z-10">
-            <img src="MASKOT.png" alt="Maskot" class="h-36 mb-4 animate-bounce drop-shadow-2xl" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=M'">
-            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-400 filter drop-shadow-sm mb-10 text-center" style="line-height: 1.2;">CERDIAKIA<br>MATCH</h1>
-            <button class="bg-gradient-to-r from-blue-500 to-green-500 text-white font-black py-4 px-10 rounded-full text-xl shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:scale-105 active:scale-95 transition-transform" onclick="startIntroVideo()">▶ MULAI APLIKASI</button>
+        <div id="start-video-overlay" class="absolute inset-0 flex flex-col justify-center items-center bg-splash-bright z-10 overflow-hidden">
+            <!-- Partikel Cahaya Latar -->
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC4yIi8+PC9zdmc+')]"></div>
+            
+            <div class="relative mb-6 mt-10">
+                <!-- Aura Cahaya Terang di belakang Maskot -->
+                <div class="absolute inset-0 bg-white blur-[40px] rounded-full scale-150 opacity-60 animate-pulse"></div>
+                <!-- Maskot asli tidak diubah -->
+                <img src="MASKOT.png" alt="Maskot" class="h-48 relative z-10 animate-bounce drop-shadow-[0_10px_15px_rgba(0,0,0,0.3)]" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=M'">
+            </div>
+            
+            <!-- Judul Bergaya Game Edukasi (Ceria 3D) -->
+            <h1 class="text-[3.2rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-100 to-yellow-300 drop-shadow-[0_5px_5px_rgba(255,100,0,0.5)] mb-1 text-center tracking-wide" style="line-height: 1.1; -webkit-text-stroke: 2px #f97316;">
+                CERDIAKIA<br>MATCH
+            </h1>
+            <p class="text-white font-extrabold tracking-[0.1em] text-sm mb-14 drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] bg-orange-500/90 px-4 py-1.5 rounded-full uppercase border-2 border-white">Belajar Sambil Bermain</p>
+            
+            <!-- Tombol Play Khas Anak-anak (Oranye/Kuning Tebal) -->
+            <button class="group relative px-8 py-4 font-black text-xl rounded-full bg-gradient-to-b from-orange-300 to-orange-500 text-white shadow-[0_8px_0_#c2410c,0_15px_25px_rgba(0,0,0,0.3)] transition-all active:translate-y-2 active:shadow-[0_0px_0_#c2410c,0_5px_10px_rgba(0,0,0,0.3)] hover:brightness-110 flex items-center gap-3 border-[3px] border-white z-20" onclick="startIntroVideo()">
+                <div class="w-10 h-10 bg-white text-orange-500 rounded-full flex justify-center items-center shadow-inner group-hover:scale-110 transition-transform">
+                    <span class="text-2xl ml-1">▶</span>
+                </div>
+                <span class="tracking-wider text-2xl drop-shadow-md">MULAI</span>
+            </button>
         </div>
     </section>
 
@@ -660,7 +690,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    
     // SETUP FIREBASE CONFIGURATION
     const isCanvas = typeof __firebase_config !== 'undefined';
     const firebaseConfig = isCanvas ? JSON.parse(__firebase_config) : {
@@ -775,7 +804,6 @@
             progressBar.style.width = '0%';
         }
     }
-    
     function generateQuestionsByChapter(chapterId, chapterName, jumlahSoal) {
         let finalQuestions = [];
         let usedQ = new Set();
@@ -812,18 +840,18 @@
             {w:"Sedih", s:"Duka"}, {w:"Ulet", s:"Gigih"}, {w:"Kawan", s:"Teman"}, {w:"Matahari", s:"Mentari"}
         ];
         const sifatList = [
-            {desc:"selalu berkata apa adanya dan tidak berbohong", word:"Jujur"},
-            {desc:"suka memberi dan menolong orang lain yang kesusahan", word:"Dermawan"},
-            {desc:"mudah memaafkan kesalahan orang lain tanpa dendam", word:"Pemaaf"},
-            {desc:"tidak banyak bicara namun banyak bertindak", word:"Pendiam"},
-            {desc:"selalu bersikap tenang dan tidak mudah marah", word:"Penyabar"},
-            {desc:"hanya memikirkan kepentingan diri sendiri", word:"Egois"}
+            {desc:"selalu berkata apa adanya, mengakui kesalahan, dan tidak suka menyembunyikan kebenaran", word:"Jujur"},
+            {desc:"suka menyisihkan uang jajannya untuk diberikan kepada pengemis atau teman yang kesusahan", word:"Dermawan"},
+            {desc:"tidak pernah menyimpan dendam meskipun temannya sering mengejeknya berulang kali", word:"Pemaaf"},
+            {desc:"lebih suka menyendiri di kelas dan jarang mengobrol kecuali jika ditanya", word:"Pendiam"},
+            {desc:"selalu menarik napas panjang dan tetap tersenyum meski adiknya sering merusak mainannya", word:"Penyabar"},
+            {desc:"selalu ingin menang sendiri saat bermain dan tidak mau meminjamkan barangnya kepada orang lain", word:"Egois"}
         ];
         const majasList = [
-            {type:"Personifikasi", ex:["Angin menari-nari ditiup badai", "Bulan tersenyum menatap bumi", "Ombak berkejaran di tepi pantai", "Pena itu menari-nari di atas kertas"]},
-            {type:"Hiperbola", ex:["Suaranya menggelegar membelah bumi", "Berlari secepat kilat", "Air matanya menganak sungai", "Tumpukan tugas setinggi gunung"]},
-            {type:"Metafora", ex:["Raja siang telah terbit di timur", "Dia adalah bintang kelas kami", "Ayah adalah tulang punggung keluarga", "Si kutu buku yang cerdas"]},
-            {type:"Simile", ex:["Wajahnya pucat bagai mayat", "Keras kepala seperti batu", "Bersinar laksana bintang", "Cepat bagai angin"]}
+            {type:"Personifikasi", ex:["Angin malam menari-nari dan membisikkan lagu rindu di telingaku.", "Bulan tersenyum ramah menatap bumi yang terlelap.", "Ombak berkejaran dan saling berpelukan di tepi pantai.", "Pena itu menari-nari di atas kertas putih, merangkai kisah sedih."]},
+            {type:"Hiperbola", ex:["Suaranya saat berteriak sungguh menggelegar hingga membelah bumi.", "Ia berlari secepat kilat menyusul temannya yang sudah jauh.", "Air matanya menganak sungai setelah mendengar kabar buruk itu.", "Tumpukan tugas dari sekolah hari ini setinggi gunung."]},
+            {type:"Metafora", ex:["Raja siang telah bangkit dari peraduannya di ufuk timur.", "Meskipun pendiam, dia adalah bintang kelas di sekolah kami.", "Sejak kecil, ayah selalu bekerja keras karena ia adalah tulang punggung keluarga.", "Berhati-hatilah dengan orang itu, ia dikenal sebagai lintah darat."]},
+            {type:"Simile", ex:["Mendengar berita mengejutkan itu, wajahnya pucat bagai mayat.", "Anak itu keras kepala seperti batu, sulit sekali dinasihati.", "Senyumannya bersinar terang laksana bintang di malam hari.", "Berita itu menyebar sangat cepat bagai angin yang berhembus."]}
         ];
         const imbuhanMeList = [
             {dasar:"sapu", jadi:"menyapu"}, {dasar:"tulis", jadi:"menulis"}, {dasar:"baca", jadi:"membaca"}, 
@@ -832,10 +860,10 @@
             {dasar:"suara", jadi:"menyuarakan"}, {dasar:"tonton", jadi:"menonton"}, {dasar:"pakai", jadi:"memakai"}
         ];
         const idiomList = [
-            {id:"Banting tulang", m:"Bekerja keras"}, {id:"Gulung tikar", m:"Bangkrut atau Rugi"},
-            {id:"Buah tangan", m:"Oleh-oleh"}, {id:"Buah bibir", m:"Bahan pembicaraan"},
-            {id:"Bintang lapangan", m:"Pemain andalan"}, {id:"Ringan tangan", m:"Suka menolong"},
-            {id:"Kepala dingin", m:"Tenang dan Sabar"}, {id:"Besar kepala", m:"Sombong"}
+            {id:"Banting tulang", m:"Bekerja sangat keras tak kenal lelah"}, {id:"Gulung tikar", m:"Mengalami kebangkrutan hingga usahanya tutup"},
+            {id:"Buah tangan", m:"Oleh-oleh atau barang bawaan dari bepergian"}, {id:"Buah bibir", m:"Menjadi bahan pembicaraan banyak orang"},
+            {id:"Bintang lapangan", m:"Pemain yang sangat hebat dan menjadi andalan"}, {id:"Ringan tangan", m:"Suka menolong orang lain dengan ikhlas"},
+            {id:"Kepala dingin", m:"Menghadapi masalah dengan tenang dan sabar"}, {id:"Besar kepala", m:"Sombong dan merasa paling pintar"}
         ];
         const singkatanList = [
             {s:"DPR", p:"Dewan Perwakilan Rakyat"}, {s:"KTP", p:"Kartu Tanda Penduduk"},
@@ -848,29 +876,31 @@
             {a:"Pemilu", p:"Pemilihan Umum"}, {a:"Sinetron", p:"Sinema Elektronik"},
             {a:"Tilang", p:"Bukti Pelanggaran"}, {a:"Bulog", p:"Badan Urusan Logistik"}
         ];
-        // LOGIKA PENYUSUNAN SOAL DINAMIS (Tidak ada yang terulang)
+        
+        // LOGIKA PENYUSUNAN SOAL DINAMIS (HOTS / BERBOBOT)
         let templates = [];
         
         if (chapterId === 'bab1') {
             templates.push(() => {
                 let pair = rand(antonimList);
                 let wrongs = getWrongs(antonimList.map(x=>x.a), pair.a);
-                return buildQ(`Pilihlah jawaban yang tepat! Antonim (lawan kata) dari kata '${pair.w}' adalah...`, pair.a, wrongs[0], wrongs[1], wrongs[2]);
+                let name = rand(names);
+                return buildQ(`Bacalah kalimat berikut dengan cermat!\n"Sebelumnya, ${name} dikenal sebagai anak yang sangat ${pair.w.toLowerCase()} di kelasnya, namun setelah ditegur gurunya, ia bertekad mengubah sikapnya menjadi kebalikannya."\nSikap yang diharapkan dari ${name} sekarang adalah...`, pair.a, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let pair = rand(sinonimList);
                 let wrongs = getWrongs(sinonimList.map(x=>x.s), pair.s);
-                return buildQ(`Di dalam kamus, sinonim (persamaan kata) dari kata '${pair.w}' yang paling tepat adalah...`, pair.s, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Di dalam sebuah cerita tertulis: "Raja itu sangat ${pair.w.toLowerCase()} dan selalu disegani rakyatnya."\nJika penulis ingin mengganti kata '${pair.w}' tanpa mengubah makna aslinya, kata yang paling tepat dipilih adalah...`, pair.s, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let pair = rand(sifatList);
                 let wrongs = getWrongs(sifatList.map(x=>x.word), pair.word);
                 let name = rand(names);
-                return buildQ(`Perhatikan cerita ini: ${name} adalah anak yang ${pair.desc}. Berdasarkan cerita tersebut, ${name} memiliki sifat...`, pair.word, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Perhatikan ilustrasi berikut:\n"Setiap hari, ${name} ${pair.desc}."\nDari ilustrasi tersebut, kita dapat menyimpulkan bahwa ${name} memiliki karakter...`, pair.word, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let obj = rand(["Pemalu", "Pemaaf", "Pemarah", "Penyabar"]);
-                return buildQ(`Apa makna imbuhan 'pe-' pada kata '${obj}' dalam bahasa Indonesia?`, `Menyatakan orang yang memiliki sifat ${obj.replace('Pe','').toLowerCase()}`, "Menyatakan alat yang digunakan", "Menyatakan proses pekerjaan", "Menyatakan lokasi kejadian");
+                return buildQ(`Kata '${obj}' terbentuk dari kata dasar yang mendapat awalan 'pe-'. Jika dianalisis, awalan 'pe-' pada kata tersebut berfungsi untuk menyatakan...`, `Orang yang memiliki sifat atau karakter ${obj.replace('Pe','').toLowerCase()}`, "Alat yang digunakan untuk melakukan pekerjaan", "Proses terjadinya suatu peristiwa", "Lokasi atau tempat kejadian");
             });
         }
         else if (chapterId === 'bab2') {
@@ -878,26 +908,24 @@
                 let m = rand(majasList);
                 let kalimat = rand(m.ex);
                 let wrongs = getWrongs(majasList.map(x=>x.type), m.type);
-                return buildQ(`Bacalah penggalan kalimat berikut: "${kalimat}".\nMajas apakah yang digunakan pada kalimat tersebut?`, m.type, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Analisislah gaya bahasa pada penggalan puisi berikut!\n"${kalimat}"\nPenulis menggunakan gaya bahasa tersebut untuk memberikan kesan dramatis atau imajinatif. Majas yang terkandung di dalamnya adalah majas...`, m.type, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let m = rand(majasList);
                 let name = rand(names);
-                let kalimat = rand(m.ex);
-                let wrongs = getWrongs(majasList.map(x=>x.ex[0]), m.ex[0]); 
-                return buildQ(`Dalam tugas Bahasa Indonesia, ${name} disuruh membuat majas ${m.type}. Manakah contoh yang benar?`, kalimat, rand(majasList.find(x=>x.type!==m.type).ex), "Buku itu dibeli di pasar pagi.", "Dia pergi ke sekolah naik sepeda.");
+                return buildQ(`${name} mendapat tugas untuk membuat kalimat yang mengandung majas ${m.type}. Namun ia masih bingung. Di antara pilihan berikut, manakah kalimat yang benar-benar mewakili majas tersebut?`, rand(m.ex), rand(majasList.find(x=>x.type!==m.type).ex), "Buku itu dibeli di pasar pada pagi hari yang cerah.", "Kemarin sore, pamanku baru saja pulang dari luar kota.");
             });
             templates.push(() => {
                 let unsur = rand(["Latar (Setting)", "Tema", "Tokoh", "Amanat", "Alur (Plot)"]);
                 let deskripsi = "";
-                if(unsur === "Latar (Setting)") deskripsi = "menunjukkan tempat, waktu, dan suasana terjadinya suatu peristiwa";
-                if(unsur === "Tema") deskripsi = "menjadi gagasan utama atau dasar cerita tersebut";
-                if(unsur === "Tokoh") deskripsi = "menjadi pelaku yang mengalami peristiwa dalam cerita";
-                if(unsur === "Amanat") deskripsi = "merupakan pesan moral atau nasihat yang ingin disampaikan penulis";
-                if(unsur === "Alur (Plot)") deskripsi = "menunjukkan jalan cerita atau urutan peristiwa dari awal hingga akhir";
+                if(unsur === "Latar (Setting)") deskripsi = "untuk mengetahui kapan, di mana, dan bagaimana suasana saat peristiwa terjadi";
+                if(unsur === "Tema") deskripsi = "untuk menemukan inti atau ide pokok yang mendasari seluruh kejadian cerita";
+                if(unsur === "Tokoh") deskripsi = "untuk mengenali siapa saja karakter yang menggerakkan jalan cerita";
+                if(unsur === "Amanat") deskripsi = "untuk memetik pesan moral atau pelajaran hidup yang disisipkan oleh penulis";
+                if(unsur === "Alur (Plot)") deskripsi = "untuk memahami rangkaian sebab-akibat peristiwa dari awal, konflik, hingga penyelesaian";
                 
                 let wrongs = getWrongs(["Latar (Setting)", "Tema", "Tokoh", "Amanat", "Alur (Plot)", "Sudut Pandang"], unsur);
-                return buildQ(`Unsur intrinsik cerita yang ${deskripsi} disebut...`, unsur, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Saat membaca sebuah dongeng, sangat penting bagi kita ${deskripsi}. Unsur intrinsik yang dimaksud dalam penjelasan ini disebut...`, unsur, wrongs[0], wrongs[1], wrongs[2]);
             });
         }
         else if (chapterId === 'bab3') {
@@ -905,76 +933,76 @@
                 let pair = rand(imbuhanMeList);
                 let name = rand(names);
                 let wrongs = [ `me${pair.dasar}`, `mem${pair.dasar}`, `meng${pair.dasar}`, `men${pair.dasar}`, `pe${pair.dasar}`].filter(x => x !== pair.jadi).sort(()=>0.5-Math.random()).slice(0,3);
-                return buildQ(`${name} menemukan kata dasar '${pair.dasar}'. Jika diberi awalan 'me-', maka penulisannya yang baku menjadi...`, pair.jadi, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Dalam aturan bahasa Indonesia, awalan 'me-' akan meleburkan (meluluhkan) huruf pertama dari beberapa kata dasar tertentu. Jika kata dasar '${pair.dasar}' diberi awalan 'me-', bentuk baku yang paling tepat adalah...`, pair.jadi, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let benda = rand(["layang-layang", "nasi goreng", "origami", "jus apel"]);
-                return buildQ(`Teks yang berisi langkah-langkah atau tahapan untuk membuat ${benda} termasuk ke dalam teks...`, "Prosedur", "Deskripsi", "Narasi", "Eksposisi");
+                return buildQ(`Perhatikan ciri teks berikut:\n1. Memiliki tujuan akhir.\n2. Terdapat rincian alat dan bahan.\n3. Memuat langkah-langkah yang harus dilakukan secara berurutan.\nJika teks tersebut membahas tentang cara membuat ${benda}, maka teks itu digolongkan sebagai teks...`, "Prosedur", "Deskripsi", "Narasi", "Eksposisi");
             });
             templates.push(() => {
-                let kata = rand(["Pertama", "Kemudian", "Lalu", "Selanjutnya", "Terakhir"]);
-                return buildQ(`Kata '${kata}' sering muncul dalam teks prosedur. Kata tersebut berfungsi sebagai kata hubung (konjungsi) yang menunjukkan...`, "Urutan waktu/langkah", "Sebab akibat", "Pertentangan", "Pemilihan");
+                let kata = rand(["Pertama", "Kemudian", "Setelah itu", "Langkah terakhir"]);
+                return buildQ(`Bacalah kutipan berikut: "(1) Masukkan teh ke dalam gelas. (2) ... tuangkan air panas perlahan-lahan."\nKata hubung (konjungsi) urutan waktu yang paling logis untuk mengisi bagian rumpang agar teks prosedur tersebut padu adalah...`, kata, "Sedangkan", "Karena", "Atau");
             });
         }
         else if (chapterId === 'bab4') {
             templates.push(() => {
                 let idm = rand(idiomList);
                 let wrongs = getWrongs(idiomList.map(x=>x.m), idm.m);
-                return buildQ(`Ayah sering menggunakan ungkapan '${idm.id}' saat bercerita. Makna kiasan dari ungkapan tersebut adalah...`, idm.m, wrongs[0], wrongs[1], wrongs[2]);
+                let name = rand(names);
+                return buildQ(`Bacalah kalimat berikut: "Karena peristiwa itu, keluarga Pak ${name} akhirnya harus ${idm.id}."\nBerdasarkan konteks kalimat tersebut, makna ungkapan kiasan yang digunakan penulis adalah...`, idm.m, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
-                let tanya = rand([{k:"Siapa", m:"Orang pelaku"}, {k:"Di mana", m:"Tempat"}, {k:"Kapan", m:"Waktu"}, {k:"Bagaimana", m:"Cara atau proses"}, {k:"Mengapa", m:"Alasan"}]);
-                let wrongs = getWrongs(["Orang pelaku", "Tempat", "Waktu", "Cara atau proses", "Alasan"], tanya.m);
-                return buildQ(`Saat melakukan wawancara, kata tanya '${tanya.k}' paling tepat digunakan untuk menanyakan tentang...`, tanya.m, wrongs[0], wrongs[1], wrongs[2]);
+                let tanya = rand([{k:"Siapa", m:"Menanyakan sosok atau orang yang terlibat", ex:"... penemu mesin uap?"}, {k:"Di mana", m:"Menanyakan lokasi kejadian peristiwa", ex:"... barang itu kamu temukan?"}, {k:"Kapan", m:"Menanyakan waktu atau momen", ex:"... kemerdekaan Indonesia diumumkan?"}, {k:"Bagaimana", m:"Menanyakan cara, proses, atau keadaan", ex:"... proses terjadinya hujan?"}, {k:"Mengapa", m:"Menanyakan alasan atau sebab", ex:"... kamu tidak datang kemarin?"}]);
+                let wrongs = getWrongs(["Menanyakan sosok atau orang yang terlibat", "Menanyakan lokasi kejadian peristiwa", "Menanyakan waktu atau momen", "Menanyakan cara, proses, atau keadaan", "Menanyakan alasan atau sebab"], tanya.m);
+                return buildQ(`Dalam wawancara, wartawan menggunakan pertanyaan: "${tanya.ex}"\nKata tanya yang tepat untuk melengkapi kalimat tersebut berfungsi untuk...`, tanya.m, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let name = rand(names);
-                return buildQ(`${name} sedang diwawancarai oleh seorang wartawan televisi. Dalam kegiatan tersebut, ${name} bertindak sebagai...`, "Narasumber", "Pewawancara", "Reporter", "Kameramen");
+                return buildQ(`Siswa kelas 5 mendapat tugas mewawancarai Pak ${name} selaku Kepala Desa mengenai kebersihan lingkungan. Dalam kegiatan komunikasi tersebut, posisi Pak ${name} berperan sebagai...`, "Narasumber", "Pewawancara", "Wartawan", "Audien/Pendengar");
             });
         }
         else if (chapterId === 'bab5') {
             templates.push(() => {
                 let name = rand(names);
-                let opini = `Menurut ${name}, pelajaran ini sangat menyenangkan.`;
-                let fakta1 = "Matahari terbit di timur.";
-                let fakta2 = "Air mendidih pada suhu 100 derajat Celcius.";
-                let fakta3 = "Pancasila memiliki 5 lambang.";
-                return buildQ("Di antara pilihan berikut, manakah yang termasuk contoh kalimat OPINI (pendapat)?", opini, fakta1, fakta2, fakta3);
+                let opini = `Menurutku, ${name} akan menjadi juara kelas tahun ini karena ia sangat rajin.`;
+                let fakta1 = "Ibukota negara Republik Indonesia saat ini berlokasi di Jakarta.";
+                let fakta2 = "Air mendidih dan menguap pada suhu 100 derajat Celcius.";
+                let fakta3 = "Proklamasi kemerdekaan Indonesia dibacakan oleh Ir. Soekarno.";
+                return buildQ("Kalimat opini adalah pernyataan yang masih berupa pendapat atau perkiraan pribadi. Dari keempat kalimat di bawah ini, manakah yang merupakan kalimat OPINI?", opini, fakta1, fakta2, fakta3);
             });
             templates.push(() => {
-                let fakta = "Indonesia merdeka pada tanggal 17 Agustus 1945.";
-                let opini1 = "Pantai itu sepertinya sangat indah saat sore hari.";
-                let opini2 = "Menurutku, sayuran lebih enak daripada daging.";
-                let opini3 = "Sebaiknya kamu segera tidur agar besok tidak kesiangan.";
-                return buildQ("Manakah di bawah ini yang merupakan contoh kalimat FAKTA yang benar-benar terjadi?", fakta, opini1, opini2, opini3);
+                let fakta = "Indonesia memiliki dasar negara yang disebut Pancasila.";
+                let opini1 = "Pantai itu sepertinya adalah tempat wisata terbaik di provinsi ini.";
+                let opini2 = "Menurut para ahli, makan sayur setiap hari membuat wajah lebih berseri.";
+                let opini3 = "Kue buatan ibu terasa jauh lebih enak dibandingkan kue dari toko.";
+                return buildQ("Fakta adalah pernyataan yang benar-benar terjadi dan dapat dibuktikan kebenarannya oleh siapa saja. Manakah kalimat berikut yang mutlak berisi FAKTA?", fakta, opini1, opini2, opini3);
             });
             templates.push(() => {
                 let s = rand(singkatanList);
                 let wrongs = getWrongs(singkatanList.map(x=>x.p), s.p);
-                return buildQ(`Singkatan resmi dari '${s.s}' adalah...`, s.p, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Dalam membaca berita di koran, sering dijumpai istilah '${s.s}'. Kepanjangan resmi dari singkatan tersebut adalah...`, s.p, wrongs[0], wrongs[1], wrongs[2]);
             });
             templates.push(() => {
                 let a = rand(akronimList);
                 let wrongs = getWrongs(akronimList.map(x=>x.p), a.p);
-                return buildQ(`Kata '${a.a}' sering kita dengar di berita. Kata ini merupakan akronim dari...`, a.p, wrongs[0], wrongs[1], wrongs[2]);
+                return buildQ(`Kata '${a.a}' bukanlah sebuah kata dasar, melainkan sebuah akronim (gabungan huruf/suku kata). Akronim tersebut terbentuk dari kalimat...`, a.p, wrongs[0], wrongs[1], wrongs[2]);
             });
         }
         else if (chapterId === 'bab6') {
             templates.push(() => {
-                let name = rand(names);
-                return buildQ(`Kalimat perintah yang bertujuan menyuruh seseorang melakukan sesuatu dengan tegas selalu diakhiri dengan tanda baca...`, "Tanda seru (!)", "Tanda titik (.)", "Tanda koma (,)", "Tanda tanya (?)");
+                return buildQ(`Bacalah kalimat berikut: "Tolong ambilkan buku itu di atas meja (...)"\nUntuk mengubahnya menjadi kalimat perintah yang sopan namun tegas, tanda baca yang paling tepat digunakan di akhir kalimat adalah...`, "Tanda seru (!)", "Tanda titik (.)", "Tanda koma (,)", "Tanda tanya (?)");
             });
             templates.push(() => {
                 let name = rand(names);
-                return buildQ(`"Jangan buang sampah di sungai itu!"\nKalimat yang diucapkan ${name} tersebut termasuk ke dalam jenis kalimat perintah...`, "Larangan", "Ajakan", "Permintaan", "Informasi");
+                return buildQ(`Pak Guru berkata: "Jangan pernah membuang sampah sembarangan di area sekolah!"\nKalimat perintah yang diucapkan Pak Guru tersebut diklasifikasikan sebagai jenis kalimat perintah...`, "Larangan", "Ajakan", "Permintaan", "Informasi/Berita");
             });
             templates.push(() => {
                 let name = rand(names);
-                return buildQ(`"Ayo kita bersihkan taman bermain ini bersama-sama!"\nKalimat di atas menggunakan awalan 'Ayo' yang menandakan jenis kalimat...`, "Ajakan", "Larangan", "Paksaan", "Berita");
+                return buildQ(`"Mari kita bersihkan selokan ini agar tidak terjadi banjir saat hujan turun."\nKalimat di atas menggunakan kata penanda 'Mari' yang menunjukkan bahwa kalimat ini adalah jenis kalimat perintah...`, "Ajakan", "Larangan", "Paksaan", "Syarat");
             });
         }
         else {
-            templates.push(() => buildQ("Pertanyaan Umum: Siapakah penemu bola lampu yang terkenal?", "Thomas Edison", "Albert Einstein", "Nikola Tesla", "Isaac Newton"));
+            templates.push(() => buildQ("Soal Kritis Umum: Jika sebuah roda gigi besar yang memiliki 20 gigi memutar roda gigi kecil yang memiliki 10 gigi, apa yang akan terjadi pada putaran roda gigi kecil?", "Berputar 2 kali lebih cepat dari roda gigi besar", "Berputar lebih lambat dari roda gigi besar", "Berputar dengan kecepatan yang sama", "Roda gigi kecil tidak akan bisa berputar"));
         }
         // GENERATE SOAL SAMPAI JUMLAH YANG DIMINTA
         for(let i = 0; i < jumlahSoal; i++) {
@@ -1002,7 +1030,6 @@
         renderTeacherQuestionsEditor();
         showCustomAlert(`🎉 Selesai!\n\nKAK AL berhasil mengekstrak materi ${chapterName} dan meracik ${jumlahSoal} Soal Pilihan Ganda berkualitas tinggi (HOTS).\n\nSemua soal dipastikan BEDA dan memiliki variasi unik.\nJangan lupa tekan 'SIMPAN KE CLOUD' agar soal ini masuk ke permainan siswa!`);
     }
-    
     // --- Custom Modal UI ---
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
@@ -1969,33 +1996,6 @@
         });
     }
     
-    // --- Video Intro System ---
-    function startIntroVideo() {
-        playSound('click');
-        document.getElementById('start-video-overlay').style.display = 'none';
-        const vid = document.getElementById('intro-video');
-        vid.play().catch(e => {
-            console.log("Autoplay ditolak browser:", e);
-            finishIntroVideo(); // Lanjut jika browser memblokir video
-        });
-        vid.onended = finishIntroVideo;
-    }
-
-    function finishIntroVideo() {
-        const vidScreen = document.getElementById('screen-splash-video');
-        if (vidScreen) {
-            vidScreen.classList.remove('active');
-            vidScreen.style.display = 'none';
-            const vid = document.getElementById('intro-video');
-            if (vid) {
-                vid.pause();
-                vid.currentTime = 0;
-            }
-        }
-        // Mulai loading app
-        initApp();
-    }
-    
     // EXPORT FUNGSI KE WINDOW AGAR BISA DIPANGGIL HTML
     window.showScreen = showScreen;
     window.playSound = playSound;
@@ -2019,8 +2019,33 @@
     window.changeVolume = changeVolume;
     window.saveUserSettings = saveUserSettings;
     window.processAIChapter = processAIChapter;
-    window.startIntroVideo = startIntroVideo;
-    window.finishIntroVideo = finishIntroVideo;
+    
+    // --- Video Intro System ---
+    window.startIntroVideo = function() {
+        playSound('click');
+        document.getElementById('start-video-overlay').style.display = 'none';
+        const vid = document.getElementById('intro-video');
+        vid.play().catch(e => {
+            console.log("Autoplay ditolak browser:", e);
+            window.finishIntroVideo(); // Lanjut jika browser memblokir video
+        });
+        vid.onended = window.finishIntroVideo;
+    };
+
+    window.finishIntroVideo = function() {
+        const vidScreen = document.getElementById('screen-splash-video');
+        if (vidScreen) {
+            vidScreen.classList.remove('active');
+            vidScreen.style.display = 'none';
+            const vid = document.getElementById('intro-video');
+            if (vid) {
+                vid.pause();
+                vid.currentTime = 0;
+            }
+        }
+        // Mulai loading app
+        initApp();
+    };
     
     // CSS Keyframe Injection for dynamic stuff
     const style = document.createElement('style');
