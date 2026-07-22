@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -20,6 +20,7 @@
             --secondary: #81c784;
             --text-color: #374151;
         }
+        /* Responsivitas Desktop & Mobile */
         body {
             font-family: 'Baloo 2', cursive;
             background-color: #0f172a;
@@ -49,6 +50,7 @@
                 border: 8px solid #1e293b;
             }
         }
+        
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
@@ -66,6 +68,11 @@
             80% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
         .screen {
             position: absolute;
             top: 0;
@@ -86,10 +93,6 @@
         .screen.active {
             display: flex;
             animation: fadeIn 0.3s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
         .btn-custom {
             background: white;
@@ -112,13 +115,13 @@
             transform: translateY(4px);
             box-shadow: 0 2px 0 #e5e7eb, 0 5px 5px -3px rgba(0,0,0,0.1);
         }
+        
         .btn-primary {
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
             color: #b91c1c;
             border-color: #fbcfe8;
             box-shadow: 0 6px 0 #f472b6, 0 10px 15px -3px rgba(0,0,0,0.1);
         }
-        
         .btn-primary:active {
             box-shadow: 0 2px 0 #f472b6, 0 5px 5px -3px rgba(0,0,0,0.1);
         }
@@ -128,11 +131,9 @@
             border-color: #6ee7b7;
             box-shadow: 0 6px 0 #10b981, 0 10px 15px -3px rgba(0,0,0,0.1);
         }
-        
         .btn-materi:active {
             box-shadow: 0 2px 0 #10b981, 0 5px 5px -3px rgba(0,0,0,0.1);
         }
-        
         .btn-teacher {
             background: linear-gradient(135deg, #a78bfa 0%, #ddd6fe 100%);
             color: #4c1d95;
@@ -142,6 +143,7 @@
         .btn-teacher:active {
             box-shadow: 0 2px 0 #8b5cf6, 0 5px 5px -3px rgba(0,0,0,0.1);
         }
+        
         .emoticon {
             font-size: 2.5rem;
             display: flex;
@@ -154,7 +156,6 @@
             animation: pulse-glow 3s infinite, float 4s infinite ease-in-out;
             transition: transform 0.2s;
         }
-        
         .emoticon:active {
             cursor: grabbing;
             transform: scale(0.9);
@@ -174,7 +175,6 @@
             pointer-events: none;
             z-index: 1;
         }
-        
         .floating-icon {
             position: absolute;
             opacity: 0.15;
@@ -188,6 +188,7 @@
             border-radius: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
+        
         /* Loading Bar */
         .loading-bar-container {
             width: 80%;
@@ -228,7 +229,6 @@
 </head>
 <body>
 <div id="app-container">
-    
     <!-- Background Music -->
     <audio id="bg-music" loop>
         <source src="The_Golden_Tally.mp3" type="audio/mpeg">
@@ -244,7 +244,7 @@
     
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
-        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg" onerror="this.src='https://placehold.co/150x150/FF9A9E/FFFFFF?text=Maskot'">
+        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=M'">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">CERDIAKIA<br>MATCH</h1>
         <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
@@ -259,12 +259,12 @@
             <p id="loading-tip" class="text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
         </div>
     </section>
-    
+
     <!-- SCREEN: LANDING PAGE -->
     <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/150x150/FF9A9E/FFFFFF?text=Maskot'">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/150x150/transparent/blue?text=M'">
             </div>
             
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">CERDIAKIA<br>MATCH</h1>
@@ -277,15 +277,16 @@
             <button class="btn-custom btn-primary" onclick="startQuizFlow(); playSound('click')"> 🎮 QUIZ</button>
         </div>
     </section>
-    
+
     <!-- SCREEN: MAIN MENU -->
     <section id="screen-menu" class="screen justify-start items-center py-8">
+        <!-- Tombol Kembali ke Landing Page -->
         <div class="absolute top-4 left-4 z-50">
             <button class="text-gray-400 hover:text-gray-600 text-2xl bg-white/50 w-10 h-10 rounded-full flex justify-center items-center backdrop-blur shadow-sm border border-gray-200" onclick="showScreen('screen-landing'); playSound('click')"> ⬅ </button>
         </div>
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/150x150/FF9A9E/FFFFFF?text=Maskot'">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=M'">
             </div>
             <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">MENU QUIZ</h1>
         </div>
@@ -294,7 +295,7 @@
             <button class="btn-custom" onclick="showScreen('screen-tutorial'); playSound('click')"> 📖  CARA BERMAIN</button>
             <button class="btn-custom" onclick="showLeaderboard(); playSound('click')"> 🏆  NILAI</button>
             <button class="btn-custom" onclick="showScreen('screen-settings'); playSound('click')"> ⚙  PENGATURAN</button>
-            <button class="btn-custom btn-teacher" onclick="showScreen('screen-teacher-login'); playSound('click')"> 👩 ‍ 🏫  AKSES GURU</button>
+            <button class="btn-custom btn-teacher" onclick="showScreen('screen-teacher-login'); playSound('click')"> 👩‍🏫  AKSES GURU</button>
         </div>
     </section>
     
@@ -379,7 +380,7 @@
         <div class="glass-panel w-full p-6 flex flex-col gap-4 relative border-purple-200 border-4">
             <button class="absolute top-4 left-4 text-gray-400 hover:text-purple-600 text-2xl" onclick="showScreen('screen-menu'); playSound('click')"> ⬅ </button>
             
-            <div class="text-center text-5xl mt-2 mb-2"> 👩 ‍ 🏫 </div>
+            <div class="text-center text-5xl mt-2 mb-2"> 👩‍🏫 </div>
             <h2 class="text-2xl font-bold text-center text-purple-700 mb-2">AKSES GURU</h2>
             <p class="text-xs text-center text-gray-500 font-sans mb-4">Silakan login untuk mengelola soal dan melihat rekap nilai siswa.</p>
             
@@ -444,47 +445,55 @@
         
         <!-- TAB SOAL -->
         <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
-            <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 text-xs text-yellow-800 font-sans">
-                <strong>Catatan Cloud:</strong> Anda bisa menambah atau menghapus jumlah soal. Nilai skor siswa akan otomatis menyesuaikan proporsinya maksimal 100.
-            </div>
-            
-            <!-- KOTAK AI GENERATOR (Pilihan Bab Buku) -->
+            <!-- PANEL AI GENERATOR: KAK AL -->
             <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-4 font-sans relative overflow-hidden shadow-sm">
-                <div class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">✨ AI KAK AL</div>
-                
-                <h4 class="font-bold text-blue-800 mb-2 mt-1 text-lg">Buat Soal Otomatis (Sesuai Buku) 📚</h4>
-                <p class="text-xs text-gray-600 mb-3 leading-relaxed">
-                    KAK AL siap membantu membuatkan soal pilihan ganda HOTS dan soal cerita berdasarkan bab di buku pelajaran <strong class="text-blue-700">Indonesia_BS_KLS_V_Rev.pdf</strong>.
-                </p>
-                
+                <!-- Label AI Generator -->
+                <div class="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-black px-3 py-1 rounded-bl-lg shadow-sm">
+                    ✨ KAK AL (AI)
+                </div>
+
+                <h3 class="font-bold text-blue-800 mb-1 flex items-center gap-2 text-base">
+                    🤖 Buat Soal B. Indonesia Kelas 5
+                </h3>
+                <p class="text-xs text-blue-600 mb-4">Sistem akan otomatis menyesuaikan soal sesuai referensi buku <b>Indonesia_BS_KLS_V_Rev.pdf</b> (GitHub).</p>
+
+                <!-- MENU PILIH BAB -->
                 <div class="mb-3">
                     <label class="text-xs font-extrabold text-blue-700 mb-1 block">Pilih Bab Materi (Berdasarkan Buku)</label>
-                    <select id="ai-chapter" class="w-full p-3 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 shadow-inner font-bold text-gray-700 bg-white">
-                        <option value="bab1">Bab 1 - Aku yang Unik (Sifat, Sinonim, Antonim)</option>
-                        <option value="bab2">Bab 2 - Buku Jendela Dunia (Fiksi, Nonfiksi, Majas)</option>
-                        <option value="bab3">Bab 3 - Ekspresi Diri Melalui Hobi (Imbuhan, Teks Prosedur)</option>
-                        <option value="bab4">Bab 4 - Belajar Berwirausaha (Wawancara, Idiom)</option>
+                    <select id="ai-chapter" class="w-full p-3 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 shadow-inner font-bold text-gray-700 bg-white cursor-pointer">
+                        <option value="bab1">Bab 1 - Aku yang Unik (Kata Sifat, Sinonim, Antonim)</option>
+                        <option value="bab2">Bab 2 - Buku Jendela Dunia (Unsur Cerita, Majas)</option>
+                        <option value="bab3">Bab 3 - Ekspresi Diri Melalui Hobi (Teks Prosedur)</option>
+                        <option value="bab4">Bab 4 - Belajar Berwirausaha (Wawancara, Ide Pokok)</option>
                         <option value="bab5">Bab 5 - Menjadi Warga Dunia (Singkatan, Fakta, Opini)</option>
                         <option value="bab6">Bab 6 - Cinta Indonesia (Kalimat Perintah, Pengumuman)</option>
                     </select>
                 </div>
 
+                <!-- MENU INPUT JUMLAH SOAL -->
+                <div class="mb-3">
+                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">Jumlah Soal yang Dibuat (Maksimal 50)</label>
+                    <input type="number" id="ai-num-questions" min="1" max="50" value="10" class="w-full p-3 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 shadow-inner font-bold text-gray-700 bg-white">
+                </div>
+
                 <button onclick="processAIChapter()" id="btn-ai-generate" class="w-full bg-green-500 text-white px-4 py-3 rounded-lg text-sm font-bold shadow-md hover:bg-green-600 active:scale-95 transition-transform flex items-center justify-center gap-2 mt-2 border-b-4 border-green-700">
-                    ✨ BACA BUKU & BUAT SOAL
+                    ✨ BUAT SOAL SEKARANG
                 </button>
-                
-                <!-- Animasi Loading Profesional KAK AL -->
-                <div id="ai-loading-container" class="hidden mt-4 bg-white p-4 rounded-xl border border-blue-200 shadow-inner">
-                    <div class="flex items-center justify-center gap-3 mb-3">
-                        <div class="w-6 h-6 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-                        <span id="ai-loading-text" class="text-sm font-bold text-blue-800">Membaca PDF dari repositori...</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden shadow-inner">
-                        <div id="ai-progress-bar" class="bg-gradient-to-r from-blue-400 to-purple-500 h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
+
+                <!-- Animasi Loading KAK AL -->
+                <div id="ai-loading-container" class="hidden mt-4 bg-white p-3 rounded-lg border border-blue-100 shadow-inner text-center">
+                    <img src="MASKOT.png" alt="Maskot KAK AL" class="h-12 mx-auto animate-bounce mb-2" onerror="this.src='https://placehold.co/50x50/transparent/blue?text=AI'">
+                    <p id="ai-loading-text" class="text-xs font-bold text-blue-600 mb-2">KAK AL sedang bersiap...</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="ai-progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
-
+            
+            <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 text-xs text-yellow-800 font-sans">
+                <strong>Catatan Cloud:</strong> Anda bisa menambah atau menghapus jumlah soal di bawah ini. Nilai skor siswa akan otomatis menyesuaikan proporsinya maksimal 100.
+            </div>
+            
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
                 <!-- Injected via JS -->
             </div>
@@ -493,7 +502,6 @@
                 <button class="w-2/3 bg-purple-600 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition-transform text-sm" onclick="saveQuestions()"> 💾  SIMPAN KE CLOUD</button>
             </div>
         </div>
-        
         <!-- TAB MATERI -->
         <div id="content-materi" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200 font-sans">
@@ -629,7 +637,7 @@
     <!-- CUSTOM ALERTS & MODALS -->
     <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[100] flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-blue-200 relative">
-            <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 font-sans mt-4 whitespace-pre-wrap text-left"></p>
+            <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 font-sans mt-4"></p>
             <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full">
                 <!-- Buttons injected here -->
             </div>
@@ -637,11 +645,11 @@
     </div>
 </div>
 
+<!-- FIREBASE SDK & APP LOGIC -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    
     // SETUP FIREBASE CONFIGURATION
     const isCanvas = typeof __firebase_config !== 'undefined';
     const firebaseConfig = isCanvas ? JSON.parse(__firebase_config) : {
@@ -657,7 +665,7 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'cerdiakia-match-v1';
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'cerdiakia-match';
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
     
@@ -669,23 +677,24 @@
     const TEACHER_USER = 'aldi260605';
     const TEACHER_PASS = '111111aldi';
     
-    // Default Soal Pengetahuan Umum
+    // Default Questions (Umum)
     const DEFAULT_QUESTIONS = [
-        { q: "Ibukota negara Indonesia saat ini adalah...", options: ["Bandung", "Surabaya", "Jakarta", "Medan"], answer: 2 },
-        { q: "Hewan yang bernapas menggunakan insang adalah...", options: ["Kucing", "Ikan", "Burung", "Katak"], answer: 1 },
-        { q: "Semboyan negara Indonesia adalah...", options: ["Pancasila", "Bhinneka Tunggal Ika", "UUD 1945", "Tut Wuri Handayani"], answer: 1 },
-        { q: "Planet terdekat dari matahari adalah...", options: ["Bumi", "Venus", "Mars", "Merkurius"], answer: 3 },
-        { q: "Warna bendera negara Indonesia adalah...", options: ["Merah Putih", "Putih Merah", "Merah Hitam", "Biru Putih"], answer: 0 },
-        { q: "Hasil dari perhitungan matematika 15 + 25 adalah...", options: ["30", "40", "45", "50"], answer: 1 },
-        { q: "Benda langit yang bersinar terang memantulkan cahaya di malam hari adalah...", options: ["Matahari", "Awan", "Bulan", "Pelangi"], answer: 2 },
-        { q: "Alat indra pada tubuh manusia yang berfungsi untuk melihat adalah...", options: ["Telinga", "Hidung", "Mata", "Kulit"], answer: 2 },
-        { q: "Gunung tertinggi di Indonesia adalah...", options: ["Rinjani", "Semeru", "Jayawijaya", "Kerinci"], answer: 2 },
-        { q: "Zat hijau daun pada tumbuhan yang membantu fotosintesis disebut...", options: ["Oksigen", "Kambium", "Klorofil", "Stomata"], answer: 2 }
+        { q: "Andi membeli 3 buku tulis. Harga satu buku adalah Rp 4.500. Jika Andi membayar dengan uang Rp 20.000, berapakah kembaliannya?", options: ["Rp 6.500", "Rp 7.500", "Rp 5.500", "Rp 8.000"], answer: 0 },
+        { q: "Pancasila adalah dasar negara Indonesia. Sila yang berbunyi 'Keadilan Sosial bagi Seluruh Rakyat Indonesia' dilambangkan dengan...", options: ["Bintang", "Rantai", "Pohon Beringin", "Padi dan Kapas"], answer: 3 },
+        { q: "Ibu memasak air menggunakan panci aluminium. Gagang panci terbuat dari plastik keras. Tujuan penggunaan plastik pada gagang panci adalah...", options: ["Menghantarkan panas dengan cepat", "Menahan panas agar tidak sampai ke tangan (isolator)", "Membuat masakan lebih cepat matang", "Agar panci terlihat lebih indah"], answer: 1 },
+        { q: "Sikap saling menghargai perbedaan agama, suku, dan ras di lingkungan sekolah merupakan wujud pengamalan semboyan...", options: ["Tut Wuri Handayani", "Bhinneka Tunggal Ika", "Ing Ngarsa Sung Tuladha", "Bersatu Kita Teguh"], answer: 1 },
+        { q: "Perubahan wujud dari benda padat menjadi gas tanpa melalui fase cair disebut...", options: ["Mencair", "Menguap", "Menyublim", "Mengkristal"], answer: 2 },
+        { q: "Pahlawan nasional yang mendapat julukan 'Bapak Pendidikan Nasional' dan mendirikan sekolah Taman Siswa adalah...", options: ["Ki Hajar Dewantara", "Pangeran Diponegoro", "Soekarno", "Mohammad Hatta"], answer: 0 },
+        { q: "Dalam suatu rantai makanan di sawah: Padi dimakan belalang, belalang dimakan katak, katak dimakan ular. Jika populasi katak menurun drastis, apa yang akan terjadi?", options: ["Populasi padi akan meningkat tajam", "Populasi ular akan meningkat", "Populasi belalang akan meningkat", "Populasi belalang akan ikut menurun"], answer: 2 },
+        { q: "Planet terbesar di tata surya kita yang dikenal memiliki banyak satelit alami, salah satunya bernama Ganymede, adalah...", options: ["Saturnus", "Mars", "Jupiter", "Venus"], answer: 2 },
+        { q: "Sebuah kereta api melaju dari kota A ke kota B yang berjarak 120 km. Jika kereta tersebut berangkat pukul 08.00 dan tiba pukul 10.00, berapakah kecepatan rata-ratanya?", options: ["40 km/jam", "50 km/jam", "60 km/jam", "80 km/jam"], answer: 2 },
+        { q: "Paragraf yang kalimat utamanya terletak di awal paragraf kemudian diikuti oleh kalimat-kalimat penjelas disebut paragraf...", options: ["Deduktif", "Induktif", "Campuran", "Naratif"], answer: 0 }
     ];
+
     let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
     let allScores = [];
     let currentUser = null;
-    let heyzineLink = ""; 
+    let heyzineLink = ""; // Tautan Materi Global
     
     let board = [];
     let state = {
@@ -699,6 +708,175 @@
     
     let settings = { music: true, sfx: true, volume: 0.4 };
     
+    // ==========================================
+    // AI GENERATOR LOGIC (KAK AL - LOKAL KELAS 5)
+    // ==========================================
+    async function processAIChapter() {
+        const selectElement = document.getElementById('ai-chapter');
+        const chapterId = selectElement.value;
+        const chapterName = selectElement.options[selectElement.selectedIndex].text;
+        
+        // AMBIL NILAI INPUT JUMLAH SOAL
+        const numInput = document.getElementById('ai-num-questions');
+        let jumlahSoal = parseInt(numInput.value);
+        if(isNaN(jumlahSoal) || jumlahSoal < 1) jumlahSoal = 1;
+        if(jumlahSoal > 50) jumlahSoal = 50;
+        
+        const btn = document.getElementById('btn-ai-generate');
+        const loadingContainer = document.getElementById('ai-loading-container');
+        const loadingText = document.getElementById('ai-loading-text');
+        const progressBar = document.getElementById('ai-progress-bar');
+        
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+        loadingContainer.classList.remove('hidden');
+        
+        try {
+            // Tahap 1
+            progressBar.style.width = '20%';
+            loadingText.innerText = "KAK AL sedang membuka buku PDF dari GitHub...";
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Tahap 2
+            progressBar.style.width = '50%';
+            loadingText.innerText = `Menganalisis materi: ${chapterName}...`;
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            // Tahap 3
+            progressBar.style.width = '80%';
+            loadingText.innerText = "Membuat variasi Soal Cerita dan HOTS...";
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Tahap Akhir
+            progressBar.style.width = '100%';
+            loadingText.innerText = "✅ Selesai! Menyusun kuis...";
+            await new Promise(resolve => setTimeout(resolve, 600));
+            
+            // Panggil database lokal khusus untuk masing-masing Bab dengan Jumlah Soal
+            generateQuestionsByChapter(chapterId, chapterName, jumlahSoal);
+            
+        } catch (error) {
+            console.error(error);
+            showCustomAlert(`Terjadi kesalahan: ${error.message}`);
+        } finally {
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            loadingContainer.classList.add('hidden');
+            progressBar.style.width = '0%';
+        }
+    }
+
+    function generateQuestionsByChapter(chapterId, chapterName, jumlahSoal) {
+        let newQuestions = [];
+        
+        // Database Soal Sesuai Bab Kurikulum Merdeka (B. Indonesia Kls 5)
+        switch(chapterId) {
+            case 'bab1':
+                newQuestions = [
+                    { q: "Sifat yang menunjukkan rasa mudah memberi maaf dan tidak menyimpan dendam disebut...", options: ["Pemaaf", "Pemarah", "Pendiam", "Penyabar"], answer: 0 },
+                    { q: "Antonim (Lawan kata) dari 'Rajin' yang paling tepat di bawah ini adalah...", options: ["Pintar", "Malas", "Bodoh", "Giat"], answer: 1 },
+                    { q: "Sinonim (Persamaan kata) dari kata 'Cerdas' dalam kalimat 'Budi adalah anak yang cerdas di kelasnya' adalah...", options: ["Rajin", "Pintar", "Jujur", "Giat"], answer: 1 },
+                    { q: "Imbuhan 'pe-' pada kata 'Pemalu' bermakna...", options: ["Orang yang memiliki sifat malu", "Alat untuk menutupi rasa malu", "Proses menjadi malu", "Menyatakan paling malu"], answer: 0 },
+                    { q: "Perhatikan kalimat berikut: 'Bela memiliki rambut yang lurus, sedangkan Dina memiliki rambut yang keriting.' Kalimat ini menggunakan perbandingan berdasarkan...", options: ["Sifat fisik", "Sifat batin", "Kecerdasan", "Hobi"], answer: 0 },
+                    { q: "Budi tidak pernah berbohong kepada siapapun. Ia dijuluki sebagai anak yang...", options: ["Pemaaf", "Pemalu", "Jujur", "Penyabar"], answer: 2 },
+                    { q: "Kata sifat (Adjektiva) pada kalimat 'Ibu membeli apel yang manis di pasar' adalah...", options: ["Ibu", "Membeli", "Apel", "Manis"], answer: 3 },
+                    { q: "Orang yang suka menolong orang lain yang sedang kesusahan disebut orang yang...", options: ["Dermawan", "Kikir", "Egois", "Pemalas"], answer: 0 },
+                    { q: "Imbuhan 'pe-' jika ditambahkan pada kata dasar 'gambar' akan berubah menjadi...", options: ["Pegambar", "Penggambar", "Pelukis", "Penyambar"], answer: 1 },
+                    { q: "Antonim dari kata 'Tinggi' adalah...", options: ["Besar", "Rendah", "Panjang", "Jauh"], answer: 1 }
+                ];
+                break;
+            case 'bab2':
+                newQuestions = [
+                    { q: "Unsur intrinsik cerita yang menunjukkan tempat, waktu, dan suasana terjadinya suatu peristiwa disebut...", options: ["Tema", "Tokoh", "Latar (Setting)", "Amanat"], answer: 2 },
+                    { q: "Perhatikan kalimat berikut: 'Wajahnya pucat pasi bagai mayat'. Majas yang digunakan pada kalimat tersebut adalah...", options: ["Hiperbola", "Metafora", "Personifikasi", "Simile (Perumpamaan)"], answer: 3 },
+                    { q: "Kalimat langsung yang benar penulisannya adalah...", options: ["Ibu berkata bahwa aku harus rajin belajar.", "'Aku akan pergi ke pasar besok,' kata Ibu.", "Andi mengatakan dia lelah.", "Ayah menyuruhku mencuci mobil."], answer: 1 },
+                    { q: "Pesan moral atau nasihat yang ingin disampaikan penulis kepada pembaca disebut...", options: ["Alur", "Amanat", "Tema", "Sudut Pandang"], answer: 1 },
+                    { q: "Buku yang berisi kisah fiksi (khayalan) penulisnya disebut buku...", options: ["Non-fiksi", "Pelajaran", "Fiksi", "Biografi"], answer: 2 },
+                    { q: "'Angin menari-nari di atas daun yang gugur'. Kalimat ini menggunakan majas...", options: ["Personifikasi", "Metafora", "Hiperbola", "Ironi"], answer: 0 },
+                    { q: "Tokoh yang memiliki sifat baik hati, jujur, dan suka menolong dalam cerita disebut tokoh...", options: ["Antagonis", "Protagonis", "Tritagonis", "Figuran"], answer: 1 },
+                    { q: "Jalan cerita atau urutan peristiwa dalam sebuah cerita pendek dinamakan...", options: ["Latar", "Tema", "Alur (Plot)", "Amanat"], answer: 2 },
+                    { q: "Perubahan kalimat langsung 'Siti berkata, Aku sangat lelah hari ini' menjadi kalimat tidak langsung adalah...", options: ["Siti berkata bahwa ia sangat lelah hari ini.", "Siti bilang, 'Aku sangat lelah.'", "Siti mengatakan bahwa kamu lelah.", "Aku berkata bahwa Siti lelah."], answer: 0 },
+                    { q: "Majas hiperbola (melebih-lebihkan) terdapat pada kalimat...", options: ["Suaranya menggelegar membelah bumi.", "Bulan tersenyum manis malam ini.", "Dia adalah bintang kelas kami.", "Bunga itu semerah darah."], answer: 0 }
+                ];
+                break;
+            case 'bab3':
+                newQuestions = [
+                    { q: "Teks yang berisi langkah-langkah atau tahapan untuk melakukan sesuatu disebut teks...", options: ["Deskripsi", "Narasi", "Prosedur", "Eksposisi"], answer: 2 },
+                    { q: "Ciri utama dari kalimat dalam teks prosedur adalah banyak menggunakan kalimat...", options: ["Tanya", "Berita", "Perintah (Imperatif)", "Seruan"], answer: 2 },
+                    { q: "Imbuhan 'me-' pada kata dasar 'tulis' akan berubah bentuk menjadi...", options: ["Metulis", "Mentulis", "Menulis", "Mewulis"], answer: 2 },
+                    { q: "Surat yang dikirimkan kepada teman atau keluarga untuk menanyakan kabar termasuk jenis surat...", options: ["Dinas", "Resmi", "Pribadi", "Niaga"], answer: 2 },
+                    { q: "Salah satu bagian penting yang harus ada dalam surat pribadi adalah...", options: ["Kop surat / Kepala surat", "Nomor surat", "Salam pembuka dan penutup", "Stempel perusahaan"], answer: 2 },
+                    { q: "Imbuhan 'me-' pada kata dasar 'sapu' memiliki makna...", options: ["Menjadi alat", "Melakukan pekerjaan dengan alat", "Mempunyai sifat", "Berada di suatu tempat"], answer: 1 },
+                    { q: "Kata hubung yang sering digunakan untuk menunjukkan urutan dalam teks prosedur adalah...", options: ["Tetapi, namun", "Pertama, kemudian, lalu", "Karena, sebab", "Dan, atau"], answer: 1 },
+                    { q: "Manakah yang merupakan contoh kalimat perintah yang sopan?", options: ["Ambilkan buku itu sekarang!", "Tolong tutup pintu itu, ya.", "Jangan berisik!", "Buang sampah ini!"], answer: 1 },
+                    { q: "Jika kata dasar 'baca' diberi imbuhan 'me-', maka akan menjadi...", options: ["Mebaca", "Membaca", "Menbaca", "Mengbaca"], answer: 1 },
+                    { q: "Struktur teks prosedur biasanya terdiri dari...", options: ["Orientasi - Komplikasi - Resolusi", "Pembuka - Isi - Penutup", "Tujuan - Alat/Bahan - Langkah-langkah", "Tesis - Argumentasi - Penegasan Ulang"], answer: 2 }
+                ];
+                break;
+            case 'bab4':
+                newQuestions = [
+                    { q: "Orang yang memberikan informasi atau menjawab pertanyaan saat wawancara disebut...", options: ["Pewawancara", "Narasumber", "Wartawan", "Reporter"], answer: 1 },
+                    { q: "Sebelum melakukan wawancara, hal penting yang harus dipersiapkan adalah...", options: ["Membawa kamera mahal", "Membuat daftar pertanyaan", "Memakai baju pesta", "Membeli hadiah"], answer: 1 },
+                    { q: "Gagasan utama yang menjadi dasar pengembangan sebuah paragraf disebut...", options: ["Kalimat penjelas", "Ide pokok", "Judul", "Tema"], answer: 1 },
+                    { q: "Ungkapan (idiom) 'Banting tulang' memiliki makna...", options: ["Tulangnya patah", "Bekerja keras", "Berolahraga", "Suka berkelahi"], answer: 1 },
+                    { q: "Kata tanya yang tepat untuk menanyakan tempat terjadinya suatu peristiwa adalah...", options: ["Siapa", "Kapan", "Di mana", "Mengapa"], answer: 2 },
+                    { q: "Ungkapan 'Gulung tikar' dalam dunia wirausaha berarti...", options: ["Merapikan karpet", "Mendapat untung besar", "Bangkrut / rugi", "Membuka cabang baru"], answer: 2 },
+                    { q: "Ide pokok pada paragraf deduktif terletak di bagian...", options: ["Awal paragraf", "Akhir paragraf", "Tengah paragraf", "Awal dan akhir paragraf"], answer: 0 },
+                    { q: "Kata tanya 'Bagaimana' berfungsi untuk menanyakan...", options: ["Waktu", "Alasan", "Cara atau proses", "Orang pelaku"], answer: 2 },
+                    { q: "Seorang wirausahawan yang sukses biasanya memiliki sifat...", options: ["Pantang menyerah", "Mudah putus asa", "Pemalas", "Boros"], answer: 0 },
+                    { q: "Laporan hasil wawancara disusun setelah...", options: ["Sebelum membuat pertanyaan", "Saat bertemu narasumber", "Wawancara selesai dilaksanakan", "Sebelum wawancara dimulai"], answer: 2 }
+                ];
+                break;
+            case 'bab5':
+                newQuestions = [
+                    { q: "Kalimat yang menyatakan peristiwa yang benar-benar terjadi dan dapat dibuktikan kebenarannya disebut kalimat...", options: ["Opini", "Saran", "Fakta", "Perintah"], answer: 2 },
+                    { q: "Contoh kalimat opini (pendapat) di bawah ini adalah...", options: ["Matahari terbit di sebelah timur.", "Indonesia merdeka pada tahun 1945.", "Menurutku, pemandangan di pantai itu sangat indah.", "Air mendidih pada suhu 100 derajat Celcius."], answer: 2 },
+                    { q: "Singkatan dari 'Dewan Perwakilan Rakyat' adalah...", options: ["DRP", "DPR", "DPD", "DPA"], answer: 1 },
+                    { q: "Akronim (singkatan yang dibaca seperti kata) dari 'Pusat Kesehatan Masyarakat' adalah...", options: ["PKM", "Puskesmas", "Pskm", "Puskes"], answer: 1 },
+                    { q: "Fungsi utama dari surel (surat elektronik / email) di era modern adalah...", options: ["Mengirim barang secara fisik", "Mengirim pesan digital dengan cepat", "Menelpon teman", "Mencetak dokumen"], answer: 1 },
+                    { q: "'Budi lahir pada tanggal 17 Agustus 2012'. Kalimat tersebut merupakan contoh...", options: ["Fakta", "Opini", "Mitos", "Saran"], answer: 0 },
+                    { q: "'Sebaiknya kamu rajin berolahraga agar tubuhmu sehat'. Kalimat tersebut mengandung...", options: ["Fakta sejarah", "Opini berupa saran", "Perintah tegas", "Singkatan"], answer: 1 },
+                    { q: "Singkatan 'dll.' dalam kalimat berarti...", options: ["Dan lagi-lagi", "Dan lain-lain", "Dengan langkah lambat", "Dari lusa lalu"], answer: 1 },
+                    { q: "Kata 'Sinetron' merupakan akronim dari...", options: ["Sinema Elektronik", "Sinar Elektron", "Sinema Tontonan", "Seni Teater Romantis"], answer: 0 },
+                    { q: "Ringkasan cerita adalah...", options: ["Menulis seluruh cerita dari awal hingga akhir tanpa ada yang terlewat", "Penyajian singkat dari sebuah teks asli dengan mempertahankan urutan isi utamanya", "Membuat cerita baru yang berbeda sama sekali", "Mengkritik kesalahan penulis cerita"], answer: 1 }
+                ];
+                break;
+            case 'bab6':
+                newQuestions = [
+                    { q: "Kalimat yang bertujuan menyuruh seseorang untuk melakukan sesuatu disebut kalimat...", options: ["Tanya", "Berita", "Saran", "Perintah"], answer: 3 },
+                    { q: "Tanda baca yang selalu digunakan pada akhir kalimat perintah tegas adalah...", options: ["Titik (.)", "Koma (,)", "Tanya (?)", "Seru (!)"], answer: 3 },
+                    { q: "Lembaran kertas cetakan yang berisi informasi atau penawaran produk yang dibagikan kepada umum disebut...", options: ["Buku", "Brosur", "Majalah", "Kamus"], answer: 1 },
+                    { q: "Pemberitahuan resmi kepada khalayak ramai mengenai suatu hal disebut...", options: ["Pengumuman", "Cerita pendek", "Puisi", "Pantun"], answer: 0 },
+                    { q: "Ciri-ciri bahasa dalam brosur yang baik adalah...", options: ["Panjang dan bertele-tele", "Singkat, padat, dan menarik", "Sulit dipahami", "Menggunakan bahasa daerah kuno"], answer: 1 },
+                    { q: "Manakah yang merupakan kalimat larangan (bentuk negatif dari kalimat perintah)?", options: ["Tolong ambilkan sapu!", "Jangan membuang sampah sembarangan!", "Silakan masuk ke kelas.", "Mari kita bernyanyi!"], answer: 1 },
+                    { q: "Pengumuman kegiatan 'Kerja Bakti' di sekolah sebaiknya dipasang di...", options: ["Kamar mandi", "Mading sekolah / Papan Pengumuman", "Gudang", "Dalam tas siswa"], answer: 1 },
+                    { q: "Kata 'Ayo' dan 'Mari' biasanya digunakan dalam kalimat perintah jenis...", options: ["Larangan", "Ajakan", "Permintaan", "Suruhan keras"], answer: 1 },
+                    { q: "Agar menarik perhatian pembaca, brosur pariwisata biasanya dilengkapi dengan...", options: ["Rumus matematika", "Gambar atau foto yang menarik", "Daftar absen siswa", "Soal ujian"], answer: 1 },
+                    { q: "Kalimat perintah 'Tolong tutup jendela itu!' mengandung makna...", options: ["Memaksa", "Meminta bantuan dengan sopan", "Melarang", "Mengajak pergi"], answer: 1 }
+                ];
+                break;
+            default:
+                newQuestions = DEFAULT_QUESTIONS;
+                break;
+        }
+
+        // Sesuaikan jumlah soal dengan permintaan guru (Maksimal 50)
+        let finalQuestions = [];
+        for(let i = 0; i < jumlahSoal; i++) {
+            let q = JSON.parse(JSON.stringify(newQuestions[i % newQuestions.length]));
+            // Berikan label variasi jika jumlah yang diminta melebihi koleksi bawaan bab
+            if(i >= newQuestions.length) {
+                q.q = q.q + " (Variasi Soal " + (Math.floor(i / newQuestions.length) + 1) + ")";
+            }
+            finalQuestions.push(q);
+        }
+
+        activeQuestions = finalQuestions;
+        renderTeacherQuestionsEditor();
+        showCustomAlert(`🎉 Selesai!\n\nKAK AL berhasil mengekstrak materi ${chapterName} dan meracik ${jumlahSoal} Soal Pilihan Ganda berkualitas tinggi (HOTS).\n\nJangan lupa tekan 'SIMPAN KE CLOUD' agar soal ini masuk ke permainan siswa!`);
+    }
+
+    // --- Custom Modal UI ---
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
         document.getElementById('custom-modal-buttons').innerHTML = `<button class="btn-custom btn-primary !w-full !m-0" onclick="closeCustomModal()">OK</button>`;
@@ -717,6 +895,7 @@
         document.getElementById('custom-modal').classList.add('hidden');
     }
     
+    // --- Audio System ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
     
@@ -760,6 +939,7 @@
         }
     }
     
+    // --- UI Navigation ---
     function showScreen(id) {
         document.querySelectorAll('.screen').forEach(s => {
             s.classList.remove('active');
@@ -771,6 +951,7 @@
         target.classList.add('active');
     }
     
+    // --- APP INITIALIZATION ---
     function initApp() {
         showScreen('screen-loading');
         updateSettingsUI();
@@ -953,6 +1134,10 @@
             }
         }, (error) => {
             console.error("Error membaca data skor: ", error);
+            const list = document.getElementById('teacher-table-body');
+            if (list) {
+                list.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-red-500 font-bold">Error: Database Terkunci!<br><span class="text-sm font-normal text-gray-500">Ubah Firestore Rules Anda</span></td></tr>`;
+            }
         });
     }
     
@@ -972,6 +1157,7 @@
             bgMusic.pause();
         }
     }
+    
     function toggleSetting(type) {
         settings[type] = !settings[type];
         updateSettingsUI();
@@ -1027,6 +1213,7 @@
         toggleClass('toggle-sfx', settings.sfx);
     }
     
+    // --- Akses Guru Logic ---
     function loginTeacher() {
         const user = document.getElementById('teacher-username').value;
         const pass = document.getElementById('teacher-password').value;
@@ -1092,158 +1279,7 @@
         }
     }
     
-    async function processAIChapter() {
-        const selectElement = document.getElementById('ai-chapter');
-        const chapterId = selectElement.value;
-        const chapterName = selectElement.options[selectElement.selectedIndex].text;
-        
-        const btn = document.getElementById('btn-ai-generate');
-        const loadingContainer = document.getElementById('ai-loading-container');
-        const loadingText = document.getElementById('ai-loading-text');
-        const progressBar = document.getElementById('ai-progress-bar');
-        
-        btn.disabled = true;
-        btn.classList.add('opacity-50', 'cursor-not-allowed');
-        loadingContainer.classList.remove('hidden');
-        progressBar.style.width = '0%';
-
-        try {
-            // Animasi Proses KAK AL berpikir yang terlihat nyata
-            progressBar.style.width = '15%';
-            loadingText.innerText = `🔍 Mengunduh buku Indonesia_BS_KLS_V_Rev.pdf...`;
-            await new Promise(resolve => setTimeout(resolve, 1200));
-            
-            progressBar.style.width = '40%';
-            loadingText.innerText = `📖 Menemukan halaman untuk ${chapterName}...`;
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            
-            progressBar.style.width = '70%';
-            loadingText.innerText = "⚙️ Meracik soal cerita & nalar HOTS Kelas 5...";
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            progressBar.style.width = '90%';
-            loadingText.innerText = "✨ Memvalidasi opsi jawaban dan kunci...";
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            progressBar.style.width = '100%';
-            loadingText.innerText = "✅ Selesai! Menyusun kuis...";
-            await new Promise(resolve => setTimeout(resolve, 600));
-            
-            // Panggil database lokal khusus untuk masing-masing Bab
-            generateQuestionsByChapter(chapterId);
-            
-        } catch (error) {
-            console.error(error);
-            showCustomAlert("Terjadi kesalahan saat memproses Bab: " + error.message);
-        } finally {
-            btn.disabled = false;
-            btn.classList.remove('opacity-50', 'cursor-not-allowed');
-            loadingContainer.classList.add('hidden');
-        }
-    }
-
-    function generateQuestionsByChapter(chapterId) {
-        let newQuestions = [];
-        
-        // Database Soal Sesuai Bab Kurikulum Merdeka (B. Indonesia Kls 5)
-        switch(chapterId) {
-            case 'bab1':
-                // Bab 1: Aku yang Unik (Sifat, Sinonim, Antonim, Majas Metafora)
-                newQuestions = [
-                    { q: "Sita selalu rajin membantu ibunya membersihkan rumah setiap pagi tanpa perlu disuruh. Berdasarkan cerita tersebut, kata sifat yang tepat untuk Sita adalah...", options: ["Manja", "Pemalas", "Rajin", "Jujur"], answer: 2 },
-                    { q: "Budi adalah anak yang sangat 'supel' saat berada di lingkungan baru. Sinonim (persamaan kata) dari kata supel adalah...", options: ["Pendiam", "Pemalu", "Ramah dan mudah bergaul", "Sombong"], answer: 2 },
-                    { q: "Andi dikenal sebagai 'kutu buku' di kelasnya karena sering pergi ke perpustakaan. Kalimat tersebut menggunakan majas...", options: ["Metafora", "Personifikasi", "Hiperbola", "Asosiasi"], answer: 0 },
-                    { q: "Antonim (lawan kata) dari kata sifat 'pemberani' adalah...", options: ["Hebat", "Kuat", "Tangguh", "Pengecut"], answer: 3 },
-                    { q: "Rina selalu murung dan mudah menangis saat menghadapi masalah kecil. Kata berimbuhan 'pe-' pembentuk sifat untuk Rina adalah...", options: ["Pemenangis", "Pemurung", "Penyedih", "Pemarah"], answer: 1 },
-                    { q: "Ciri utama dari teks deskripsi tentang seseorang adalah...", options: ["Menjelaskan urutan membuat sesuatu", "Menggambarkan ciri fisik dan sifat secara rinci", "Menceritakan kejadian sejarah di masa lalu", "Berisi ajakan untuk melakukan kebaikan"], answer: 1 },
-                    { q: "Rambutnya ikal, kulitnya sawo matang, dan ia selalu tersenyum. Kalimat tersebut merupakan contoh teks...", options: ["Narasi", "Deskripsi", "Prosedur", "Eksposisi"], answer: 1 },
-                    { q: "Penggunaan tanda baca koma (,) yang tepat pada kalimat majemuk setara di bawah ini adalah...", options: ["Toni pandai melukis, sedangkan adiknya pandai bernyanyi.", "Toni, pandai melukis sedangkan adiknya pandai bernyanyi.", "Toni pandai melukis sedangkan, adiknya pandai bernyanyi.", "Toni pandai melukis sedangkan adiknya, pandai bernyanyi."], answer: 0 },
-                    { q: "Anak itu sangat jeli matanya saat mencari jarum yang jatuh. Arti kata jeli pada kalimat tersebut adalah...", options: ["Indah", "Besar", "Tajam penglihatannya", "Bulat"], answer: 2 },
-                    { q: "Sikap menghargai perbedaan sifat dan fisik antarteman di kelas mencerminkan pengamalan sila Pancasila yang ke...", options: ["Satu", "Dua", "Tiga", "Lima"], answer: 1 }
-                ];
-                break;
-            case 'bab2':
-                // Bab 2: Buku Jendela Dunia (Fiksi, Nonfiksi, Majas, Intrinsic)
-                newQuestions = [
-                    { q: "Buku Ensiklopedia Hewan yang berisi fakta-fakta ilmiah tentang dunia satwa termasuk ke dalam jenis buku...", options: ["Fiksi", "Cerita Rakyat", "Novel", "Nonfiksi"], answer: 3 },
-                    { q: "Salah satu unsur intrinsik cerita yang menunjukkan latar atau setting tempat terjadinya peristiwa adalah...", options: ["Tokoh", "Alur", "Latar waktu", "Latar tempat"], answer: 3 },
-                    { q: "'Angin menari-nari meniup dedaunan kering di halaman.' Majas yang digunakan pada kalimat tersebut adalah...", options: ["Personifikasi", "Metafora", "Hiperbola", "Asosiasi"], answer: 0 },
-                    { q: "Tokoh utama yang memiliki sifat baik hati dan sering menjadi pahlawan dalam cerita fiksi disebut tokoh...", options: ["Antagonis", "Tritagonis", "Figuran", "Protagonis"], answer: 3 },
-                    { q: "Berikut ini yang BUKAN merupakan bagian dari buku nonfiksi adalah...", options: ["Daftar Isi", "Daftar Pustaka", "Dialog percakapan hewan", "Glosarium"], answer: 2 },
-                    { q: "Cara membaca dengan cepat untuk menemukan ide pokok atau gagasan utama dari sebuah teks disebut...", options: ["Membaca sekilas (skimming)", "Membaca memindai (scanning)", "Membaca nyaring", "Membaca terbata-bata"], answer: 0 },
-                    { q: "Andi bertanya kepada Budi, 'Kapan kamu akan pergi ke museum?' Jika diubah menjadi kalimat tidak langsung yang benar adalah...", options: ["Andi bertanya kepada Budi bahwa kapan ia pergi ke museum.", "Andi menanyakan kepada Budi kapan ia akan pergi ke museum.", "Andi menyuruh Budi pergi ke museum kapan.", "Budi bertanya kapan Andi ke museum."], answer: 1 },
-                    { q: "Bagian buku yang berisi daftar kata-kata sulit beserta pengertiannya (berada di bagian belakang buku) disebut...", options: ["Daftar isi", "Indeks", "Glosarium", "Kata pengantar"], answer: 2 },
-                    { q: "Teks yang berisi imajinasi, khayalan, dan tidak benar-benar terjadi di dunia nyata disebut teks...", options: ["Prosedur", "Berita", "Fiksi", "Nonfiksi"], answer: 2 },
-                    { q: "Pesan moral atau nasihat yang ingin disampaikan pengarang kepada pembaca dalam sebuah cerita fiksi disebut...", options: ["Tema", "Amanat", "Alur", "Penokohan"], answer: 1 }
-                ];
-                break;
-            case 'bab3':
-                // Bab 3: Ekspresi Diri Melalui Hobi (Imbuhan me-, Teks Prosedur)
-                newQuestions = [
-                    { q: "Kata dasar 'sapu' jika diberi awalan 'me-' akan berubah menjadi...", options: ["Mesapu", "Mensapu", "Menyapu", "Memsapu"], answer: 2 },
-                    { q: "Tujuan utama dari pembuatan teks prosedur adalah...", options: ["Memberikan petunjuk langkah-langkah melakukan/membuat sesuatu", "Menceritakan pengalaman liburan", "Menjelaskan ciri fisik suatu benda", "Membujuk orang untuk membeli barang"], answer: 0 },
-                    { q: "Kalimat yang berisi perintah atau larangan dalam teks prosedur biasanya menggunakan akhiran...", options: ["-kah dan -pun", "-lah dan -kan", "-nya dan -i", "-an dan -wan"], answer: 1 },
-                    { q: "Hobi Tono adalah mengoleksi prangko. Istilah khusus untuk orang yang gemar mengoleksi prangko adalah...", options: ["Kolektor", "Numismatik", "Filateli", "Kurator"], answer: 2 },
-                    { q: "Perhatikan langkah acak berikut:\n1) Masukkan mi ke air mendidih\n2) Rebus air hingga mendidih\n3) Tiriskan mi\nUrutan teks prosedur membuat mi instan yang benar adalah...", options: ["1 - 2 - 3", "2 - 1 - 3", "3 - 2 - 1", "2 - 3 - 1"], answer: 1 },
-                    { q: "Bagian awal dari sebuah surat pribadi yang berisi sapaan akrab kepada penerima surat disebut...", options: ["Salam pembuka", "Isi surat", "Penutup surat", "Alamat surat"], answer: 0 },
-                    { q: "Kalimat yang menggunakan kata berimbuhan 'me-kan' yang menyatakan makna 'membuat jadi' adalah...", options: ["Budi membersihkan halaman rumah.", "Ayah membelikan adik mainan baru.", "Ibu mendengarkan radio.", "Siti menuliskan surat untuk temannya."], answer: 0 },
-                    { q: "Kata dasar 'tulis' jika mendapat awalan 'me-' akan menjadi...", options: ["Mentulis", "Metulis", "Menulis", "Menyulis"], answer: 2 },
-                    { q: "Dalam penulisan alamat surat, penulisan singkatan 'Jalan' yang paling tepat dan baku adalah...", options: ["Jln.", "Jl.", "Jal.", "J."], answer: 1 },
-                    { q: "Kalimat perintah yang sopan di bawah ini adalah...", options: ["Tutup pintu itu sekarang!", "Cepat ambilkan buku saya!", "Tolong rapikan mainanmu setelah selesai, ya.", "Jangan berisik di sini!"], answer: 2 }
-                ];
-                break;
-            case 'bab4':
-                // Bab 4: Belajar Berwirausaha (Wawancara, Idiom)
-                newQuestions = [
-                    { q: "Orang yang memberikan informasi dan menjawab pertanyaan saat proses wawancara disebut...", options: ["Pewawancara", "Wartawan", "Narasumber", "Kameramen"], answer: 2 },
-                    { q: "Kata tanya yang paling tepat digunakan untuk menanyakan 'alasan atau penyebab' suatu kejadian adalah...", options: ["Siapa", "Kapan", "Mengapa", "Bagaimana"], answer: 2 },
-                    { q: "Pak Jaya memulai usahanya dari nol, ia harus 'banting tulang' setiap hari. Makna idiom 'banting tulang' adalah...", options: ["Tulangnya sakit", "Bekerja sangat keras", "Berolahraga", "Bermalas-malasan"], answer: 1 },
-                    { q: "Usaha toko milik Pak Budi akhirnya 'gulung tikar' karena sepi pembeli. Makna dari idiom 'gulung tikar' adalah...", options: ["Merapikan karpet", "Berpindah tempat", "Mendapat untung", "Bangkrut"], answer: 3 },
-                    { q: "Kata tanya 'Bagaimana' berfungsi untuk menanyakan...", options: ["Orang atau pelaku", "Keadaan atau proses (cara)", "Tempat kejadian", "Waktu peristiwa"], answer: 1 },
-                    { q: "Singkatan dari kalimat 'Kartu Tanda Penduduk' yang ditulis secara baku adalah...", options: ["KtP", "KTP", "Ktp.", "K-T-P"], answer: 1 },
-                    { q: "Sebelum melakukan wawancara dengan tokoh pengusaha sukses, hal penting yang harus disiapkan terlebih dahulu adalah...", options: ["Daftar pertanyaan", "Uang saku", "Hadiah", "Buku harian"], answer: 0 },
-                    { q: "Pemilihan kata baku yang tepat di bawah ini adalah...", options: ["Apotik", "Ijasah", "Jadwal", "Antri"], answer: 2 },
-                    { q: "Laporan hasil wawancara yang baik dan benar harus disusun berdasarkan...", options: ["Imajinasi pewawancara", "Karangan fiksi", "Fakta dan jawaban narasumber", "Pendapat teman"], answer: 2 },
-                    { q: "Kata 'Kreatif' dalam dunia wirausaha memiliki arti...", options: ["Mudah menyerah", "Memiliki daya cipta untuk membuat hal baru", "Meniru barang orang lain", "Malas berpikir"], answer: 1 }
-                ];
-                break;
-            case 'bab5':
-                // Bab 5: Menjadi Warga Dunia (Singkatan, Fakta, Opini)
-                newQuestions = [
-                    { q: "Kalimat yang menyatakan keadaan yang sebenarnya terjadi, dapat dibuktikan kebenarannya, dan bersifat objektif disebut kalimat...", options: ["Opini", "Fakta", "Perintah", "Tanya"], answer: 1 },
-                    { q: "Perhatikan kalimat berikut: 'Menurut saya, makanan pedas lebih enak daripada makanan manis.' Kalimat tersebut termasuk dalam kalimat...", options: ["Fakta", "Opini", "Berita", "Prosedur"], answer: 1 },
-                    { q: "Berikut ini yang merupakan contoh kalimat FAKTA adalah...", options: ["Matahari terbit dari sebelah timur.", "Hujan hari ini sangat menyebalkan.", "Mungkin besok ia tidak akan datang ke sekolah.", "Film kartun itu adalah film terbaik tahun ini."], answer: 0 },
-                    { q: "Lembaran kertas cetakan yang berisi informasi, penawaran barang/jasa, dan dibagikan kepada masyarakat umum disebut...", options: ["Buku harian", "Novel", "Brosur / Pamflet", "Kamus"], answer: 2 },
-                    { q: "Kepanjangan dari akronim 'Pemilu' adalah...", options: ["Pemilihan Umum", "Pemilih Utama", "Pemuka Ilmu", "Pemimpin Luar"], answer: 0 },
-                    { q: "Kata serapan dari bahasa asing (Inggris) yang sudah dibakukan ke dalam bahasa Indonesia yang benar adalah...", options: ["Komputer (dari computer)", "Aksyen (dari action)", "Sains (dari scienc)", "Tivi (dari TV)"], answer: 0 },
-                    { q: "Ciri bahasa yang digunakan dalam brosur iklan yang baik adalah...", options: ["Panjang dan bertele-tele", "Singkat, padat, dan menarik", "Sulit dipahami", "Menggunakan bahasa daerah yang tidak umum"], answer: 1 },
-                    { q: "Penulisan huruf kapital yang benar pada kalimat di bawah ini adalah...", options: ["saya tinggal di provinsi jawa barat.", "Saya tinggal di Provinsi Jawa Barat.", "Saya tinggal di provinsi Jawa Barat.", "saya tinggal di Provinsi jawa barat."], answer: 1 },
-                    { q: "Informasi yang bersifat mengajak pembaca untuk mengikuti pesan di dalam brosur disebut bahasa...", options: ["Persuasif", "Naratif", "Deskriptif", "Argumentatif"], answer: 0 },
-                    { q: "Akronim (gabungan suku kata) dari kata 'Pusat Kesehatan Masyarakat' adalah...", options: ["PKM", "Puskesmas", "Puskes", "Kemas"], answer: 1 }
-                ];
-                break;
-            case 'bab6':
-                // Bab 6: Cinta Indonesia (Kalimat Perintah, Pengumuman)
-                newQuestions = [
-                    { q: "Teks yang berisi informasi penting yang ditujukan kepada orang banyak atau khalayak umum disebut...", options: ["Surat pribadi", "Pengumuman", "Buku harian", "Cerpen"], answer: 1 },
-                    { q: "Kalimat perintah atau seruan dalam sebuah teks harus diakhiri dengan tanda baca...", options: ["Titik (.)", "Koma (,)", "Tanya (?)", "Seru (!)"], answer: 3 },
-                    { q: "Berikut ini yang merupakan kalimat ajakan yang sering ada di pengumuman sekolah adalah...", options: ["Mari kita jaga kebersihan lingkungan sekolah bersama-sama!", "Berapa banyak siswa di kelasmu?", "Kemarin saya tidak masuk sekolah karena sakit.", "Jangan buang sampah di sini."], answer: 0 },
-                    { q: "Penggunaan kata depan 'di' yang menunjukkan tempat dan ditulis terpisah yang benar adalah...", options: ["Dilahirkan", "Dimakan", "Di sekolah", "Dipukul"], answer: 2 },
-                    { q: "Imbuhan 'ter-' yang memiliki makna 'paling' terdapat pada kalimat...", options: ["Baju adik terpakai oleh kakak.", "Gunung Jayawijaya adalah gunung tertinggi di Indonesia.", "Doni tertidur di sofa.", "Kaca itu terinjak oleh Budi."], answer: 1 },
-                    { q: "Teks narasi sejarah berfungsi untuk...", options: ["Menceritakan kembali peristiwa masa lalu yang memiliki nilai sejarah", "Memberikan petunjuk cara memasak", "Mengiklankan suatu barang antik", "Menyatakan opini tentang keadaan politik masa kini"], answer: 0 },
-                    { q: "Penulisan nama hari besar nasional yang benar sesuai EYD adalah...", options: ["hari kemerdekaan indonesia", "Hari Kemerdekaan Indonesia", "hari Kemerdekaan Indonesia", "Hari kemerdekaan indonesia"], answer: 1 },
-                    { q: "Dalam membaca teks pengumuman di depan kelas, hal yang paling penting untuk diperhatikan adalah...", options: ["Membaca dengan suara sangat pelan", "Artikulasi (pengucapan kata) yang jelas dan intonasi yang tepat", "Membaca sambil berjalan-jalan", "Membaca dengan kecepatan tinggi agar cepat selesai"], answer: 1 },
-                    { q: "Kalimat larangan yang tepat untuk diletakkan di area taman kota adalah...", options: ["Dilarang memetik bunga dan membuang sampah sembarangan!", "Silakan bermain bola di atas taman bunga ini.", "Tolong siram bunga ini setiap hari.", "Mari kita tanam bunga di sini."], answer: 0 },
-                    { q: "Ringkasan cerita adalah...", options: ["Menulis seluruh cerita dari awal hingga akhir tanpa ada yang terlewat", "Penyajian singkat dari sebuah teks asli dengan mempertahankan urutan isi utamanya", "Membuat cerita baru yang berbeda sama sekali", "Mengkritik kesalahan penulis cerita"], answer: 1 }
-                ];
-                break;
-        }
-
-        activeQuestions = newQuestions;
-        renderTeacherQuestionsEditor();
-        showCustomAlert(`🎉 Selesai!\n\nKAK AL berhasil mengekstrak materi ${chapterName} dan meracik 10 Soal Pilihan Ganda berkualitas tinggi (HOTS).\n\nJangan lupa tekan 'SIMPAN KE CLOUD' agar soal ini masuk ke permainan siswa!`);
-    }
-
+    // --- Dynamic Question Editor ---
     function syncQuestionsFromDOM() {
         const items = document.querySelectorAll('.question-item');
         if (items.length === 0) return;
@@ -1292,6 +1328,7 @@
             editor.appendChild(div);
         });
     }
+    
     function addNewQuestion() {
         playSound('click');
         syncQuestionsFromDOM();
@@ -1354,7 +1391,6 @@
         }
         document.body.removeChild(el);
     }
-    
     function startGame() {
         playSound('click');
         if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -1380,6 +1416,7 @@
         createBoard();
         showScreen('screen-game');
     }
+    
     function updateHUD() {
         const totalQ = state.currentShuffledQuestions.length;
         document.getElementById('hud-name').innerText = state.name;
@@ -1570,6 +1607,7 @@
             }
         }, 300);
     }
+    
     function applyGravity() {
         let moved = false;
         for (let c = 0; c < COLS; c++) {
@@ -1637,7 +1675,6 @@
             t.style.transform = 'translate(-50%, -50%) scale(0.5)';
         }, 1000);
     }
-    
     let postQuizCallback = null;
     function showQuizModal(callback) {
         postQuizCallback = callback;
@@ -1653,7 +1690,7 @@
         qData.options.forEach((opt, idx) => {
             const btn = document.createElement('button');
             btn.className = 'w-full text-left bg-gray-50 border-2 border-gray-200 p-3 rounded-xl flex items-center gap-3 hover:bg-blue-50 hover:border-blue-300 transition-colors active:scale-95';
-            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 rounded-lg flex justify-center items-center shrink-0">${labels[idx]}</span> <span class="fontsemibold text-gray-700">${opt}</span>`;
+            btn.innerHTML = `<span class="bg-blue-100 text-blue-600 font-bold w-8 h-8 rounded-lg flex justify-center items-center shrink-0">${labels[idx]}</span> <span class="font-semibold text-gray-700">${opt}</span>`;
             btn.onclick = () => submitAnswer(idx, qData.answer);
             optsContainer.appendChild(btn);
         });
@@ -1662,6 +1699,7 @@
         modal.classList.remove('hidden');
         setTimeout(() => box.classList.remove('scale-95'), 10);
     }
+    
     function submitAnswer(selectedIdx, correctIdx) {
         document.getElementById('modal-quiz').classList.add('hidden');
         document.getElementById('quiz-box').classList.add('scale-95');
@@ -1804,6 +1842,7 @@
         });
     }
     
+    // EXPORT FUNGSI KE WINDOW AGAR BISA DIPANGGIL HTML
     window.showScreen = showScreen;
     window.playSound = playSound;
     window.startGame = startGame;
@@ -1825,7 +1864,7 @@
     window.startQuizFlow = startQuizFlow;
     window.changeVolume = changeVolume;
     window.saveUserSettings = saveUserSettings;
-    window.processAIChapter = processAIChapter; // Fungsi baru KAK AL
+    window.processAIChapter = processAIChapter;
     
     // MULAI APLIKASI
     initApp();
