@@ -449,26 +449,33 @@
             
             <!-- Fitur AI Pembuat Soal -->
             <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 font-sans">
-                <h3 class="font-bold text-blue-700 mb-2 flex items-center gap-2"> 🤖 AI Pembuat Soal (10 Nomer)</h3>
+                <h3 class="font-bold text-blue-700 mb-3 flex items-center gap-2"> 🤖 AI Pembuat Soal Otomatis</h3>
                 
-                <!-- Input API Key (BARU) -->
-                <div class="mb-3 p-3 bg-white rounded-lg border border-blue-100 shadow-sm">
-                    <label class="text-xs font-bold text-blue-600 mb-1 block">1. Gemini API Key (Wajib)</label>
-                    <input type="password" id="ai-api-key" placeholder="Paste API Key di sini..." class="w-full p-2 border border-gray-300 rounded-md text-xs focus:outline-none focus:border-blue-500 bg-gray-50 mb-1">
-                    <p class="text-[10px] text-gray-500">Dapatkan key gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 font-bold underline">Google AI Studio</a>.</p>
+                <!-- Input API Key -->
+                <div class="mb-4 p-3 bg-white rounded-lg border-2 border-blue-200 shadow-sm relative">
+                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">1. Masukkan Gemini API Key (Wajib)</label>
+                    <input type="password" id="ai-api-key" placeholder="Mulai dengan AIza..." class="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-blue-500 bg-gray-50 mb-2 font-mono">
+                    <div class="bg-yellow-50 p-2 rounded border border-yellow-200">
+                        <p class="text-[10px] text-yellow-800 font-bold mb-1">💡 Cara Mendapatkan API Key (Gratis):</p>
+                        <ol class="text-[10px] text-yellow-700 list-decimal ml-3 space-y-0.5">
+                            <li>Buka <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 font-bold underline">Google AI Studio</a></li>
+                            <li>Login dengan akun Google/Gmail.</li>
+                            <li>Klik tombol biru <b>"Create API key"</b>.</li>
+                            <li>Salin kodenya dan tempel (paste) ke kotak di atas.</li>
+                        </ol>
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="text-xs font-bold text-blue-600 mb-1 block">2. Topik Materi</label>
-                    <p class="text-xs text-gray-500 mb-2">Masukkan topik materi untuk membuat 10 soal otomatis.</p>
+                <div class="mb-2">
+                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">2. Topik Materi (Contoh: Tata Surya)</label>
                     <div class="flex gap-2">
-                        <input type="text" id="ai-topic" placeholder="Contoh: Tata Surya, Fotosintesis..." class="flex-1 p-2 border border-blue-300 rounded-lg text-sm focus:outline-none focus:border-blue-500">
-                        <button onclick="generateQuestionsAI()" id="btn-ai-generate" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 active:scale-95 transition-transform flex items-center gap-2">
-                            ✨ Buat
+                        <input type="text" id="ai-topic" placeholder="Ketik topik di sini..." class="flex-1 p-2 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                        <button onclick="generateQuestionsAI()" id="btn-ai-generate" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-blue-700 active:scale-95 transition-transform flex items-center gap-2">
+                            ✨ BUAT
                         </button>
                     </div>
                 </div>
-                <p id="ai-loading" class="text-xs text-blue-500 mt-2 font-bold hidden animate-pulse text-center">AI sedang berpikir... Mohon tunggu (±10 detik).</p>
+                <p id="ai-loading" class="text-xs text-blue-700 mt-3 font-bold hidden animate-pulse text-center bg-blue-100 p-2 rounded-lg border border-blue-300">🤖 AI sedang berpikir... Mohon tunggu (±10 detik).</p>
             </div>
 
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
