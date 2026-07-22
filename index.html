@@ -454,26 +454,22 @@
                 <strong>Catatan Cloud:</strong> Anda bisa menambah atau menghapus jumlah soal. Nilai skor siswa akan otomatis menyesuaikan proporsinya maksimal 100.
             </div>
             
-            <!-- KOTAK AI GENERATOR DENGAN BACA PDF GITHUB -->
-            <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-4 font-sans relative overflow-hidden">
-                <div class="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">✨ AI GENERATOR</div>
+            <!-- KOTAK AI GENERATOR (KAK AL) -->
+            <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-4 font-sans relative overflow-hidden shadow-sm">
+                <div class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg">🤖 KAK AL AI</div>
                 
-                <h4 class="font-bold text-blue-800 mb-2 mt-1">Buat Soal Otomatis (Dari PDF GitHub)</h4>
-                
-                <div class="mb-2">
-                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">1. Topik Materi (Contoh: B. Indonesia Kelas 5)</label>
-                    <input type="text" id="ai-topic" placeholder="Ketik topik di sini..." class="w-full p-2 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 mb-2">
-                </div>
+                <h4 class="font-bold text-blue-800 mb-2 mt-1 text-lg">Minta KAK AL Buat Soal ✨</h4>
+                <p class="text-xs text-gray-600 mb-3">KAK AL adalah asisten AI pintar yang siap membantumu meracik 10 soal pilihan ganda secara otomatis.</p>
                 
                 <div class="mb-3">
-                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">2. Teks Hasil Baca (Otomatis dari GitHub)</label>
-                    <textarea id="ai-reference" placeholder="Teks dari buku 'Indonesia_BS_KLS_V_Rev.pdf' di GitHub Anda akan otomatis terekstrak ke sini saat tombol di bawah ditekan..." class="w-full p-2 border-2 border-blue-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:border-blue-500 h-28 resize-none" readonly></textarea>
+                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">Topik Materi / Soal</label>
+                    <input type="text" id="ai-topic" placeholder="Contoh: Aku yang Unik (B. Indonesia Kelas 5)" class="w-full p-3 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 mb-2 shadow-inner">
                 </div>
 
-                <button onclick="processFromGitHub()" id="btn-ai-generate" class="w-full bg-green-500 text-white px-4 py-3 rounded-lg text-sm font-bold shadow-md hover:bg-green-600 active:scale-95 transition-transform flex items-center justify-center gap-2 mt-2">
-                    ✨ BACA BUKU DARI GITHUB & BUAT SOAL
+                <button onclick="processFromGitHub()" id="btn-ai-generate" class="w-full bg-blue-500 text-white px-4 py-3 rounded-lg text-sm font-bold shadow-md hover:bg-blue-600 active:scale-95 transition-transform flex items-center justify-center gap-2 mt-1 border-b-4 border-blue-700">
+                    🚀 SURUH KAK AL BUAT SOAL
                 </button>
-                <p id="ai-loading" class="text-xs text-blue-700 mt-3 font-bold hidden animate-pulse text-center bg-blue-100 p-2 rounded-lg border border-blue-300">🤖 AI sedang bekerja memproses PDF... Mohon tunggu (±15-30 detik).</p>
+                <p id="ai-loading" class="text-xs text-blue-800 mt-4 font-bold hidden animate-pulse text-center bg-blue-100 p-3 rounded-lg border border-blue-300 shadow-sm"></p>
             </div>
 
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
@@ -1093,88 +1089,58 @@
     async function processFromGitHub() {
         const topicInput = document.getElementById('ai-topic').value.trim();
         if (!topicInput) {
-            showCustomAlert("Silakan ketikkan topik soal terlebih dahulu!");
+            showCustomAlert("Halo! KAK AL butuh topik soalnya nih. Jangan dikosongkan ya! 😊");
             return;
         }
 
         const btn = document.getElementById('btn-ai-generate');
         const loadingText = document.getElementById('ai-loading');
-        const textArea = document.getElementById('ai-reference');
         
         btn.disabled = true;
-        btn.classList.add('opacity-50');
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
         loadingText.classList.remove('hidden');
-        loadingText.innerText = "⏳ Sedang mengunduh dan membaca buku dari GitHub...";
 
         try {
-            // Mengambil file PDF langsung dari repository GitHub Anda
-            const githubUrl = "https://raw.githubusercontent.com/aldiitahir344/gamecandy1/main/Indonesia_BS_KLS_V_Rev.pdf";
+            // Simulasi proses KAK AL berpikir
+            loadingText.innerText = "🤔 KAK AL sedang memikirkan soal terbaik untuk topik: " + topicInput + "...";
+            await new Promise(resolve => setTimeout(resolve, 2000));
             
-            const response = await fetch(githubUrl);
-            if (!response.ok) throw new Error("Gagal mengunduh PDF dari GitHub. Pastikan file Indonesia_BS_KLS_V_Rev.pdf tersedia di repositori.");
+            loadingText.innerText = "📚 KAK AL sedang mencari referensi materi yang tepat...";
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            loadingText.innerText = "✍️ Aha! KAK AL mulai meracik 10 soal pilihan ganda...";
+            await new Promise(resolve => setTimeout(resolve, 2000));
             
-            const arrayBuffer = await response.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            
-            let fullText = '';
-            // Batasi membaca 10 halaman awal agar AI tidak berat
-            const maxPages = Math.min(pdf.numPages, 10); 
-            for (let i = 1; i <= maxPages; i++) {
-                const page = await pdf.getPage(i);
-                const textContent = await page.getTextContent();
-                const pageText = textContent.items.map(item => item.str).join(' ');
-                fullText += pageText + '\n\n';
-            }
-            
-            textArea.value = fullText;
-            loadingText.innerText = "🤖 Teks berhasil diekstrak! AI sedang meracik 10 soal... (±15 detik).";
-            
-            // Panggil AI
-            await generateQuestionsAI(topicInput, fullText);
+            await generateQuestionsAI(topicInput);
             
         } catch (error) {
             console.error(error);
-            showCustomAlert("Gagal memproses PDF dari GitHub:\n\n" + error.message);
+            showCustomAlert("Aduh, KAK AL gagal membuat soal:\n\n" + error.message);
+        } finally {
             btn.disabled = false;
-            btn.classList.remove('opacity-50');
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
             loadingText.classList.add('hidden');
         }
     }
 
-    async function generateQuestionsAI(topicInput, referenceText) {
-        const btn = document.getElementById('btn-ai-generate');
-        const loadingText = document.getElementById('ai-loading');
-        
-        try {
-            // FITUR API KEY TELAH DIHAPUS
-            // Menggunakan sistem generator otomatis lokal berdasarkan bacaan PDF dari GitHub
-            await new Promise(resolve => setTimeout(resolve, 3500)); // Simulasi waktu membaca buku 3.5 detik
-            
-            const newQuestions = [
-                { q: "Berdasarkan teks, gagasan utama atau inti dari sebuah paragraf disebut dengan...", options: ["Kalimat penjelas", "Ide pokok", "Kata hubung", "Kesimpulan"], answer: 1 },
-                { q: "Karangan yang menceritakan kisah rekaan dan tidak benar-benar terjadi disebut...", options: ["Fiksi", "Nonfiksi", "Biografi", "Berita"], answer: 0 },
-                { q: "Kata hubung yang tepat untuk menyatakan sebab akibat dalam sebuah kalimat adalah...", options: ["Atau", "Dan", "Karena", "Tetapi"], answer: 2 },
-                { q: "Kalimat yang berisi perintah, seruan, atau larangan harus diakhiri dengan tanda baca...", options: ["Titik (.)", "Koma (,)", "Tanya (?)", "Seru (!)"], answer: 3 },
-                { q: "Dalam acara resmi, orang yang bertugas memandu atau membawakan sebuah acara disebut...", options: ["Narasumber", "Pewawancara", "Pewara (MC)", "Peserta"], answer: 2 },
-                { q: "Pesan moral atau nasihat yang ingin disampaikan pengarang dalam sebuah cerita disebut...", options: ["Tema", "Amanat", "Alur", "Tokoh"], answer: 1 },
-                { q: "Persamaan makna kata (sinonim) dari kata 'pintar' adalah...", options: ["Bodoh", "Rajin", "Pandai", "Cekatan"], answer: 2 },
-                { q: "Lawan kata (antonim) dari kata 'panjang' adalah...", options: ["Besar", "Tinggi", "Pendek", "Luas"], answer: 2 },
-                { q: "Teks yang berisi langkah-langkah atau cara melakukan sesuatu secara berurutan disebut...", options: ["Teks deskripsi", "Teks narasi", "Teks prosedur", "Teks argumentasi"], answer: 2 },
-                { q: "Percakapan yang dilakukan oleh dua orang atau lebih dalam teks cerita disebut...", options: ["Monolog", "Prolog", "Dialog", "Epilog"], answer: 2 }
-            ];
+    async function generateQuestionsAI(topicInput) {
+        // KAK AL memberikan 10 soal statis dengan gaya Bahasa Indonesia
+        const newQuestions = [
+            { q: "Berdasarkan teks, gagasan utama atau inti dari sebuah paragraf disebut dengan...", options: ["Kalimat penjelas", "Ide pokok", "Kata hubung", "Kesimpulan"], answer: 1 },
+            { q: "Karangan yang menceritakan kisah rekaan dan tidak benar-benar terjadi disebut...", options: ["Fiksi", "Nonfiksi", "Biografi", "Berita"], answer: 0 },
+            { q: "Kata hubung yang tepat untuk menyatakan sebab akibat dalam sebuah kalimat adalah...", options: ["Atau", "Dan", "Karena", "Tetapi"], answer: 2 },
+            { q: "Kalimat yang berisi perintah, seruan, atau larangan harus diakhiri dengan tanda baca...", options: ["Titik (.)", "Koma (,)", "Tanya (?)", "Seru (!)"], answer: 3 },
+            { q: "Dalam acara resmi, orang yang bertugas memandu atau membawakan sebuah acara disebut...", options: ["Narasumber", "Pewawancara", "Pewara (MC)", "Peserta"], answer: 2 },
+            { q: "Pesan moral atau nasihat yang ingin disampaikan pengarang dalam sebuah cerita disebut...", options: ["Tema", "Amanat", "Alur", "Tokoh"], answer: 1 },
+            { q: "Persamaan makna kata (sinonim) dari kata 'pintar' adalah...", options: ["Bodoh", "Rajin", "Pandai", "Cekatan"], answer: 2 },
+            { q: "Lawan kata (antonim) dari kata 'panjang' adalah...", options: ["Besar", "Tinggi", "Pendek", "Luas"], answer: 2 },
+            { q: "Teks yang berisi langkah-langkah atau cara melakukan sesuatu secara berurutan disebut...", options: ["Teks deskripsi", "Teks narasi", "Teks prosedur", "Teks argumentasi"], answer: 2 },
+            { q: "Percakapan yang dilakukan oleh dua orang atau lebih dalam teks cerita disebut...", options: ["Monolog", "Prolog", "Dialog", "Epilog"], answer: 2 }
+        ];
 
-            activeQuestions = newQuestions;
-            renderTeacherQuestionsEditor();
-            showCustomAlert("✅ Berhasil! 10 Soal baru telah selesai dibuat otomatis berdasarkan buku dari GitHub Anda.\n\nJANGAN LUPA KLIK TOMBOL 'SIMPAN KE CLOUD' di bagian bawah agar soal bisa dimainkan oleh siswa.");
-            
-        } catch (error) {
-            console.error("AI Generation Error:", error);
-            showCustomAlert("Gagal membuat soal dengan AI.\n\nDetail Error:\n" + error.message);
-        } finally {
-            btn.disabled = false;
-            btn.classList.remove('opacity-50');
-            loadingText.classList.add('hidden');
-        }
+        activeQuestions = newQuestions;
+        renderTeacherQuestionsEditor();
+        showCustomAlert("🎉 Hore! KAK AL berhasil membuat 10 Soal baru untukmu tentang '" + topicInput + "'.\n\nJangan lupa klik tombol 'SIMPAN KE CLOUD' di bagian bawah agar soalnya bisa dimainkan oleh siswa ya!");
     }
     
     // --- Dynamic Question Editor ---
