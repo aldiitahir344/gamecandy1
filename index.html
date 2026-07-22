@@ -450,14 +450,25 @@
             <!-- Fitur AI Pembuat Soal -->
             <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 font-sans">
                 <h3 class="font-bold text-blue-700 mb-2 flex items-center gap-2"> 🤖 AI Pembuat Soal (10 Nomer)</h3>
-                <p class="text-xs text-blue-600 mb-3">Masukkan topik materi untuk membuat 10 soal otomatis dengan bantuan AI.</p>
-                <div class="flex gap-2">
-                    <input type="text" id="ai-topic" placeholder="Contoh: Tata Surya, Fotosintesis..." class="flex-1 p-2 border border-blue-300 rounded-lg text-sm focus:outline-none focus:border-blue-500">
-                    <button onclick="generateQuestionsAI()" id="btn-ai-generate" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 active:scale-95 transition-transform flex items-center gap-2">
-                        ✨ Buat
-                    </button>
+                
+                <!-- Input API Key (BARU) -->
+                <div class="mb-3 p-3 bg-white rounded-lg border border-blue-100 shadow-sm">
+                    <label class="text-xs font-bold text-blue-600 mb-1 block">1. Gemini API Key (Wajib)</label>
+                    <input type="password" id="ai-api-key" placeholder="Paste API Key di sini..." class="w-full p-2 border border-gray-300 rounded-md text-xs focus:outline-none focus:border-blue-500 bg-gray-50 mb-1">
+                    <p class="text-[10px] text-gray-500">Dapatkan key gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 font-bold underline">Google AI Studio</a>.</p>
                 </div>
-                <p id="ai-loading" class="text-xs text-blue-500 mt-2 font-bold hidden animate-pulse">AI sedang berpikir... Mohon tunggu sebentar (±10 detik).</p>
+
+                <div class="mb-3">
+                    <label class="text-xs font-bold text-blue-600 mb-1 block">2. Topik Materi</label>
+                    <p class="text-xs text-gray-500 mb-2">Masukkan topik materi untuk membuat 10 soal otomatis.</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="ai-topic" placeholder="Contoh: Tata Surya, Fotosintesis..." class="flex-1 p-2 border border-blue-300 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                        <button onclick="generateQuestionsAI()" id="btn-ai-generate" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 active:scale-95 transition-transform flex items-center gap-2">
+                            ✨ Buat
+                        </button>
+                    </div>
+                </div>
+                <p id="ai-loading" class="text-xs text-blue-500 mt-2 font-bold hidden animate-pulse text-center">AI sedang berpikir... Mohon tunggu (±10 detik).</p>
             </div>
 
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
@@ -1172,11 +1183,20 @@
 
     // --- AI Question Generator ---
     async function generateQuestionsAI() {
+        const apiKeyInput = document.getElementById('ai-api-key').value.trim();
+        if (!apiKeyInput) {
+            showCustomAlert("Silakan masukkan Gemini API Key terlebih dahulu!\n\nKlik link 'Google AI Studio' untuk mendapatkan kunci gratis.");
+            return;
+        }
+
         const topicInput = document.getElementById('ai-topic').value.trim();
         if (!topicInput) {
             showCustomAlert("Silakan masukkan topik materi soal terlebih dahulu!");
             return;
         }
+
+        // Simpan API Key ke LocalStorage agar guru tidak perlu ketik ulang
+        localStorage.setItem('quiz_gemini_api_key', apiKeyInput);
 
         const btn = document.getElementById('btn-ai-generate');
         const loadingText = document.getElementById('ai-loading');
@@ -1211,8 +1231,8 @@
                 }
             };
             
-            const apiKey = ""; // API Key otomatis disediakan oleh platform Canvas
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            // Menggunakan gemini-1.5-flash yang stabil dan gratis
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKeyInput}`;
             
             let result = null;
             let delay = 1000;
@@ -1269,11 +1289,13 @@
         } catch (error) {
             console.error("AI Error:", error);
             let errMsg = error.message;
-            if (errMsg.includes('400') || errMsg.includes('API_KEY_INVALID')) {
-                errMsg = "API Key hilang atau tidak valid. Jika Anda menjalankan file ini di luar aplikasi web ini, Anda harus mengisi variabel 'apiKey' secara manual.";
+            if (errMsg.includes('403') || errMsg.includes('PERMISSION_DENIED') || errMsg.includes('API_KEY_INVALID')) {
+                errMsg = "API Key yang Anda masukkan salah atau tidak valid. Silakan periksa kembali ketikan Anda.";
+                // Hapus key yang salah dari storage
+                localStorage.removeItem('quiz_gemini_api_key');
+                document.getElementById('ai-api-key').value = '';
             }
-            // Kini pesan peringatan akan menampilkan alasan kenapa AI gagal memuat soal
-            showCustomAlert("Gagal membuat soal dengan AI.\n\nDetail Error: " + errMsg);
+            showCustomAlert("Gagal membuat soal dengan AI.\n\nDetail: " + errMsg);
         } finally {
             btn.disabled = false;
             btn.classList.remove('opacity-50');
@@ -1780,6 +1802,17 @@
     // MULAI APLIKASI
     initApp();
     
+    // Memuat API Key yang tersimpan di Local Storage saat aplikasi dimuat
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const savedKey = localStorage.getItem('quiz_gemini_api_key');
+            if(savedKey) {
+                const keyInput = document.getElementById('ai-api-key');
+                if(keyInput) keyInput.value = savedKey;
+            }
+        }, 1000);
+    });
+
     // CSS Keyframe Injection for dynamic stuff
     const style = document.createElement('style');
     style.innerHTML = `
