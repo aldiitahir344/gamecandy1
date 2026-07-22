@@ -1186,12 +1186,27 @@
         loadingText.classList.remove('hidden');
 
         try {
-            const prompt = `Buat 10 soal pilihan ganda bahasa Indonesia tentang topik '${topicInput}'. Setiap soal harus memiliki 4 pilihan dan satu jawaban yang benar. Format hasil WAJIB dalam format JSON murni array of objects dengan struktur persis seperti ini: [{"q": "Pertanyaan", "options": ["Pilihan 0", "Pilihan 1", "Pilihan 2", "Pilihan 3"], "answer": 0}]. 'answer' adalah indeks dari jawaban yang benar (0, 1, 2, atau 3). Hanya kembalikan array JSON murni tanpa markdown \`\`\`json.`;
+            const prompt = `Buat 10 soal pilihan ganda bahasa Indonesia yang edukatif dan menarik tentang topik '${topicInput}'. Setiap soal harus memiliki 4 pilihan jawaban dan satu jawaban yang benar. Nilai 'answer' adalah indeks dari pilihan yang benar (yaitu 0, 1, 2, atau 3). Pastikan soal bervariasi dan tidak ada yang ganda.`;
             
             const payload = {
                 contents: [{ parts: [{ text: prompt }] }],
                 generationConfig: {
-                    responseMimeType: "application/json"
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                "q": { "type": "STRING", "description": "Teks pertanyaan" },
+                                "options": {
+                                    "type": "ARRAY",
+                                    "items": { "type": "STRING" },
+                                    "description": "4 pilihan jawaban"
+                                },
+                                "answer": { "type": "INTEGER", "description": "Indeks array dari jawaban yang benar (0-3)" }
+                            }
+                        }
+                    }
                 }
             };
             
@@ -1208,24 +1223,27 @@
             
             if (result.candidates && result.candidates.length > 0) {
                 let jsonText = result.candidates[0].content.parts[0].text;
-                jsonText = jsonText.replace(/```json/g, '').replace(/```/g, '').trim();
+                // Bersihkan baris markdown jikalau AI tetap menyisipkannya
+                jsonText = jsonText.replace(/```json/gi, '').replace(/```/g, '').trim();
                 
                 const generatedQuestions = JSON.parse(jsonText);
                 
-                if (Array.isArray(generatedQuestions) && generatedQuestions.length === 10) {
-                    activeQuestions = generatedQuestions;
+                if (Array.isArray(generatedQuestions) && generatedQuestions.length > 0) {
+                    // Ambil maksimal 10 soal jika ternyata AI membuat lebih
+                    activeQuestions = generatedQuestions.slice(0, 10);
                     renderTeacherQuestionsEditor();
-                    showCustomAlert(" ✅ 10 Soal berhasil dibuat oleh AI!\n\nJangan lupa klik 'SIMPAN KE CLOUD' agar bisa dimainkan siswa.");
+                    showCustomAlert(` ✅ ${activeQuestions.length} Soal berhasil dibuat oleh AI!\n\nJangan lupa klik 'SIMPAN KE CLOUD' agar bisa dimainkan siswa.`);
                     document.getElementById('ai-topic').value = '';
                 } else {
-                    throw new Error("Format JSON tidak sesuai atau soal tidak berjumlah 10");
+                    throw new Error("Format JSON dari AI tidak valid atau kosong");
                 }
             } else {
-                throw new Error("Gagal mendapatkan respons dari AI");
+                console.error("API Error Result:", result);
+                throw new Error("Gagal mendapatkan respons valid dari server AI");
             }
         } catch (error) {
             console.error("AI Error:", error);
-            showCustomAlert("Gagal membuat soal dengan AI. Silakan coba lagi.");
+            showCustomAlert("Gagal membuat soal dengan AI. Silakan coba klik tombol 'Buat' lagi.");
         } finally {
             btn.disabled = false;
             btn.classList.remove('opacity-50');
