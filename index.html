@@ -1186,10 +1186,10 @@
         loadingText.classList.remove('hidden');
 
         try {
-            const prompt = `Buat 10 soal pilihan ganda bahasa Indonesia yang edukatif dan menarik tentang topik '${topicInput}'. Setiap soal harus memiliki 4 pilihan jawaban dan satu jawaban yang benar. Nilai 'answer' adalah indeks dari pilihan yang benar (yaitu 0, 1, 2, atau 3). Pastikan soal bervariasi dan tidak ada yang ganda.`;
+            const prompt = `Buat 10 soal pilihan ganda bahasa Indonesia yang edukatif dan sesuai fakta tentang topik '${topicInput}'. Setiap soal harus memiliki 4 pilihan jawaban dan HANYA SATU jawaban yang benar. Nilai 'answer' adalah indeks dari pilihan yang benar (angka bulat 0, 1, 2, atau 3). Pastikan soal bervariasi.`;
             
             const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
                 generationConfig: {
                     responseMimeType: "application/json",
                     responseSchema: {
@@ -1201,49 +1201,79 @@
                                 "options": {
                                     "type": "ARRAY",
                                     "items": { "type": "STRING" },
-                                    "description": "4 pilihan jawaban"
+                                    "description": "Daftar 4 pilihan jawaban"
                                 },
-                                "answer": { "type": "INTEGER", "description": "Indeks array dari jawaban yang benar (0-3)" }
-                            }
+                                "answer": { "type": "INTEGER", "description": "Indeks 0, 1, 2, atau 3" }
+                            },
+                            "propertyOrdering": ["q", "options", "answer"]
                         }
                     }
                 }
             };
             
-            const apiKey = ""; 
+            const apiKey = ""; // API Key otomatis disediakan oleh platform Canvas
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
             
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+            let result = null;
+            let delay = 1000;
+
+            // Exponential Backoff: Coba ulang otomatis jika server sibuk (Max 3 kali)
+            for (let i = 0; i < 3; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        const errText = await response.text();
+                        if (response.status === 429 || response.status >= 500) {
+                            if (i === 2) throw new Error(`Server AI Sibuk (HTTP ${response.status})`);
+                            await new Promise(res => setTimeout(res, delay));
+                            delay *= 2;
+                            continue;
+                        }
+                        throw new Error(`API Error ${response.status}: ${errText}`);
+                    }
+                    
+                    result = await response.json();
+                    break;
+                } catch (fetchErr) {
+                    if (i === 2) throw fetchErr;
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
             
-            const result = await response.json();
-            
-            if (result.candidates && result.candidates.length > 0) {
-                let jsonText = result.candidates[0].content.parts[0].text;
-                // Bersihkan baris markdown jikalau AI tetap menyisipkannya
-                jsonText = jsonText.replace(/```json/gi, '').replace(/```/g, '').trim();
+            if (result && result.candidates && result.candidates.length > 0) {
+                let jsonText = result.candidates[0].content?.parts?.[0]?.text;
                 
+                if (!jsonText) throw new Error("Respons teks dari AI kosong.");
+                
+                // Membersihkan markdown jika masih ada
+                jsonText = jsonText.replace(/```json/gi, '').replace(/```/g, '').trim();
                 const generatedQuestions = JSON.parse(jsonText);
                 
                 if (Array.isArray(generatedQuestions) && generatedQuestions.length > 0) {
-                    // Ambil maksimal 10 soal jika ternyata AI membuat lebih
                     activeQuestions = generatedQuestions.slice(0, 10);
                     renderTeacherQuestionsEditor();
                     showCustomAlert(` ✅ ${activeQuestions.length} Soal berhasil dibuat oleh AI!\n\nJangan lupa klik 'SIMPAN KE CLOUD' agar bisa dimainkan siswa.`);
                     document.getElementById('ai-topic').value = '';
                 } else {
-                    throw new Error("Format JSON dari AI tidak valid atau kosong");
+                    throw new Error("Format yang dikembalikan AI tidak sesuai standar.");
                 }
             } else {
-                console.error("API Error Result:", result);
-                throw new Error("Gagal mendapatkan respons valid dari server AI");
+                throw new Error("Gagal mendapatkan respons valid dari server AI.");
             }
         } catch (error) {
             console.error("AI Error:", error);
-            showCustomAlert("Gagal membuat soal dengan AI. Silakan coba klik tombol 'Buat' lagi.");
+            let errMsg = error.message;
+            if (errMsg.includes('400') || errMsg.includes('API_KEY_INVALID')) {
+                errMsg = "API Key hilang atau tidak valid. Jika Anda menjalankan file ini di luar aplikasi web ini, Anda harus mengisi variabel 'apiKey' secara manual.";
+            }
+            // Kini pesan peringatan akan menampilkan alasan kenapa AI gagal memuat soal
+            showCustomAlert("Gagal membuat soal dengan AI.\n\nDetail Error: " + errMsg);
         } finally {
             btn.disabled = false;
             btn.classList.remove('opacity-50');
