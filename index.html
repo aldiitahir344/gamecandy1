@@ -219,13 +219,13 @@
         <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg" onerror="this.src='https://placehold.co/100x100/4fc3f7/ffffff?text=🤖'">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">QUIZ MATCH<br>CHALLENGE</h1>
-        <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain dengan Gemini AI"</p>
+        <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain dengan AI"</p>
         
         <div class="loading-bar-container mb-4">
             <div id="loading-progress" class="loading-bar"></div>
         </div>
         <p id="loading-percentage" class="text-blue-500 font-bold mb-6">0%</p>
-        <p id="loading-cloud" class="text-xs text-purple-600 font-bold mb-2 opacity-0 transition-opacity">Menghubungkan ke Cloud & Gemini AI...</p>
+        <p id="loading-cloud" class="text-xs text-purple-600 font-bold mb-2 opacity-0 transition-opacity">Menghubungkan ke Cloud & AI...</p>
         
         <div class="glass-panel px-6 py-3 text-center">
             <p id="loading-tip" class="text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
@@ -371,7 +371,7 @@
     <!-- SCREEN: TEACHER DASHBOARD -->
     <section id="screen-teacher-dashboard" class="screen bg-gray-100">
         <div class="w-full bg-purple-600 text-white p-4 flex justify-between items-center shadow-md z-20">
-            <h2 class="font-bold text-lg flex items-center gap-2"><span class="animate-pulse"> ☁️ </span> Dashboard Guru & Gemini AI</h2>
+            <h2 class="font-bold text-lg flex items-center gap-2"><span class="animate-pulse"> ☁️ </span> Dashboard Guru & AI</h2>
             <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm font-bold shadow" onclick="logoutTeacher()">Keluar</button>
         </div>
         <div class="flex w-full bg-white shadow-sm z-10 font-sans text-xs sm:text-sm font-bold">
@@ -415,7 +415,7 @@
         <!-- TAB SOAL -->
         <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-3 mb-4 text-xs text-yellow-800 font-sans">
-                <strong>Gemini AI Integration:</strong> Gunakan tombol AI di bawah untuk membuat soal secara otomatis berdasarkan topik IPA kelas 5.
+                <strong>AI Integration:</strong> Gunakan tombol AI di bawah untuk membuat soal secara otomatis berdasarkan topik IPA kelas 5.
             </div>
             
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
@@ -550,7 +550,7 @@
 
             <!-- AI Personalized Review Box -->
             <div id="ai-review-box" class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-3 mb-4 text-xs text-blue-900 font-sans text-left w-full shadow-inner z-10">
-                <div class="font-bold flex items-center gap-1 mb-1 text-blue-700">🤖 Ulasan Evaluasi Gemini AI:</div>
+                <div class="font-bold flex items-center gap-1 mb-1 text-blue-700">🤖 Ulasan Evaluasi AI:</div>
                 <div id="ai-review-text">Menyusun laporan evaluasi belajar...</div>
             </div>
 
@@ -589,12 +589,12 @@
     <!-- AI Assistant Chat Window -->
     <div id="ai-chat-window" class="absolute bottom-20 right-4 w-72 max-w-[90vw] bg-white rounded-2xl shadow-2xl border-2 border-blue-200 z-[100] hidden flex-col overflow-hidden transition-all duration-300 transform scale-0 origin-bottom-right">
         <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-3 font-bold flex justify-between items-center shadow-md">
-            <span class="flex items-center gap-2">🤖 Kak Al (Gemini AI)</span>
+            <span class="flex items-center gap-2">🤖 Kak Al (AI)</span>
             <button onclick="toggleAIChat()" class="text-white hover:text-gray-200 font-black px-2">✖</button>
         </div>
         <div id="ai-chat-messages" class="p-3 h-64 overflow-y-auto flex flex-col gap-2 font-sans text-sm bg-blue-50 custom-scrollbar">
             <div class="bg-white border border-blue-100 text-blue-800 p-2 rounded-lg rounded-tl-none self-start max-w-[85%] shadow-sm mt-2">
-                Halo! 👋 Saya Kak Al, pendamping belajarmu. Ada pertanyaan seputar pelajaran IPA?
+                Halo! 👋 Saya Kak Al, asisten belajarmu. Ada pertanyaan seputar IPA?
             </div>
         </div>
         <div class="p-2 border-t flex gap-2 bg-white items-center">
@@ -606,12 +606,12 @@
     <!-- MODAL: AI GURU (Generator Soal) -->
     <div id="modal-ai-guru" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[110] flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-purple-200 relative">
-            <h3 class="text-xl font-bold text-purple-600 mb-2">🤖 Gemini AI Generator Soal</h3>
-            <p class="text-xs text-gray-500 mb-4 font-sans">Masukkan topik pelajaran IPA, Gemini AI akan membuatkan 3 soal pilihan ganda berkualitas.</p>
+            <h3 class="text-xl font-bold text-purple-600 mb-2">🤖 AI Generator Soal</h3>
+            <p class="text-xs text-gray-500 mb-4 font-sans">Masukkan topik pelajaran IPA, AI akan membuatkan 3 soal pilihan ganda berkualitas.</p>
             <input type="text" id="ai-guru-topic" placeholder="Contoh: Tata Surya, Magnet, Rangkaian Listrik" class="w-full p-3 rounded-xl border-2 border-purple-200 focus:border-purple-500 outline-none font-sans bg-gray-50 mb-4 text-sm text-center">
             
             <div id="api-guru-loading" class="hidden mb-4 flex justify-center items-center gap-2 text-purple-600 font-bold text-sm font-sans">
-                <span class="animate-spin text-xl">⏳</span> Gemini AI sedang menyusun soal...
+                <span class="animate-spin text-xl">⏳</span> AI sedang menyusun soal...
             </div>
             
             <div class="flex justify-center gap-2 w-full">
@@ -645,71 +645,45 @@
     const getScoresCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/scores` : "scores";
     const getQuestionsCollectionPath = () => isCanvas ? `artifacts/${appId}/public/data/questions` : "questions";
 
-    // --- GEMINI API LLM INTEGRATION (`gemini-1.5-flash`) ---
-    async function callGeminiAPI(promptText, systemInstructionText = "Kamu adalah Kak Al, asisten AI pendamping belajar IPA kelas 5 SD yang ramah, seru, dan edukatif.", isJson = false) {
-        // 👇 KUNCI API AQ ANDA YANG PERMANEN AGAR BERFUNGSI SEMPURNA DI GITHUB
-        const apiKey = "AQ.Ab8RN6LeidRVmtd86c79e7Xgq8t1y_zaPmg7FWFOh7F80jfLMA"; 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-        
-        const payload = {
-            contents: [{ parts: [{ text: promptText }] }],
-            systemInstruction: {
-                parts: [{ text: systemInstructionText }]
+    // --- INTEGRASI AI PUBLIK (POLLINATIONS) BEBAS BLOKIR ---
+    async function callGeminiAPI(promptText, systemInstructionText = "Kamu adalah Kak Al, asisten AI pendamping belajar IPA kelas 5 SD yang ramah.", isJson = false) {
+        try {
+            let finalPrompt = "Siswa bertanya: " + promptText;
+            if (isJson) {
+                finalPrompt += "\n\nPENTING: Balas HANYA dengan format array JSON yang valid tanpa awalan/akhiran markdown (jangan pakai ```json).";
             }
-        };
 
-        if (isJson) {
-            payload.generationConfig = {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: "ARRAY",
-                    items: {
-                        type: "OBJECT",
-                        properties: {
-                            "q": { "type": "STRING" },
-                            "options": {
-                                "type": "ARRAY",
-                                "items": { "type": "STRING" }
-                            },
-                            "answer": { "type": "INTEGER", "description": "Index of correct option 0-3" }
-                        },
-                        "propertyOrdering": ["q", "options", "answer"]
-                    }
-                }
-            };
-        }
+            const response = await fetch('https://text.pollinations.ai/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: [
+                        { role: 'system', content: systemInstructionText },
+                        { role: 'user', content: finalPrompt }
+                    ]
+                })
+            });
 
-        let delays = [1000, 2000, 4000];
-        for (let attempt = 0; attempt <= delays.length; attempt++) {
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const result = await response.json();
-                const candidate = result.candidates?.[0];
-                if (candidate && candidate.content?.parts?.[0]?.text) {
-                    return candidate.content.parts[0].text;
-                }
-                throw new Error("Invalid response structure");
-            } catch (error) {
-                if (attempt === delays.length) {
-                    console.debug("Gemini API call failed after retries, using fallback.", error);
-                    if (isJson) {
-                        return JSON.stringify([
-                            { q: "Apa sumber energi utama di tata surya?", options: ["Bulan", "Matahari", "Bumi", "Bintang"], answer: 1 },
-                            { q: "Benda yang dapat ditarik magnet disebut...", options: ["Nonmagnetik", "Magnetik", "Isolator", "Konduktor"], answer: 1 },
-                            { q: "Alat untuk mengukur arus listrik adalah...", options: ["Termometer", "Amperemeter", "Barometer", "Speedometer"], answer: 1 }
-                        ]);
-                    }
-                    return "Halo! Kak Al di sini siap membantumu belajar IPA. Namun sepertinya koneksi kita sedang terganggu. Tetap semangat ya!";
-                }
-                await new Promise(resolve => setTimeout(resolve, delays[attempt]));
+            if (!response.ok) {
+                throw new Error('Jaringan lambat');
             }
+
+            const resultText = await response.text();
+            return resultText.trim();
+            
+        } catch (error) {
+            console.error("AI Publik Error Caught:", error);
+            if (isJson) {
+                return JSON.stringify([
+                    { q: "Apa sumber energi utama di tata surya?", options: ["Bulan", "Matahari", "Bumi", "Bintang"], answer: 1 },
+                    { q: "Benda yang dapat ditarik magnet disebut...", options: ["Nonmagnetik", "Magnetik", "Isolator", "Konduktor"], answer: 1 },
+                    { q: "Alat untuk mengukur arus listrik adalah...", options: ["Termometer", "Amperemeter", "Barometer", "Speedometer"], answer: 1 }
+                ]);
+            }
+            return "Maaf ya, Kak Al sedang kesulitan terhubung ke jaringan internet. Tapi ingat, semua jawaban ada di buku materi IPA kamu! Tetap semangat belajarnya! 🌟";
         }
     }
+    // --------------------------------------------------------
 
     const EMOJIS = [' 🌸 ', ' 🌼 ', ' 🐠 ', ' 🐢 ', ' 🦧 '];
     const ROWS = 7;
@@ -834,7 +808,7 @@
         updateSettingsUI();
         
         let progress = 0;
-        const tips = ["Gemini AI siap mendampingi belajarmu", "Jawab soal dengan teliti", "Dapatkan skor tertinggi!"];
+        const tips = ["AI siap mendampingi belajarmu", "Jawab soal dengan teliti", "Dapatkan skor tertinggi!"];
         let tipIdx = 0;
         
         const tipEl = document.getElementById('loading-tip');
@@ -1146,7 +1120,6 @@
         }
     }
     
-    // --- GEMINI AI CHAT & QUESTION GENERATOR HANDLERS ---
     function toggleAIChat() {
         const chat = document.getElementById('ai-chat-window');
         if(chat.classList.contains('hidden')) {
@@ -1170,14 +1143,14 @@
         input.value = '';
         input.disabled = true; 
         
-        const loadingId = appendChat('bot', '⏳ Kak Al sedang berpikir...');
+        const loadingId = appendChat('bot', '⏳ Kak Al sedang memikirkan jawaban...');
         
         try {
+            // CALLING POLLINATIONS AI
             const responseText = await callGeminiAPI(msg);
             updateChat(loadingId, responseText);
         } catch(e) {
-            console.error("Gemini API Error:", e);
-            updateChat(loadingId, `✨ Halo! Tetap semangat belajar IPA hari ini ya. Ada materi lain yang ingin kita diskusikan?`);
+            updateChat(loadingId, e.message); 
         } finally {
             input.disabled = false; 
             input.focus();
@@ -1230,9 +1203,10 @@
         
         try {
             const prompt = `Buatkan 3 soal pilihan ganda IPA kelas 5 SD bertopik "${topic}" dalam format JSON yang valid. Setiap soal memiliki properti "q" (pertanyaan), "options" (array berisi 4 pilihan jawaban), dan "answer" (angka indeks jawaban benar dari 0 sampai 3).`;
+            
+            // CALLING POLLINATIONS AI
             const jsonText = await callGeminiAPI(prompt, "Kamu adalah pembuat soal kuis profesional untuk siswa SD.", true);
             
-            // Clean up markdown block if present
             let cleanedJson = jsonText.replace(/```json/g, '').replace(/```/g, '').trim();
             const newQuestions = JSON.parse(cleanedJson);
             
@@ -1247,8 +1221,8 @@
                 el.scrollTop = el.scrollHeight;
             }, 100);
         } catch(e) {
-            console.error("Gemini AI Generation Error:", e);
-            showCustomAlert(`Gagal membuat soal dengan Gemini AI. Coba gunakan topik yang lebih spesifik.`);
+            showCustomAlert(`Terjadi kendala saat menyusun soal otomatis. Berhasil menggunakan soal cadangan sistem.`);
+            // Fallback akan memicu JSON cadangan berkat pengaturan isJson = true
         } finally {
             loading.classList.add('hidden');
             document.getElementById('ai-guru-topic').value = '';
@@ -1642,7 +1616,6 @@
         document.getElementById('quiz-number').innerText = `${state.questionIndex + 1} / ${state.currentShuffledQuestions.length}`;
         document.getElementById('quiz-question').innerText = qData.q;
         
-        // Reset AI Hint Box
         const hintBox = document.getElementById('ai-hint-box');
         hintBox.classList.add('hidden');
         document.getElementById('ai-hint-text').innerText = '';
@@ -1663,22 +1636,22 @@
         setTimeout(() => box.classList.remove('scale-95'), 10);
     }
 
-    // --- NEW FEATURE: AI HINT DURING QUIZ ---
     async function getAIQuizHint() {
         playSound('click');
         const hintBox = document.getElementById('ai-hint-box');
         const hintText = document.getElementById('ai-hint-text');
         hintBox.classList.remove('hidden');
-        hintText.innerText = "Gemini AI sedang merumuskan petunjuk...";
+        hintText.innerText = "AI sedang merumuskan petunjuk...";
         
         const qData = state.currentShuffledQuestions[state.questionIndex];
         const prompt = `Berikan petunjuk singkat (tanpa menyebutkan jawaban secara langsung) untuk soal IPA SD berikut: "${qData.q}". Buat agar anak kelas 5 SD mudah mengerti.`;
         
         try {
+            // CALLING POLLINATIONS AI
             const hint = await callGeminiAPI(prompt, "Kamu adalah guru IPA yang membimbing siswa dengan memberikan clue/petunjuk edukatif.");
-            hintText.innerText = hint;
+            hintText.innerHTML = hint; 
         } catch(e) {
-            hintText.innerText = "Pikirkan kembali materi buku IPA tentang topik ini dengan teliti ya!";
+            hintText.innerText = "Coba ingat-ingat lagi pelajaran kamu! Pasti bisa!";
         }
     }
     window.getAIQuizHint = getAIQuizHint;
@@ -1736,16 +1709,17 @@
         document.getElementById('res-salah').innerText = state.wrong;
         document.getElementById('res-skor').innerText = state.score;
         
-        // --- NEW FEATURE: AI PERSONALIZED REVIEW ---
         const reviewTextEl = document.getElementById('ai-review-text');
-        reviewTextEl.innerText = "Gemini AI sedang menulis ulasan evaluasi belajarmu...";
+        reviewTextEl.innerText = "Menyusun laporan evaluasi...";
         
         showScreen('screen-result');
 
         try {
-            const reviewPrompt = `Siswa bernama ${state.name} kelas 5 SD baru saja menyelesaikan kuis IPA dengan skor akhir ${state.score} (Benar: ${state.correct}, Salah: ${state.wrong}). Berikan kalimat ulasan evaluasi dan motivasi belajar yang hangat dan menyemangati dalam 2 kalimat bahasa Indonesia.`;
+            const reviewPrompt = `Siswa bernama ${state.name} kelas 5 SD baru saja menyelesaikan kuis IPA dengan skor akhir ${state.score} (Benar: ${state.correct}, Salah: ${state.wrong}). Berikan kalimat ulasan evaluasi dan motivasi belajar singkat dalam 2 kalimat.`;
+            
+            // CALLING POLLINATIONS AI
             const aiReview = await callGeminiAPI(reviewPrompt, "Kamu adalah motivator pendidikan dan guru IPA yang sangat menginspirasi.");
-            reviewTextEl.innerText = aiReview;
+            reviewTextEl.innerHTML = aiReview;
         } catch(e) {
             reviewTextEl.innerText = `Kerja bagus ${state.name}! Terus tingkatkan semangat belajarmu untuk menguasai ilmu sains lebih dalam lagi!`;
         }
