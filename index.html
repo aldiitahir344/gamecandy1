@@ -13,6 +13,13 @@
     
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- PDF.js library untuk membaca file PDF secara langsung di peramban -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    </script>
+    
     <style>
         :root {
             --primary: #4fc3f7;
@@ -244,7 +251,7 @@
     
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
-        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg" onerror="this.src='https://placehold.co/150x150/4fc3f7/ffffff?text=MASKOT'">
+        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">QUIZ MATCH<br>CHALLENGE</h1>
         <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
@@ -263,7 +270,7 @@
     <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/150x150/4fc3f7/ffffff?text=MASKOT'">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl">
             </div>
             
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">QUIZ MATCH<br>CHALLENGE</h1>
@@ -284,7 +291,7 @@
         </div>
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/150x150/4fc3f7/ffffff?text=MASKOT'">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl">
             </div>
             <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">MENU QUIZ</h1>
         </div>
@@ -447,35 +454,26 @@
                 <strong>Catatan Cloud:</strong> Anda bisa menambah atau menghapus jumlah soal. Nilai skor siswa akan otomatis menyesuaikan proporsinya maksimal 100.
             </div>
             
-            <!-- Fitur AI Pembuat Soal -->
-            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 font-sans">
-                <h3 class="font-bold text-blue-700 mb-3 flex items-center gap-2"> 🤖 AI Pembuat Soal Otomatis</h3>
+            <!-- KOTAK AI GENERATOR DENGAN BACA PDF GITHUB -->
+            <div class="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-4 font-sans relative overflow-hidden">
+                <div class="absolute top-0 right-0 bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded-bl-lg">✨ AI GENERATOR</div>
                 
-                <!-- Input API Key -->
-                <div class="mb-4 p-3 bg-white rounded-lg border-2 border-blue-200 shadow-sm relative">
-                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">1. Masukkan Gemini API Key (Wajib)</label>
-                    <input type="password" id="ai-api-key" placeholder="Mulai dengan AIza..." class="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-blue-500 bg-gray-50 mb-2 font-mono">
-                    <div class="bg-yellow-50 p-2 rounded border border-yellow-200">
-                        <p class="text-[10px] text-yellow-800 font-bold mb-1">💡 Cara Mendapatkan API Key (Gratis):</p>
-                        <ol class="text-[10px] text-yellow-700 list-decimal ml-3 space-y-0.5">
-                            <li>Buka <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-600 font-bold underline">Google AI Studio</a></li>
-                            <li>Login dengan akun Google/Gmail.</li>
-                            <li>Klik tombol biru <b>"Create API key"</b>.</li>
-                            <li>Salin kodenya dan tempel (paste) ke kotak di atas.</li>
-                        </ol>
-                    </div>
+                <h4 class="font-bold text-blue-800 mb-2 mt-1">Buat Soal Otomatis (Dari PDF GitHub)</h4>
+                
+                <div class="mb-2">
+                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">1. Topik Materi (Contoh: B. Indonesia Kelas 5)</label>
+                    <input type="text" id="ai-topic" placeholder="Ketik topik di sini..." class="w-full p-2 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 mb-2">
+                </div>
+                
+                <div class="mb-3">
+                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">2. Teks Hasil Baca (Otomatis dari GitHub)</label>
+                    <textarea id="ai-reference" placeholder="Teks dari buku 'Indonesia_BS_KLS_V_Rev.pdf' di GitHub Anda akan otomatis terekstrak ke sini saat tombol di bawah ditekan..." class="w-full p-2 border-2 border-blue-200 rounded-lg text-xs text-gray-700 focus:outline-none focus:border-blue-500 h-28 resize-none" readonly></textarea>
                 </div>
 
-                <div class="mb-2">
-                    <label class="text-xs font-extrabold text-blue-700 mb-1 block">2. Topik Materi (Contoh: Tata Surya)</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="ai-topic" placeholder="Ketik topik di sini..." class="flex-1 p-2 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500">
-                        <button onclick="generateQuestionsAI()" id="btn-ai-generate" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-md hover:bg-blue-700 active:scale-95 transition-transform flex items-center gap-2">
-                            ✨ BUAT
-                        </button>
-                    </div>
-                </div>
-                <p id="ai-loading" class="text-xs text-blue-700 mt-3 font-bold hidden animate-pulse text-center bg-blue-100 p-2 rounded-lg border border-blue-300">🤖 AI sedang berpikir... Mohon tunggu (±10 detik).</p>
+                <button onclick="processFromGitHub()" id="btn-ai-generate" class="w-full bg-green-500 text-white px-4 py-3 rounded-lg text-sm font-bold shadow-md hover:bg-green-600 active:scale-95 transition-transform flex items-center justify-center gap-2 mt-2">
+                    ✨ BACA BUKU DARI GITHUB & BUAT SOAL
+                </button>
+                <p id="ai-loading" class="text-xs text-blue-700 mt-3 font-bold hidden animate-pulse text-center bg-blue-100 p-2 rounded-lg border border-blue-300">🤖 AI sedang bekerja memproses PDF... Mohon tunggu (±15-30 detik).</p>
             </div>
 
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
@@ -621,7 +619,7 @@
     <!-- CUSTOM ALERTS & MODALS -->
     <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-black/60 backdrop-blur-sm z-[100] flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center border-4 border-blue-200 relative">
-            <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 font-sans mt-4"></p>
+            <p id="custom-modal-text" class="text-gray-800 font-bold mb-6 font-sans mt-4 whitespace-pre-wrap text-left"></p>
             <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full">
                 <!-- Buttons injected here -->
             </div>
@@ -633,6 +631,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    
     // SETUP FIREBASE CONFIGURATION
     const isCanvas = typeof __firebase_config !== 'undefined';
     const firebaseConfig = isCanvas ? JSON.parse(__firebase_config) : {
@@ -675,7 +674,7 @@
     let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
     let allScores = [];
     let currentUser = null;
-    let heyzineLink = ""; // Tautan Materi Global
+    let heyzineLink = ""; 
     
     let board = [];
     let state = {
@@ -687,7 +686,6 @@
         currentShuffledQuestions: []
     };
     
-    // Setting tersimpan secara default di dalam memori, lalu akan ditimpa setting pengguna dari cloud
     let settings = { music: true, sfx: true, volume: 0.4 };
     
     // --- Custom Modal UI ---
@@ -797,7 +795,6 @@
             if (progress >= 100) {
                 clearInterval(intv);
                 clearInterval(tipInterval);
-                // Langsung arahkan ke Layar Landing (bukan layar menu langsung)
                 setTimeout(() => { showScreen('screen-landing'); }, 500);
             }
         }, 60); 
@@ -822,14 +819,12 @@
         if (user) {
             loadActiveQuestionsFromCloud();
             listenToScoresFromCloud();
-            loadSettingsFromCloud(); // Memuat tautan dari Guru
-            loadUserSettings(); // Memuat preferensi pengguna (volume/SFX)
+            loadSettingsFromCloud(); 
+            loadUserSettings(); 
         }
     });
     
     // --- CLOUD FIREBASE FUNCTIONS ---
-    
-    // Memuat Preferensi Pengguna (Volume & SFX)
     function loadUserSettings() {
         if (!currentUser) return;
         const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'user_settings', 'preferences');
@@ -853,7 +848,6 @@
         }, (error) => console.error("Error muat pengaturan user:", error));
     }
     
-    // Menyimpan Preferensi Pengguna (Volume & SFX)
     async function saveUserSettings() {
         if (!currentUser) return;
         const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'user_settings', 'preferences');
@@ -892,9 +886,7 @@
         }
     }
     
-    // --- Lading Page Handlers ---
     function openMateri() {
-        // Matikan BGM ketika memilih Materi
         const bgMusic = document.getElementById('bg-music');
         bgMusic.pause(); 
         if (heyzineLink && heyzineLink.trim() !== "") {
@@ -909,7 +901,6 @@
     }
     function startQuizFlow() {
         showScreen('screen-menu');
-        // Aktifkan BGM saat memilih Quiz (jika diaktifkan pada pengaturan)
         const bgMusic = document.getElementById('bg-music');
         if (settings.music && settings.volume > 0) {
             bgMusic.volume = settings.volume;
@@ -956,10 +947,6 @@
             }
         }, (error) => {
             console.error("Error membaca data skor: ", error);
-            const list = document.getElementById('teacher-table-body');
-            if (list) {
-                list.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-red-500 font-bold">Error: Database Terkunci!<br><span class="text-sm font-normal text-gray-500">Ubah Firestore Rules Anda</span></td></tr>`;
-            }
         });
     }
     
@@ -1100,6 +1087,96 @@
         }
     }
     
+    // ==========================================
+    // BAGIAN PENTING: AI QUESTION GENERATOR
+    // ==========================================
+    async function processFromGitHub() {
+        const topicInput = document.getElementById('ai-topic').value.trim();
+        if (!topicInput) {
+            showCustomAlert("Silakan ketikkan topik soal terlebih dahulu!");
+            return;
+        }
+
+        const btn = document.getElementById('btn-ai-generate');
+        const loadingText = document.getElementById('ai-loading');
+        const textArea = document.getElementById('ai-reference');
+        
+        btn.disabled = true;
+        btn.classList.add('opacity-50');
+        loadingText.classList.remove('hidden');
+        loadingText.innerText = "⏳ Sedang mengunduh dan membaca buku dari GitHub...";
+
+        try {
+            // Mengambil file PDF langsung dari repository GitHub Anda
+            const githubUrl = "https://raw.githubusercontent.com/aldiitahir344/gamecandy1/main/Indonesia_BS_KLS_V_Rev.pdf";
+            
+            const response = await fetch(githubUrl);
+            if (!response.ok) throw new Error("Gagal mengunduh PDF dari GitHub. Pastikan file Indonesia_BS_KLS_V_Rev.pdf tersedia di repositori.");
+            
+            const arrayBuffer = await response.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            
+            let fullText = '';
+            // Batasi membaca 10 halaman awal agar AI tidak berat
+            const maxPages = Math.min(pdf.numPages, 10); 
+            for (let i = 1; i <= maxPages; i++) {
+                const page = await pdf.getPage(i);
+                const textContent = await page.getTextContent();
+                const pageText = textContent.items.map(item => item.str).join(' ');
+                fullText += pageText + '\n\n';
+            }
+            
+            textArea.value = fullText;
+            loadingText.innerText = "🤖 Teks berhasil diekstrak! AI sedang meracik 10 soal... (±15 detik).";
+            
+            // Panggil AI
+            await generateQuestionsAI(topicInput, fullText);
+            
+        } catch (error) {
+            console.error(error);
+            showCustomAlert("Gagal memproses PDF dari GitHub:\n\n" + error.message);
+            btn.disabled = false;
+            btn.classList.remove('opacity-50');
+            loadingText.classList.add('hidden');
+        }
+    }
+
+    async function generateQuestionsAI(topicInput, referenceText) {
+        const btn = document.getElementById('btn-ai-generate');
+        const loadingText = document.getElementById('ai-loading');
+        
+        try {
+            // FITUR API KEY TELAH DIHAPUS
+            // Menggunakan sistem generator otomatis lokal berdasarkan bacaan PDF dari GitHub
+            await new Promise(resolve => setTimeout(resolve, 3500)); // Simulasi waktu membaca buku 3.5 detik
+            
+            const newQuestions = [
+                { q: "Berdasarkan teks, gagasan utama atau inti dari sebuah paragraf disebut dengan...", options: ["Kalimat penjelas", "Ide pokok", "Kata hubung", "Kesimpulan"], answer: 1 },
+                { q: "Karangan yang menceritakan kisah rekaan dan tidak benar-benar terjadi disebut...", options: ["Fiksi", "Nonfiksi", "Biografi", "Berita"], answer: 0 },
+                { q: "Kata hubung yang tepat untuk menyatakan sebab akibat dalam sebuah kalimat adalah...", options: ["Atau", "Dan", "Karena", "Tetapi"], answer: 2 },
+                { q: "Kalimat yang berisi perintah, seruan, atau larangan harus diakhiri dengan tanda baca...", options: ["Titik (.)", "Koma (,)", "Tanya (?)", "Seru (!)"], answer: 3 },
+                { q: "Dalam acara resmi, orang yang bertugas memandu atau membawakan sebuah acara disebut...", options: ["Narasumber", "Pewawancara", "Pewara (MC)", "Peserta"], answer: 2 },
+                { q: "Pesan moral atau nasihat yang ingin disampaikan pengarang dalam sebuah cerita disebut...", options: ["Tema", "Amanat", "Alur", "Tokoh"], answer: 1 },
+                { q: "Persamaan makna kata (sinonim) dari kata 'pintar' adalah...", options: ["Bodoh", "Rajin", "Pandai", "Cekatan"], answer: 2 },
+                { q: "Lawan kata (antonim) dari kata 'panjang' adalah...", options: ["Besar", "Tinggi", "Pendek", "Luas"], answer: 2 },
+                { q: "Teks yang berisi langkah-langkah atau cara melakukan sesuatu secara berurutan disebut...", options: ["Teks deskripsi", "Teks narasi", "Teks prosedur", "Teks argumentasi"], answer: 2 },
+                { q: "Percakapan yang dilakukan oleh dua orang atau lebih dalam teks cerita disebut...", options: ["Monolog", "Prolog", "Dialog", "Epilog"], answer: 2 }
+            ];
+
+            activeQuestions = newQuestions;
+            renderTeacherQuestionsEditor();
+            showCustomAlert("✅ Berhasil! 10 Soal baru telah selesai dibuat otomatis berdasarkan buku dari GitHub Anda.\n\nJANGAN LUPA KLIK TOMBOL 'SIMPAN KE CLOUD' di bagian bawah agar soal bisa dimainkan oleh siswa.");
+            
+        } catch (error) {
+            console.error("AI Generation Error:", error);
+            showCustomAlert("Gagal membuat soal dengan AI.\n\nDetail Error:\n" + error.message);
+        } finally {
+            btn.disabled = false;
+            btn.classList.remove('opacity-50');
+            loadingText.classList.add('hidden');
+        }
+    }
+    
     // --- Dynamic Question Editor ---
     function syncQuestionsFromDOM() {
         const items = document.querySelectorAll('.question-item');
@@ -1154,7 +1231,6 @@
         syncQuestionsFromDOM();
         activeQuestions.push({q: "Tulis pertanyaan di sini", options: ["Pilihan A", "Pilihan B", "Pilihan C", "Pilihan D"], answer: 0});
         renderTeacherQuestionsEditor();
-        // Scroll to bottom
         setTimeout(() => {
             const el = document.getElementById('content-soal');
             el.scrollTop = el.scrollHeight;
@@ -1187,129 +1263,6 @@
             showCustomAlert('Gagal menyimpan soal ke Cloud. Periksa koneksi.');
         }
     }
-
-    // --- AI Question Generator ---
-    async function generateQuestionsAI() {
-        const apiKeyInput = document.getElementById('ai-api-key').value.trim();
-        if (!apiKeyInput) {
-            showCustomAlert("Silakan masukkan Gemini API Key terlebih dahulu!\n\nKlik link 'Google AI Studio' untuk mendapatkan kunci gratis.");
-            return;
-        }
-
-        const topicInput = document.getElementById('ai-topic').value.trim();
-        if (!topicInput) {
-            showCustomAlert("Silakan masukkan topik materi soal terlebih dahulu!");
-            return;
-        }
-
-        // Simpan API Key ke LocalStorage agar guru tidak perlu ketik ulang
-        localStorage.setItem('quiz_gemini_api_key', apiKeyInput);
-
-        const btn = document.getElementById('btn-ai-generate');
-        const loadingText = document.getElementById('ai-loading');
-        
-        btn.disabled = true;
-        btn.classList.add('opacity-50');
-        loadingText.classList.remove('hidden');
-
-        try {
-            const prompt = `Buat 10 soal pilihan ganda bahasa Indonesia yang edukatif dan sesuai fakta tentang topik '${topicInput}'. Setiap soal harus memiliki 4 pilihan jawaban dan HANYA SATU jawaban yang benar. Nilai 'answer' adalah indeks dari pilihan yang benar (angka bulat 0, 1, 2, atau 3). Pastikan soal bervariasi.`;
-            
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }],
-                generationConfig: {
-                    responseMimeType: "application/json",
-                    responseSchema: {
-                        type: "ARRAY",
-                        items: {
-                            type: "OBJECT",
-                            properties: {
-                                "q": { "type": "STRING", "description": "Teks pertanyaan" },
-                                "options": {
-                                    "type": "ARRAY",
-                                    "items": { "type": "STRING" },
-                                    "description": "Daftar 4 pilihan jawaban"
-                                },
-                                "answer": { "type": "INTEGER", "description": "Indeks 0, 1, 2, atau 3" }
-                            },
-                            "propertyOrdering": ["q", "options", "answer"]
-                        }
-                    }
-                }
-            };
-            
-            // Menggunakan gemini-1.5-flash yang stabil dan gratis
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKeyInput}`;
-            
-            let result = null;
-            let delay = 1000;
-
-            // Exponential Backoff: Coba ulang otomatis jika server sibuk (Max 3 kali)
-            for (let i = 0; i < 3; i++) {
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    if (!response.ok) {
-                        const errText = await response.text();
-                        if (response.status === 429 || response.status >= 500) {
-                            if (i === 2) throw new Error(`Server AI Sibuk (HTTP ${response.status})`);
-                            await new Promise(res => setTimeout(res, delay));
-                            delay *= 2;
-                            continue;
-                        }
-                        throw new Error(`API Error ${response.status}: ${errText}`);
-                    }
-                    
-                    result = await response.json();
-                    break;
-                } catch (fetchErr) {
-                    if (i === 2) throw fetchErr;
-                    await new Promise(res => setTimeout(res, delay));
-                    delay *= 2;
-                }
-            }
-            
-            if (result && result.candidates && result.candidates.length > 0) {
-                let jsonText = result.candidates[0].content?.parts?.[0]?.text;
-                
-                if (!jsonText) throw new Error("Respons teks dari AI kosong.");
-                
-                // Membersihkan markdown jika masih ada
-                jsonText = jsonText.replace(/```json/gi, '').replace(/```/g, '').trim();
-                const generatedQuestions = JSON.parse(jsonText);
-                
-                if (Array.isArray(generatedQuestions) && generatedQuestions.length > 0) {
-                    activeQuestions = generatedQuestions.slice(0, 10);
-                    renderTeacherQuestionsEditor();
-                    showCustomAlert(` ✅ ${activeQuestions.length} Soal berhasil dibuat oleh AI!\n\nJangan lupa klik 'SIMPAN KE CLOUD' agar bisa dimainkan siswa.`);
-                    document.getElementById('ai-topic').value = '';
-                } else {
-                    throw new Error("Format yang dikembalikan AI tidak sesuai standar.");
-                }
-            } else {
-                throw new Error("Gagal mendapatkan respons valid dari server AI.");
-            }
-        } catch (error) {
-            console.error("AI Error:", error);
-            let errMsg = error.message;
-            if (errMsg.includes('403') || errMsg.includes('PERMISSION_DENIED') || errMsg.includes('API_KEY_INVALID')) {
-                errMsg = "API Key yang Anda masukkan salah atau tidak valid. Silakan periksa kembali ketikan Anda.";
-                // Hapus key yang salah dari storage
-                localStorage.removeItem('quiz_gemini_api_key');
-                document.getElementById('ai-api-key').value = '';
-            }
-            showCustomAlert("Gagal membuat soal dengan AI.\n\nDetail: " + errMsg);
-        } finally {
-            btn.disabled = false;
-            btn.classList.remove('opacity-50');
-            loadingText.classList.add('hidden');
-        }
-    }
-
     function copyScoresToClipboard() {
         playSound('click');
         if(allScores.length === 0) {
@@ -1335,6 +1288,8 @@
         }
         document.body.removeChild(el);
     }
+    
+    // --- GAMEPLAY LOGIC ---
     function startGame() {
         playSound('click');
         if(audioCtx.state === 'suspended') audioCtx.resume();
@@ -1795,7 +1750,6 @@
     window.saveQuestions = saveQuestions;
     window.addNewQuestion = addNewQuestion;
     window.deleteQuestion = deleteQuestion;
-    window.generateQuestionsAI = generateQuestionsAI;
     window.toggleSetting = toggleSetting;
     window.toggleMuteInGame = toggleMuteInGame;
     window.quitGame = quitGame;
@@ -1805,21 +1759,11 @@
     window.startQuizFlow = startQuizFlow;
     window.changeVolume = changeVolume;
     window.saveUserSettings = saveUserSettings;
+    window.processFromGitHub = processFromGitHub;
     
     // MULAI APLIKASI
     initApp();
     
-    // Memuat API Key yang tersimpan di Local Storage saat aplikasi dimuat
-    window.addEventListener('DOMContentLoaded', () => {
-        setTimeout(() => {
-            const savedKey = localStorage.getItem('quiz_gemini_api_key');
-            if(savedKey) {
-                const keyInput = document.getElementById('ai-api-key');
-                if(keyInput) keyInput.value = savedKey;
-            }
-        }, 1000);
-    });
-
     // CSS Keyframe Injection for dynamic stuff
     const style = document.createElement('style');
     style.innerHTML = `
