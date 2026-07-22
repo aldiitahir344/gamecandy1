@@ -122,7 +122,6 @@
         .btn-primary:active {
             box-shadow: 0 2px 0 #f472b6, 0 5px 5px -3px rgba(0,0,0,0.1);
         }
-
         .btn-materi {
             background: linear-gradient(135deg, #a7f3d0 0%, #34d399 100%);
             color: #064e3b;
@@ -245,7 +244,7 @@
     
     <!-- SCREEN: LOADING -->
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
-        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg">
+        <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg" onerror="this.src='https://placehold.co/150x150/4fc3f7/ffffff?text=MASKOT'">
         
         <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">QUIZ MATCH<br>CHALLENGE</h1>
         <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
@@ -260,12 +259,11 @@
             <p id="loading-tip" class="text-sm font-semibold text-gray-700 transition-opacity duration-300">Memuat permainan...</p>
         </div>
     </section>
-
     <!-- SCREEN: LANDING PAGE -->
     <section id="screen-landing" class="screen justify-start items-center py-8">
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/150x150/4fc3f7/ffffff?text=MASKOT'">
             </div>
             
             <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">QUIZ MATCH<br>CHALLENGE</h1>
@@ -278,17 +276,15 @@
             <button class="btn-custom btn-primary" onclick="startQuizFlow(); playSound('click')"> 🎮 QUIZ</button>
         </div>
     </section>
-
     <!-- SCREEN: MAIN MENU -->
     <section id="screen-menu" class="screen justify-start items-center py-8">
         <!-- Tombol Kembali ke Landing Page -->
         <div class="absolute top-4 left-4 z-50">
             <button class="text-gray-400 hover:text-gray-600 text-2xl bg-white/50 w-10 h-10 rounded-full flex justify-center items-center backdrop-blur shadow-sm border border-gray-200" onclick="showScreen('screen-landing'); playSound('click')"> ⬅ </button>
         </div>
-
         <div class="text-center mb-6 animation-pop-in mt-auto">
             <div class="mb-2 inline-block" style="animation: bounce-soft 2s infinite;">
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl">
+                <img src="MASKOT.png" alt="Maskot Menu" class="h-32 mx-auto drop-shadow-xl" onerror="this.src='https://placehold.co/150x150/4fc3f7/ffffff?text=MASKOT'">
             </div>
             <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">MENU QUIZ</h1>
         </div>
@@ -367,7 +363,6 @@
                 <!-- SLIDER VOLUME MUSIK -->
                 <input type="range" id="music-volume" min="0" max="100" value="40" class="w-full mt-1 accent-green-500" oninput="changeVolume(this.value)" onchange="saveUserSettings()">
             </div>
-
             <div class="flex justify-between items-center bg-white p-3 rounded-xl mb-3 shadow-sm">
                 <span class="font-bold text-gray-600"> 🔊  Efek Suara</span>
                 <button id="toggle-sfx" class="w-12 h-6 bg-green-400 rounded-full relative transition-colors duration-300" onclick="toggleSetting('sfx')">
@@ -452,6 +447,19 @@
                 <strong>Catatan Cloud:</strong> Anda bisa menambah atau menghapus jumlah soal. Nilai skor siswa akan otomatis menyesuaikan proporsinya maksimal 100.
             </div>
             
+            <!-- Fitur AI Pembuat Soal -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4 font-sans">
+                <h3 class="font-bold text-blue-700 mb-2 flex items-center gap-2"> 🤖 AI Pembuat Soal (10 Nomer)</h3>
+                <p class="text-xs text-blue-600 mb-3">Masukkan topik materi untuk membuat 10 soal otomatis dengan bantuan AI.</p>
+                <div class="flex gap-2">
+                    <input type="text" id="ai-topic" placeholder="Contoh: Tata Surya, Fotosintesis..." class="flex-1 p-2 border border-blue-300 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                    <button onclick="generateQuestionsAI()" id="btn-ai-generate" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow hover:bg-blue-700 active:scale-95 transition-transform flex items-center gap-2">
+                        ✨ Buat
+                    </button>
+                </div>
+                <p id="ai-loading" class="text-xs text-blue-500 mt-2 font-bold hidden animate-pulse">AI sedang berpikir... Mohon tunggu sebentar (±10 detik).</p>
+            </div>
+
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
                 <!-- Injected via JS -->
             </div>
@@ -460,7 +468,6 @@
                 <button class="w-2/3 bg-purple-600 text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition-transform text-sm" onclick="saveQuestions()"> 💾  SIMPAN KE CLOUD</button>
             </div>
         </div>
-
         <!-- TAB MATERI -->
         <div id="content-materi" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-200 font-sans">
@@ -603,7 +610,6 @@
         </div>
     </div>
 </div>
-
 <!-- FIREBASE SDK & APP LOGIC -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -839,7 +845,6 @@
             console.error("Gagal menyimpan pengaturan", e);
         }
     }
-
     function loadSettingsFromCloud() {
         if (!currentUser) return;
         const docRef = doc(db, getQuestionsCollectionPath(), 'app_settings');
@@ -874,7 +879,6 @@
         // Matikan BGM ketika memilih Materi
         const bgMusic = document.getElementById('bg-music');
         bgMusic.pause(); 
-
         if (heyzineLink && heyzineLink.trim() !== "") {
             let finalLink = heyzineLink.trim();
             if (!finalLink.startsWith('http://') && !finalLink.startsWith('https://')) {
@@ -885,7 +889,6 @@
             showCustomAlert("Tautan materi belum ditambahkan oleh Guru. Silakan hubungi Guru Anda.");
         }
     }
-
     function startQuizFlow() {
         showScreen('screen-menu');
         // Aktifkan BGM saat memilih Quiz (jika diaktifkan pada pengaturan)
@@ -958,7 +961,6 @@
             bgMusic.pause();
         }
     }
-
     function toggleSetting(type) {
         settings[type] = !settings[type];
         updateSettingsUI();
@@ -1167,6 +1169,70 @@
             showCustomAlert('Gagal menyimpan soal ke Cloud. Periksa koneksi.');
         }
     }
+
+    // --- AI Question Generator ---
+    async function generateQuestionsAI() {
+        const topicInput = document.getElementById('ai-topic').value.trim();
+        if (!topicInput) {
+            showCustomAlert("Silakan masukkan topik materi soal terlebih dahulu!");
+            return;
+        }
+
+        const btn = document.getElementById('btn-ai-generate');
+        const loadingText = document.getElementById('ai-loading');
+        
+        btn.disabled = true;
+        btn.classList.add('opacity-50');
+        loadingText.classList.remove('hidden');
+
+        try {
+            const prompt = `Buat 10 soal pilihan ganda bahasa Indonesia tentang topik '${topicInput}'. Setiap soal harus memiliki 4 pilihan dan satu jawaban yang benar. Format hasil WAJIB dalam format JSON murni array of objects dengan struktur persis seperti ini: [{"q": "Pertanyaan", "options": ["Pilihan 0", "Pilihan 1", "Pilihan 2", "Pilihan 3"], "answer": 0}]. 'answer' adalah indeks dari jawaban yang benar (0, 1, 2, atau 3). Hanya kembalikan array JSON murni tanpa markdown \`\`\`json.`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: {
+                    responseMimeType: "application/json"
+                }
+            };
+            
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            
+            const result = await response.json();
+            
+            if (result.candidates && result.candidates.length > 0) {
+                let jsonText = result.candidates[0].content.parts[0].text;
+                jsonText = jsonText.replace(/```json/g, '').replace(/```/g, '').trim();
+                
+                const generatedQuestions = JSON.parse(jsonText);
+                
+                if (Array.isArray(generatedQuestions) && generatedQuestions.length === 10) {
+                    activeQuestions = generatedQuestions;
+                    renderTeacherQuestionsEditor();
+                    showCustomAlert(" ✅ 10 Soal berhasil dibuat oleh AI!\n\nJangan lupa klik 'SIMPAN KE CLOUD' agar bisa dimainkan siswa.");
+                    document.getElementById('ai-topic').value = '';
+                } else {
+                    throw new Error("Format JSON tidak sesuai atau soal tidak berjumlah 10");
+                }
+            } else {
+                throw new Error("Gagal mendapatkan respons dari AI");
+            }
+        } catch (error) {
+            console.error("AI Error:", error);
+            showCustomAlert("Gagal membuat soal dengan AI. Silakan coba lagi.");
+        } finally {
+            btn.disabled = false;
+            btn.classList.remove('opacity-50');
+            loadingText.classList.add('hidden');
+        }
+    }
+
     function copyScoresToClipboard() {
         playSound('click');
         if(allScores.length === 0) {
@@ -1652,6 +1718,7 @@
     window.saveQuestions = saveQuestions;
     window.addNewQuestion = addNewQuestion;
     window.deleteQuestion = deleteQuestion;
+    window.generateQuestionsAI = generateQuestionsAI;
     window.toggleSetting = toggleSetting;
     window.toggleMuteInGame = toggleMuteInGame;
     window.quitGame = quitGame;
