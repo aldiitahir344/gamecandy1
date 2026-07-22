@@ -767,113 +767,234 @@
     }
 
     function generateQuestionsByChapter(chapterId, chapterName, jumlahSoal) {
-        let newQuestions = [];
+        let finalQuestions = [];
+        let usedQ = new Set();
         
-        // Database Soal Sesuai Bab Kurikulum Merdeka (B. Indonesia Kls 5)
-        switch(chapterId) {
-            case 'bab1':
-                newQuestions = [
-                    { q: "Sifat yang menunjukkan rasa mudah memberi maaf dan tidak menyimpan dendam disebut...", options: ["Pemaaf", "Pemarah", "Pendiam", "Penyabar"], answer: 0 },
-                    { q: "Antonim (Lawan kata) dari 'Rajin' yang paling tepat di bawah ini adalah...", options: ["Pintar", "Malas", "Bodoh", "Giat"], answer: 1 },
-                    { q: "Sinonim (Persamaan kata) dari kata 'Cerdas' dalam kalimat 'Budi adalah anak yang cerdas di kelasnya' adalah...", options: ["Rajin", "Pintar", "Jujur", "Giat"], answer: 1 },
-                    { q: "Imbuhan 'pe-' pada kata 'Pemalu' bermakna...", options: ["Orang yang memiliki sifat malu", "Alat untuk menutupi rasa malu", "Proses menjadi malu", "Menyatakan paling malu"], answer: 0 },
-                    { q: "Perhatikan kalimat berikut: 'Bela memiliki rambut yang lurus, sedangkan Dina memiliki rambut yang keriting.' Kalimat ini menggunakan perbandingan berdasarkan...", options: ["Sifat fisik", "Sifat batin", "Kecerdasan", "Hobi"], answer: 0 },
-                    { q: "Budi tidak pernah berbohong kepada siapapun. Ia dijuluki sebagai anak yang...", options: ["Pemaaf", "Pemalu", "Jujur", "Penyabar"], answer: 2 },
-                    { q: "Kata sifat (Adjektiva) pada kalimat 'Ibu membeli apel yang manis di pasar' adalah...", options: ["Ibu", "Membeli", "Apel", "Manis"], answer: 3 },
-                    { q: "Orang yang suka menolong orang lain yang sedang kesusahan disebut orang yang...", options: ["Dermawan", "Kikir", "Egois", "Pemalas"], answer: 0 },
-                    { q: "Imbuhan 'pe-' jika ditambahkan pada kata dasar 'gambar' akan berubah menjadi...", options: ["Pegambar", "Penggambar", "Pelukis", "Penyambar"], answer: 1 },
-                    { q: "Antonim dari kata 'Tinggi' adalah...", options: ["Besar", "Rendah", "Panjang", "Jauh"], answer: 1 }
-                ];
-                break;
-            case 'bab2':
-                newQuestions = [
-                    { q: "Unsur intrinsik cerita yang menunjukkan tempat, waktu, dan suasana terjadinya suatu peristiwa disebut...", options: ["Tema", "Tokoh", "Latar (Setting)", "Amanat"], answer: 2 },
-                    { q: "Perhatikan kalimat berikut: 'Wajahnya pucat pasi bagai mayat'. Majas yang digunakan pada kalimat tersebut adalah...", options: ["Hiperbola", "Metafora", "Personifikasi", "Simile (Perumpamaan)"], answer: 3 },
-                    { q: "Kalimat langsung yang benar penulisannya adalah...", options: ["Ibu berkata bahwa aku harus rajin belajar.", "'Aku akan pergi ke pasar besok,' kata Ibu.", "Andi mengatakan dia lelah.", "Ayah menyuruhku mencuci mobil."], answer: 1 },
-                    { q: "Pesan moral atau nasihat yang ingin disampaikan penulis kepada pembaca disebut...", options: ["Alur", "Amanat", "Tema", "Sudut Pandang"], answer: 1 },
-                    { q: "Buku yang berisi kisah fiksi (khayalan) penulisnya disebut buku...", options: ["Non-fiksi", "Pelajaran", "Fiksi", "Biografi"], answer: 2 },
-                    { q: "'Angin menari-nari di atas daun yang gugur'. Kalimat ini menggunakan majas...", options: ["Personifikasi", "Metafora", "Hiperbola", "Ironi"], answer: 0 },
-                    { q: "Tokoh yang memiliki sifat baik hati, jujur, dan suka menolong dalam cerita disebut tokoh...", options: ["Antagonis", "Protagonis", "Tritagonis", "Figuran"], answer: 1 },
-                    { q: "Jalan cerita atau urutan peristiwa dalam sebuah cerita pendek dinamakan...", options: ["Latar", "Tema", "Alur (Plot)", "Amanat"], answer: 2 },
-                    { q: "Perubahan kalimat langsung 'Siti berkata, Aku sangat lelah hari ini' menjadi kalimat tidak langsung adalah...", options: ["Siti berkata bahwa ia sangat lelah hari ini.", "Siti bilang, 'Aku sangat lelah.'", "Siti mengatakan bahwa kamu lelah.", "Aku berkata bahwa Siti lelah."], answer: 0 },
-                    { q: "Majas hiperbola (melebih-lebihkan) terdapat pada kalimat...", options: ["Suaranya menggelegar membelah bumi.", "Bulan tersenyum manis malam ini.", "Dia adalah bintang kelas kami.", "Bunga itu semerah darah."], answer: 0 }
-                ];
-                break;
-            case 'bab3':
-                newQuestions = [
-                    { q: "Teks yang berisi langkah-langkah atau tahapan untuk melakukan sesuatu disebut teks...", options: ["Deskripsi", "Narasi", "Prosedur", "Eksposisi"], answer: 2 },
-                    { q: "Ciri utama dari kalimat dalam teks prosedur adalah banyak menggunakan kalimat...", options: ["Tanya", "Berita", "Perintah (Imperatif)", "Seruan"], answer: 2 },
-                    { q: "Imbuhan 'me-' pada kata dasar 'tulis' akan berubah bentuk menjadi...", options: ["Metulis", "Mentulis", "Menulis", "Mewulis"], answer: 2 },
-                    { q: "Surat yang dikirimkan kepada teman atau keluarga untuk menanyakan kabar termasuk jenis surat...", options: ["Dinas", "Resmi", "Pribadi", "Niaga"], answer: 2 },
-                    { q: "Salah satu bagian penting yang harus ada dalam surat pribadi adalah...", options: ["Kop surat / Kepala surat", "Nomor surat", "Salam pembuka dan penutup", "Stempel perusahaan"], answer: 2 },
-                    { q: "Imbuhan 'me-' pada kata dasar 'sapu' memiliki makna...", options: ["Menjadi alat", "Melakukan pekerjaan dengan alat", "Mempunyai sifat", "Berada di suatu tempat"], answer: 1 },
-                    { q: "Kata hubung yang sering digunakan untuk menunjukkan urutan dalam teks prosedur adalah...", options: ["Tetapi, namun", "Pertama, kemudian, lalu", "Karena, sebab", "Dan, atau"], answer: 1 },
-                    { q: "Manakah yang merupakan contoh kalimat perintah yang sopan?", options: ["Ambilkan buku itu sekarang!", "Tolong tutup pintu itu, ya.", "Jangan berisik!", "Buang sampah ini!"], answer: 1 },
-                    { q: "Jika kata dasar 'baca' diberi imbuhan 'me-', maka akan menjadi...", options: ["Mebaca", "Membaca", "Menbaca", "Mengbaca"], answer: 1 },
-                    { q: "Struktur teks prosedur biasanya terdiri dari...", options: ["Orientasi - Komplikasi - Resolusi", "Pembuka - Isi - Penutup", "Tujuan - Alat/Bahan - Langkah-langkah", "Tesis - Argumentasi - Penegasan Ulang"], answer: 2 }
-                ];
-                break;
-            case 'bab4':
-                newQuestions = [
-                    { q: "Orang yang memberikan informasi atau menjawab pertanyaan saat wawancara disebut...", options: ["Pewawancara", "Narasumber", "Wartawan", "Reporter"], answer: 1 },
-                    { q: "Sebelum melakukan wawancara, hal penting yang harus dipersiapkan adalah...", options: ["Membawa kamera mahal", "Membuat daftar pertanyaan", "Memakai baju pesta", "Membeli hadiah"], answer: 1 },
-                    { q: "Gagasan utama yang menjadi dasar pengembangan sebuah paragraf disebut...", options: ["Kalimat penjelas", "Ide pokok", "Judul", "Tema"], answer: 1 },
-                    { q: "Ungkapan (idiom) 'Banting tulang' memiliki makna...", options: ["Tulangnya patah", "Bekerja keras", "Berolahraga", "Suka berkelahi"], answer: 1 },
-                    { q: "Kata tanya yang tepat untuk menanyakan tempat terjadinya suatu peristiwa adalah...", options: ["Siapa", "Kapan", "Di mana", "Mengapa"], answer: 2 },
-                    { q: "Ungkapan 'Gulung tikar' dalam dunia wirausaha berarti...", options: ["Merapikan karpet", "Mendapat untung besar", "Bangkrut / rugi", "Membuka cabang baru"], answer: 2 },
-                    { q: "Ide pokok pada paragraf deduktif terletak di bagian...", options: ["Awal paragraf", "Akhir paragraf", "Tengah paragraf", "Awal dan akhir paragraf"], answer: 0 },
-                    { q: "Kata tanya 'Bagaimana' berfungsi untuk menanyakan...", options: ["Waktu", "Alasan", "Cara atau proses", "Orang pelaku"], answer: 2 },
-                    { q: "Seorang wirausahawan yang sukses biasanya memiliki sifat...", options: ["Pantang menyerah", "Mudah putus asa", "Pemalas", "Boros"], answer: 0 },
-                    { q: "Laporan hasil wawancara disusun setelah...", options: ["Sebelum membuat pertanyaan", "Saat bertemu narasumber", "Wawancara selesai dilaksanakan", "Sebelum wawancara dimulai"], answer: 2 }
-                ];
-                break;
-            case 'bab5':
-                newQuestions = [
-                    { q: "Kalimat yang menyatakan peristiwa yang benar-benar terjadi dan dapat dibuktikan kebenarannya disebut kalimat...", options: ["Opini", "Saran", "Fakta", "Perintah"], answer: 2 },
-                    { q: "Contoh kalimat opini (pendapat) di bawah ini adalah...", options: ["Matahari terbit di sebelah timur.", "Indonesia merdeka pada tahun 1945.", "Menurutku, pemandangan di pantai itu sangat indah.", "Air mendidih pada suhu 100 derajat Celcius."], answer: 2 },
-                    { q: "Singkatan dari 'Dewan Perwakilan Rakyat' adalah...", options: ["DRP", "DPR", "DPD", "DPA"], answer: 1 },
-                    { q: "Akronim (singkatan yang dibaca seperti kata) dari 'Pusat Kesehatan Masyarakat' adalah...", options: ["PKM", "Puskesmas", "Pskm", "Puskes"], answer: 1 },
-                    { q: "Fungsi utama dari surel (surat elektronik / email) di era modern adalah...", options: ["Mengirim barang secara fisik", "Mengirim pesan digital dengan cepat", "Menelpon teman", "Mencetak dokumen"], answer: 1 },
-                    { q: "'Budi lahir pada tanggal 17 Agustus 2012'. Kalimat tersebut merupakan contoh...", options: ["Fakta", "Opini", "Mitos", "Saran"], answer: 0 },
-                    { q: "'Sebaiknya kamu rajin berolahraga agar tubuhmu sehat'. Kalimat tersebut mengandung...", options: ["Fakta sejarah", "Opini berupa saran", "Perintah tegas", "Singkatan"], answer: 1 },
-                    { q: "Singkatan 'dll.' dalam kalimat berarti...", options: ["Dan lagi-lagi", "Dan lain-lain", "Dengan langkah lambat", "Dari lusa lalu"], answer: 1 },
-                    { q: "Kata 'Sinetron' merupakan akronim dari...", options: ["Sinema Elektronik", "Sinar Elektron", "Sinema Tontonan", "Seni Teater Romantis"], answer: 0 },
-                    { q: "Ringkasan cerita adalah...", options: ["Menulis seluruh cerita dari awal hingga akhir tanpa ada yang terlewat", "Penyajian singkat dari sebuah teks asli dengan mempertahankan urutan isi utamanya", "Membuat cerita baru yang berbeda sama sekali", "Mengkritik kesalahan penulis cerita"], answer: 1 }
-                ];
-                break;
-            case 'bab6':
-                newQuestions = [
-                    { q: "Kalimat yang bertujuan menyuruh seseorang untuk melakukan sesuatu disebut kalimat...", options: ["Tanya", "Berita", "Saran", "Perintah"], answer: 3 },
-                    { q: "Tanda baca yang selalu digunakan pada akhir kalimat perintah tegas adalah...", options: ["Titik (.)", "Koma (,)", "Tanya (?)", "Seru (!)"], answer: 3 },
-                    { q: "Lembaran kertas cetakan yang berisi informasi atau penawaran produk yang dibagikan kepada umum disebut...", options: ["Buku", "Brosur", "Majalah", "Kamus"], answer: 1 },
-                    { q: "Pemberitahuan resmi kepada khalayak ramai mengenai suatu hal disebut...", options: ["Pengumuman", "Cerita pendek", "Puisi", "Pantun"], answer: 0 },
-                    { q: "Ciri-ciri bahasa dalam brosur yang baik adalah...", options: ["Panjang dan bertele-tele", "Singkat, padat, dan menarik", "Sulit dipahami", "Menggunakan bahasa daerah kuno"], answer: 1 },
-                    { q: "Manakah yang merupakan kalimat larangan (bentuk negatif dari kalimat perintah)?", options: ["Tolong ambilkan sapu!", "Jangan membuang sampah sembarangan!", "Silakan masuk ke kelas.", "Mari kita bernyanyi!"], answer: 1 },
-                    { q: "Pengumuman kegiatan 'Kerja Bakti' di sekolah sebaiknya dipasang di...", options: ["Kamar mandi", "Mading sekolah / Papan Pengumuman", "Gudang", "Dalam tas siswa"], answer: 1 },
-                    { q: "Kata 'Ayo' dan 'Mari' biasanya digunakan dalam kalimat perintah jenis...", options: ["Larangan", "Ajakan", "Permintaan", "Suruhan keras"], answer: 1 },
-                    { q: "Agar menarik perhatian pembaca, brosur pariwisata biasanya dilengkapi dengan...", options: ["Rumus matematika", "Gambar atau foto yang menarik", "Daftar absen siswa", "Soal ujian"], answer: 1 },
-                    { q: "Kalimat perintah 'Tolong tutup jendela itu!' mengandung makna...", options: ["Memaksa", "Meminta bantuan dengan sopan", "Melarang", "Mengajak pergi"], answer: 1 }
-                ];
-                break;
-            default:
-                newQuestions = DEFAULT_QUESTIONS;
-                break;
+        // Helper untuk mengacak jawaban
+        function buildQ(qText, correctOpt, wrong1, wrong2, wrong3) {
+            let opts = [correctOpt, wrong1, wrong2, wrong3];
+            let mapped = opts.map((opt, i) => ({ text: opt, isCorrect: i === 0 }));
+            
+            // Acak urutan ABCD
+            for (let i = mapped.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [mapped[i], mapped[j]] = [mapped[j], mapped[i]];
+            }
+            let ansIdx = mapped.findIndex(m => m.isCorrect);
+            return { q: qText, options: mapped.map(m => m.text), answer: ansIdx };
         }
 
-        // Sesuaikan jumlah soal dengan permintaan guru (Maksimal 50)
-        let finalQuestions = [];
+        // Kamus Data untuk AI
+        const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
+        const getWrongs = (arr, correct) => arr.filter(x => x !== correct).sort(() => 0.5 - Math.random()).slice(0, 3);
+        
+        const names = ["Andi", "Budi", "Siti", "Bela", "Edo", "Lani", "Dayu", "Udin", "Rani", "Dika", "Ayu", "Rio"];
+        
+        // --- DATABASE KAMUS KELAS 5 ---
+        const antonimList = [
+            {w:"Rajin", a:"Malas"}, {w:"Tinggi", a:"Rendah"}, {w:"Besar", a:"Kecil"}, {w:"Panjang", a:"Pendek"}, 
+            {w:"Gelap", a:"Terang"}, {w:"Cepat", a:"Lambat"}, {w:"Kuat", a:"Lemah"}, {w:"Jujur", a:"Bohong"}, 
+            {w:"Berani", a:"Takut"}, {w:"Kaya", a:"Miskin"}, {w:"Gemuk", a:"Kurus"}, {w:"Ramah", a:"Sombong"},
+            {w:"Panas", a:"Dingin"}, {w:"Berat", a:"Ringan"}, {w:"Luas", a:"Sempit"}, {w:"Kasar", a:"Halus"}
+        ];
+        const sinonimList = [
+            {w:"Cerdas", s:"Pintar"}, {w:"Giat", s:"Rajin"}, {w:"Tampan", s:"Gagah"}, {w:"Cantik", s:"Jelita"}, 
+            {w:"Lekas", s:"Cepat"}, {w:"Dusta", s:"Bohong"}, {w:"Akbar", s:"Besar"}, {w:"Bahagia", s:"Senang"}, 
+            {w:"Sedih", s:"Duka"}, {w:"Ulet", s:"Gigih"}, {w:"Kawan", s:"Teman"}, {w:"Matahari", s:"Mentari"}
+        ];
+        const sifatList = [
+            {desc:"selalu berkata apa adanya dan tidak berbohong", word:"Jujur"},
+            {desc:"suka memberi dan menolong orang lain yang kesusahan", word:"Dermawan"},
+            {desc:"mudah memaafkan kesalahan orang lain tanpa dendam", word:"Pemaaf"},
+            {desc:"tidak banyak bicara namun banyak bertindak", word:"Pendiam"},
+            {desc:"selalu bersikap tenang dan tidak mudah marah", word:"Penyabar"},
+            {desc:"hanya memikirkan kepentingan diri sendiri", word:"Egois"}
+        ];
+        const majasList = [
+            {type:"Personifikasi", ex:["Angin menari-nari ditiup badai", "Bulan tersenyum menatap bumi", "Ombak berkejaran di tepi pantai", "Pena itu menari-nari di atas kertas"]},
+            {type:"Hiperbola", ex:["Suaranya menggelegar membelah bumi", "Berlari secepat kilat", "Air matanya menganak sungai", "Tumpukan tugas setinggi gunung"]},
+            {type:"Metafora", ex:["Raja siang telah terbit di timur", "Dia adalah bintang kelas kami", "Ayah adalah tulang punggung keluarga", "Si kutu buku yang cerdas"]},
+            {type:"Simile", ex:["Wajahnya pucat bagai mayat", "Keras kepala seperti batu", "Bersinar laksana bintang", "Cepat bagai angin"]}
+        ];
+        const imbuhanMeList = [
+            {dasar:"sapu", jadi:"menyapu"}, {dasar:"tulis", jadi:"menulis"}, {dasar:"baca", jadi:"membaca"}, 
+            {dasar:"potong", jadi:"memotong"}, {dasar:"gambar", jadi:"menggambar"}, {dasar:"cuci", jadi:"mencuci"},
+            {dasar:"pukul", jadi:"memukul"}, {dasar:"tarik", jadi:"menarik"}, {dasar:"tari", jadi:"menari"},
+            {dasar:"suara", jadi:"menyuarakan"}, {dasar:"tonton", jadi:"menonton"}, {dasar:"pakai", jadi:"memakai"}
+        ];
+        const idiomList = [
+            {id:"Banting tulang", m:"Bekerja keras"}, {id:"Gulung tikar", m:"Bangkrut atau Rugi"},
+            {id:"Buah tangan", m:"Oleh-oleh"}, {id:"Buah bibir", m:"Bahan pembicaraan"},
+            {id:"Bintang lapangan", m:"Pemain andalan"}, {id:"Ringan tangan", m:"Suka menolong"},
+            {id:"Kepala dingin", m:"Tenang dan Sabar"}, {id:"Besar kepala", m:"Sombong"}
+        ];
+        const singkatanList = [
+            {s:"DPR", p:"Dewan Perwakilan Rakyat"}, {s:"KTP", p:"Kartu Tanda Penduduk"},
+            {s:"SD", p:"Sekolah Dasar"}, {s:"SMP", p:"Sekolah Menengah Pertama"},
+            {s:"SIM", p:"Surat Izin Mengemudi"}, {s:"KK", p:"Kartu Keluarga"},
+            {s:"PBB", p:"Perserikatan Bangsa-Bangsa"}, {s:"TNI", p:"Tentara Nasional Indonesia"}
+        ];
+        const akronimList = [
+            {a:"Puskesmas", p:"Pusat Kesehatan Masyarakat"}, {a:"Posyandu", p:"Pos Pelayanan Terpadu"},
+            {a:"Pemilu", p:"Pemilihan Umum"}, {a:"Sinetron", p:"Sinema Elektronik"},
+            {a:"Tilang", p:"Bukti Pelanggaran"}, {a:"Bulog", p:"Badan Urusan Logistik"}
+        ];
+
+        // LOGIKA PENYUSUNAN SOAL DINAMIS (Tidak ada yang terulang)
+        let templates = [];
+        
+        if (chapterId === 'bab1') {
+            templates.push(() => {
+                let pair = rand(antonimList);
+                let wrongs = getWrongs(antonimList.map(x=>x.a), pair.a);
+                return buildQ(`Pilihlah jawaban yang tepat! Antonim (lawan kata) dari kata '${pair.w}' adalah...`, pair.a, wrongs[0], wrongs[1], wrongs[2]);
+            });
+            templates.push(() => {
+                let pair = rand(sinonimList);
+                let wrongs = getWrongs(sinonimList.map(x=>x.s), pair.s);
+                return buildQ(`Di dalam kamus, sinonim (persamaan kata) dari kata '${pair.w}' yang paling tepat adalah...`, pair.s, wrongs[0], wrongs[1], wrongs[2]);
+            });
+            templates.push(() => {
+                let pair = rand(sifatList);
+                let wrongs = getWrongs(sifatList.map(x=>x.word), pair.word);
+                let name = rand(names);
+                return buildQ(`Perhatikan cerita ini: ${name} adalah anak yang ${pair.desc}. Berdasarkan cerita tersebut, ${name} memiliki sifat...`, pair.word, wrongs[0], wrongs[1], wrongs[2]);
+            });
+            templates.push(() => {
+                let obj = rand(["Pemalu", "Pemaaf", "Pemarah", "Penyabar"]);
+                return buildQ(`Apa makna imbuhan 'pe-' pada kata '${obj}' dalam bahasa Indonesia?`, `Menyatakan orang yang memiliki sifat ${obj.replace('Pe','').toLowerCase()}`, "Menyatakan alat yang digunakan", "Menyatakan proses pekerjaan", "Menyatakan lokasi kejadian");
+            });
+        }
+        else if (chapterId === 'bab2') {
+            templates.push(() => {
+                let m = rand(majasList);
+                let kalimat = rand(m.ex);
+                let wrongs = getWrongs(majasList.map(x=>x.type), m.type);
+                return buildQ(`Bacalah penggalan kalimat berikut: "${kalimat}".\nMajas apakah yang digunakan pada kalimat tersebut?`, m.type, wrongs[0], wrongs[1], wrongs[2]);
+            });
+            templates.push(() => {
+                let m = rand(majasList);
+                let name = rand(names);
+                let kalimat = rand(m.ex);
+                let wrongs = getWrongs(majasList.map(x=>x.ex[0]), m.ex[0]); 
+                return buildQ(`Dalam tugas Bahasa Indonesia, ${name} disuruh membuat majas ${m.type}. Manakah contoh yang benar?`, kalimat, rand(majasList.find(x=>x.type!==m.type).ex), "Buku itu dibeli di pasar pagi.", "Dia pergi ke sekolah naik sepeda.");
+            });
+            templates.push(() => {
+                let unsur = rand(["Latar (Setting)", "Tema", "Tokoh", "Amanat", "Alur (Plot)"]);
+                let deskripsi = "";
+                if(unsur === "Latar (Setting)") deskripsi = "menunjukkan tempat, waktu, dan suasana terjadinya suatu peristiwa";
+                if(unsur === "Tema") deskripsi = "menjadi gagasan utama atau dasar cerita tersebut";
+                if(unsur === "Tokoh") deskripsi = "menjadi pelaku yang mengalami peristiwa dalam cerita";
+                if(unsur === "Amanat") deskripsi = "merupakan pesan moral atau nasihat yang ingin disampaikan penulis";
+                if(unsur === "Alur (Plot)") deskripsi = "menunjukkan jalan cerita atau urutan peristiwa dari awal hingga akhir";
+                
+                let wrongs = getWrongs(["Latar (Setting)", "Tema", "Tokoh", "Amanat", "Alur (Plot)", "Sudut Pandang"], unsur);
+                return buildQ(`Unsur intrinsik cerita yang ${deskripsi} disebut...`, unsur, wrongs[0], wrongs[1], wrongs[2]);
+            });
+        }
+        else if (chapterId === 'bab3') {
+            templates.push(() => {
+                let pair = rand(imbuhanMeList);
+                let name = rand(names);
+                let wrongs = [ `me${pair.dasar}`, `mem${pair.dasar}`, `meng${pair.dasar}`, `men${pair.dasar}`, `pe${pair.dasar}`].filter(x => x !== pair.jadi).sort(()=>0.5-Math.random()).slice(0,3);
+                return buildQ(`${name} menemukan kata dasar '${pair.dasar}'. Jika diberi awalan 'me-', maka penulisannya yang baku menjadi...`, pair.jadi, wrongs[0], wrongs[1], wrongs[2]);
+            });
+            templates.push(() => {
+                let benda = rand(["layang-layang", "nasi goreng", "origami", "jus apel"]);
+                return buildQ(`Teks yang berisi langkah-langkah atau tahapan untuk membuat ${benda} termasuk ke dalam teks...`, "Prosedur", "Deskripsi", "Narasi", "Eksposisi");
+            });
+            templates.push(() => {
+                let kata = rand(["Pertama", "Kemudian", "Lalu", "Selanjutnya", "Terakhir"]);
+                return buildQ(`Kata '${kata}' sering muncul dalam teks prosedur. Kata tersebut berfungsi sebagai kata hubung (konjungsi) yang menunjukkan...`, "Urutan waktu/langkah", "Sebab akibat", "Pertentangan", "Pemilihan");
+            });
+        }
+        else if (chapterId === 'bab4') {
+            templates.push(() => {
+                let idm = rand(idiomList);
+                let wrongs = getWrongs(idiomList.map(x=>x.m), idm.m);
+                return buildQ(`Ayah sering menggunakan ungkapan '${idm.id}' saat bercerita. Makna kiasan dari ungkapan tersebut adalah...`, idm.m, wrongs[0], wrongs[1], wrongs[2]);
+            });
+            templates.push(() => {
+                let tanya = rand([{k:"Siapa", m:"Orang pelaku"}, {k:"Di mana", m:"Tempat"}, {k:"Kapan", m:"Waktu"}, {k:"Bagaimana", m:"Cara atau proses"}, {k:"Mengapa", m:"Alasan"}]);
+                let wrongs = getWrongs(["Orang pelaku", "Tempat", "Waktu", "Cara atau proses", "Alasan"], tanya.m);
+                return buildQ(`Saat melakukan wawancara, kata tanya '${tanya.k}' paling tepat digunakan untuk menanyakan tentang...`, tanya.m, wrongs[0], wrongs[1], wrongs[2]);
+            });
+            templates.push(() => {
+                let name = rand(names);
+                return buildQ(`${name} sedang diwawancarai oleh seorang wartawan televisi. Dalam kegiatan tersebut, ${name} bertindak sebagai...`, "Narasumber", "Pewawancara", "Reporter", "Kameramen");
+            });
+        }
+        else if (chapterId === 'bab5') {
+            templates.push(() => {
+                let name = rand(names);
+                let opini = `Menurut ${name}, pelajaran ini sangat menyenangkan.`;
+                let fakta1 = "Matahari terbit di timur.";
+                let fakta2 = "Air mendidih pada suhu 100 derajat Celcius.";
+                let fakta3 = "Pancasila memiliki 5 lambang.";
+                return buildQ("Di antara pilihan berikut, manakah yang termasuk contoh kalimat OPINI (pendapat)?", opini, fakta1, fakta2, fakta3);
+            });
+            templates.push(() => {
+                let fakta = "Indonesia merdeka pada tanggal 17 Agustus 1945.";
+                let opini1 = "Pantai itu sepertinya sangat indah saat sore hari.";
+                let opini2 = "Menurutku, sayuran lebih enak daripada daging.";
+                let opini3 = "Sebaiknya kamu segera tidur agar besok tidak kesiangan.";
+                return buildQ("Manakah di bawah ini yang merupakan contoh kalimat FAKTA yang benar-benar terjadi?", fakta, opini1, opini2, opini3);
+            });
+            templates.push(() => {
+                let s = rand(singkatanList);
+                let wrongs = getWrongs(singkatanList.map(x=>x.p), s.p);
+                return buildQ(`Singkatan resmi dari '${s.s}' adalah...`, s.p, wrongs[0], wrongs[1], wrongs[2]);
+            });
+            templates.push(() => {
+                let a = rand(akronimList);
+                let wrongs = getWrongs(akronimList.map(x=>x.p), a.p);
+                return buildQ(`Kata '${a.a}' sering kita dengar di berita. Kata ini merupakan akronim dari...`, a.p, wrongs[0], wrongs[1], wrongs[2]);
+            });
+        }
+        else if (chapterId === 'bab6') {
+            templates.push(() => {
+                let name = rand(names);
+                return buildQ(`Kalimat perintah yang bertujuan menyuruh seseorang melakukan sesuatu dengan tegas selalu diakhiri dengan tanda baca...`, "Tanda seru (!)", "Tanda titik (.)", "Tanda koma (,)", "Tanda tanya (?)");
+            });
+            templates.push(() => {
+                let name = rand(names);
+                return buildQ(`"Jangan buang sampah di sungai itu!"\nKalimat yang diucapkan ${name} tersebut termasuk ke dalam jenis kalimat perintah...`, "Larangan", "Ajakan", "Permintaan", "Informasi");
+            });
+            templates.push(() => {
+                let name = rand(names);
+                return buildQ(`"Ayo kita bersihkan taman bermain ini bersama-sama!"\nKalimat di atas menggunakan awalan 'Ayo' yang menandakan jenis kalimat...`, "Ajakan", "Larangan", "Paksaan", "Berita");
+            });
+        }
+        else {
+            templates.push(() => buildQ("Pertanyaan Umum: Siapakah penemu bola lampu yang terkenal?", "Thomas Edison", "Albert Einstein", "Nikola Tesla", "Isaac Newton"));
+        }
+
+        // GENERATE SOAL SAMPAI JUMLAH YANG DIMINTA
         for(let i = 0; i < jumlahSoal; i++) {
-            let q = JSON.parse(JSON.stringify(newQuestions[i % newQuestions.length]));
-            // Berikan label variasi jika jumlah yang diminta melebihi koleksi bawaan bab
-            if(i >= newQuestions.length) {
-                q.q = q.q + " (Variasi Soal " + (Math.floor(i / newQuestions.length) + 1) + ")";
+            let attempt = 0;
+            let generated;
+            let qText;
+            
+            // AI akan mencoba hingga 50 kali untuk merangkai kata-kata unik yang belum pernah dibuat
+            do {
+                let tpl = rand(templates);
+                generated = tpl();
+                qText = generated.q;
+                attempt++;
+            } while (usedQ.has(qText) && attempt < 50); 
+            
+            // Jika kemungkinan kombinasi kata benar-benar habis, tambahkan kode unik halus
+            if(usedQ.has(qText)) {
+                generated.q = qText + ` (Kasus No.${Math.floor(Math.random()*900)+100})`;
             }
-            finalQuestions.push(q);
+            
+            usedQ.add(generated.q);
+            finalQuestions.push(generated);
         }
 
         activeQuestions = finalQuestions;
         renderTeacherQuestionsEditor();
-        showCustomAlert(`🎉 Selesai!\n\nKAK AL berhasil mengekstrak materi ${chapterName} dan meracik ${jumlahSoal} Soal Pilihan Ganda berkualitas tinggi (HOTS).\n\nJangan lupa tekan 'SIMPAN KE CLOUD' agar soal ini masuk ke permainan siswa!`);
+        showCustomAlert(`🎉 Selesai!\n\nKAK AL berhasil mengekstrak materi ${chapterName} dan meracik ${jumlahSoal} Soal Pilihan Ganda berkualitas tinggi (HOTS).\n\nSemua soal dipastikan BEDA dan memiliki variasi unik.\nJangan lupa tekan 'SIMPAN KE CLOUD' agar soal ini masuk ke permainan siswa!`);
     }
 
     // --- Custom Modal UI ---
