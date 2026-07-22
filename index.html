@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>QUIZ MATCH CHALLENGE</title>
+    <title>CERDIAKIA MATCH</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -253,7 +253,7 @@
     <section id="screen-loading" class="screen active justify-center items-center z-50 bg-gradient-to-b from-blue-200 via-green-100 to-white">
         <img src="MASKOT.png" alt="Maskot Loading" class="h-28 mx-auto mb-4 animate-bounce drop-shadow-lg">
         
-        <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">QUIZ MATCH<br>CHALLENGE</h1>
+        <h1 class="text-3xl font-extrabold text-blue-600 text-center drop-shadow-md mb-2 tracking-wide" style="line-height: 1.1;">CERDIAKIA<br>MATCH</h1>
         <p class="text-gray-600 font-semibold mb-8">"Belajar Sambil Bermain"</p>
         
         <div class="loading-bar-container mb-4">
@@ -273,7 +273,7 @@
                 <img src="MASKOT.png" alt="Maskot Menu" class="h-44 mx-auto drop-shadow-xl">
             </div>
             
-            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">QUIZ MATCH<br>CHALLENGE</h1>
+            <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 filter drop-shadow-sm mb-1" style="line-height: 1.2;">CERDIAKIA<br>MATCH</h1>
             <p class="text-lg text-gray-600 font-bold bg-white px-4 py-1 rounded-full inline-block shadow-sm">Belajar Sambil Bermain</p>
             <div id="cloud-status" class="mt-2 text-xs font-bold bg-green-100 text-green-600 px-3 py-1 rounded-full inline-block shadow-sm"> ☁️  Cloud Terhubung</div>
         </div>
@@ -463,13 +463,23 @@
                 
                 <div class="mb-3">
                     <label class="text-xs font-extrabold text-blue-700 mb-1 block">Topik Materi / Soal</label>
-                    <input type="text" id="ai-topic" placeholder="Contoh: Aku yang Unik (B. Indonesia Kelas 5)" class="w-full p-3 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 mb-2 shadow-inner">
+                    <input type="text" id="ai-topic" placeholder="Contoh: Pengetahuan Umum (Kelas 5)" class="w-full p-3 border-2 border-blue-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 mb-2 shadow-inner">
                 </div>
 
                 <button onclick="processFromGitHub()" id="btn-ai-generate" class="w-full bg-blue-500 text-white px-4 py-3 rounded-lg text-sm font-bold shadow-md hover:bg-blue-600 active:scale-95 transition-transform flex items-center justify-center gap-2 mt-1 border-b-4 border-blue-700">
                     🚀 SURUH KAK AL BUAT SOAL
                 </button>
-                <p id="ai-loading" class="text-xs text-blue-800 mt-4 font-bold hidden animate-pulse text-center bg-blue-100 p-3 rounded-lg border border-blue-300 shadow-sm"></p>
+                
+                <!-- Animasi Loading Profesional KAK AL -->
+                <div id="ai-loading-container" class="hidden mt-4 bg-white p-4 rounded-xl border border-blue-200 shadow-inner">
+                    <div class="flex items-center justify-center gap-3 mb-3">
+                        <div class="w-6 h-6 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+                        <span id="ai-loading-text" class="text-sm font-bold text-blue-800">Menganalisis topik...</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden shadow-inner">
+                        <div id="ai-progress-bar" class="bg-gradient-to-r from-blue-400 to-blue-600 h-2.5 rounded-full" style="width: 0%; transition: width 0.5s ease-in-out;"></div>
+                    </div>
+                </div>
             </div>
 
             <div id="questions-editor" class="space-y-4 font-sans pb-24">
@@ -592,7 +602,7 @@
                 </div>
             </div>
             <div id="res-predikat" class="text-xl font-black text-white bg-gradient-to-r from-blue-500 to-purple-500 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white">
-                MASTER IPA
+                MASTER KUIS
             </div>
             <div class="w-full flex flex-col gap-2 z-10">
                 <button class="btn-custom btn-primary !w-full !m-0" onclick="startGame()"> 🔄  MAIN LAGI</button>
@@ -656,16 +666,16 @@
     const TEACHER_USER = 'aldi260605';
     const TEACHER_PASS = '111111aldi';
     const DEFAULT_QUESTIONS = [
-        { q: "Benda yang dapat ditarik magnet disebut …", options: ["Cair", "Nonmagnetik", "Magnetik", "Elastis"], answer: 2 },
-        { q: "Contoh benda yang dapat ditarik magnet …", options: ["Kayu", "Besi", "Plastik", "Kertas"], answer: 1 },
-        { q: "Bagian magnet paling kuat …", options: ["Tengah", "Ujung", "Kutub magnet", "Sisi"], answer: 2 },
-        { q: "Kutub utara bertemu selatan …", options: ["Tolak", "Diam", "Tarik", "Hilang"], answer: 2 },
-        { q: "Sumber energi listrik sederhana …", options: ["Penggaris", "Baterai", "Pensil", "Kertas"], answer: 1 },
-        { q: "Rangkaian lampu agar menyala …", options: ["Terbuka", "Panjang", "Tertutup", "Besar"], answer: 2 },
-        { q: "Penghantar listrik …", options: ["Karet", "Kayu", "Plastik", "Tembaga"], answer: 3 },
-        { q: "Teknologi membantu pekerjaan …", options: ["Sulit", "Lambat", "Mudah", "Mahal"], answer: 2 },
-        { q: "Teknologi komunikasi modern …", options: ["Kentongan", "Surat daun", "Telepon genggam", "Asap"], answer: 2 },
-        { q: "Menggunakan teknologi …", options: ["Bebas", "Bijak", "Sepanjang waktu", "Bermain saja"], answer: 1 }
+        { q: "Ibukota negara Indonesia adalah...", options: ["Bandung", "Surabaya", "Jakarta", "Medan"], answer: 2 },
+        { q: "Hasil dari 15 + 25 adalah...", options: ["30", "40", "45", "50"], answer: 1 },
+        { q: "Hewan yang bernapas menggunakan insang adalah...", options: ["Kucing", "Ikan", "Burung", "Katak"], answer: 1 },
+        { q: "Semboyan negara Indonesia adalah...", options: ["Pancasila", "Bhinneka Tunggal Ika", "UUD 1945", "Tut Wuri Handayani"], answer: 1 },
+        { q: "Planet terdekat dari matahari adalah...", options: ["Bumi", "Venus", "Mars", "Merkurius"], answer: 3 },
+        { q: "Warna bendera negara Indonesia adalah...", options: ["Merah Putih", "Putih Merah", "Merah Hitam", "Biru Putih"], answer: 0 },
+        { q: "Benda langit yang bersinar di malam hari adalah...", options: ["Matahari", "Awan", "Bulan", "Pelangi"], answer: 2 },
+        { q: "Alat indra manusia yang berfungsi untuk melihat adalah...", options: ["Telinga", "Hidung", "Mata", "Kulit"], answer: 2 },
+        { q: "Gunung tertinggi di Indonesia adalah...", options: ["Rinjani", "Semeru", "Jayawijaya", "Kerinci"], answer: 2 },
+        { q: "Zat hijau daun pada tumbuhan disebut...", options: ["Oksigen", "Kambium", "Klorofil", "Stomata"], answer: 2 }
     ];
     let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
     let allScores = [];
@@ -1094,22 +1104,32 @@
         }
 
         const btn = document.getElementById('btn-ai-generate');
-        const loadingText = document.getElementById('ai-loading');
+        const loadingContainer = document.getElementById('ai-loading-container');
+        const loadingText = document.getElementById('ai-loading-text');
+        const progressBar = document.getElementById('ai-progress-bar');
         
         btn.disabled = true;
         btn.classList.add('opacity-50', 'cursor-not-allowed');
-        loadingText.classList.remove('hidden');
+        loadingContainer.classList.remove('hidden');
+        progressBar.style.width = '0%';
 
         try {
-            // Simulasi proses KAK AL berpikir
-            loadingText.innerText = "🤔 KAK AL sedang memikirkan soal terbaik untuk topik: " + topicInput + "...";
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Animasi Proses KAK AL berpikir yang lebih profesional
+            progressBar.style.width = '20%';
+            loadingText.innerText = "🔍 Menganalisis kurikulum SD Kelas 5...";
+            await new Promise(resolve => setTimeout(resolve, 1500));
             
-            loadingText.innerText = "📚 KAK AL sedang mencari referensi materi yang tepat...";
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            progressBar.style.width = '50%';
+            loadingText.innerText = "⚙️ Meracik soal cerita & logika nalar...";
+            await new Promise(resolve => setTimeout(resolve, 1500));
 
-            loadingText.innerText = "✍️ Aha! KAK AL mulai meracik 10 soal pilihan ganda...";
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            progressBar.style.width = '80%';
+            loadingText.innerText = "✨ Memvalidasi tingkat kesulitan & opsi jawaban...";
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            progressBar.style.width = '100%';
+            loadingText.innerText = "✅ Selesai! Menyiapkan kuis untukmu...";
+            await new Promise(resolve => setTimeout(resolve, 800));
             
             await generateQuestionsAI(topicInput);
             
@@ -1119,28 +1139,28 @@
         } finally {
             btn.disabled = false;
             btn.classList.remove('opacity-50', 'cursor-not-allowed');
-            loadingText.classList.add('hidden');
+            loadingContainer.classList.add('hidden');
         }
     }
 
     async function generateQuestionsAI(topicInput) {
-        // KAK AL memberikan 10 soal statis dengan gaya Bahasa Indonesia
+        // KAK AL meracik soal level SD Kelas 5 campuran (Soal Cerita Matematika, IPA, IPS, Bhs Indonesia, PPKn)
         const newQuestions = [
-            { q: "Berdasarkan teks, gagasan utama atau inti dari sebuah paragraf disebut dengan...", options: ["Kalimat penjelas", "Ide pokok", "Kata hubung", "Kesimpulan"], answer: 1 },
-            { q: "Karangan yang menceritakan kisah rekaan dan tidak benar-benar terjadi disebut...", options: ["Fiksi", "Nonfiksi", "Biografi", "Berita"], answer: 0 },
-            { q: "Kata hubung yang tepat untuk menyatakan sebab akibat dalam sebuah kalimat adalah...", options: ["Atau", "Dan", "Karena", "Tetapi"], answer: 2 },
-            { q: "Kalimat yang berisi perintah, seruan, atau larangan harus diakhiri dengan tanda baca...", options: ["Titik (.)", "Koma (,)", "Tanya (?)", "Seru (!)"], answer: 3 },
-            { q: "Dalam acara resmi, orang yang bertugas memandu atau membawakan sebuah acara disebut...", options: ["Narasumber", "Pewawancara", "Pewara (MC)", "Peserta"], answer: 2 },
-            { q: "Pesan moral atau nasihat yang ingin disampaikan pengarang dalam sebuah cerita disebut...", options: ["Tema", "Amanat", "Alur", "Tokoh"], answer: 1 },
-            { q: "Persamaan makna kata (sinonim) dari kata 'pintar' adalah...", options: ["Bodoh", "Rajin", "Pandai", "Cekatan"], answer: 2 },
-            { q: "Lawan kata (antonim) dari kata 'panjang' adalah...", options: ["Besar", "Tinggi", "Pendek", "Luas"], answer: 2 },
-            { q: "Teks yang berisi langkah-langkah atau cara melakukan sesuatu secara berurutan disebut...", options: ["Teks deskripsi", "Teks narasi", "Teks prosedur", "Teks argumentasi"], answer: 2 },
-            { q: "Percakapan yang dilakukan oleh dua orang atau lebih dalam teks cerita disebut...", options: ["Monolog", "Prolog", "Dialog", "Epilog"], answer: 2 }
+            { q: "Budi memiliki 150 kelereng. Ia membagikannya kepada 5 temannya sama rata. Berapa kelereng yang diterima masing-masing teman Budi?", options: ["20 kelereng", "30 kelereng", "40 kelereng", "50 kelereng"], answer: 1 },
+            { q: "Petani mengamati tanaman padinya banyak yang rusak dimakan tikus. Untuk menanggulangi hama tikus secara alami tanpa racun, hewan pemangsa apa yang sebaiknya dipelihara di sawah?", options: ["Ular sawah", "Belalang", "Katak", "Burung pipit"], answer: 0 },
+            { q: "Ibu pergi ke pasar membeli 2,5 kg gula pasir dan 1,5 kg tepung terigu. Berapa kilogram total berat belanjaan Ibu?", options: ["3 kg", "3,5 kg", "4 kg", "4,5 kg"], answer: 2 },
+            { q: "Contoh pengamalan sila pertama Pancasila di lingkungan sekolah yang paling tepat adalah...", options: ["Mencontek saat ulangan", "Menghargai teman yang berbeda agama saat beribadah", "Bermain terus saat jam pelajaran", "Berkelahi dengan teman sekelas"], answer: 1 },
+            { q: "\"Pagi itu, udara di pegunungan sangat sejuk. Burung-burung berkicau menyambut mentari.\" Latar waktu dan tempat pada cerita tersebut adalah...", options: ["Pagi hari di desa", "Siang hari di pegunungan", "Pagi hari di pegunungan", "Sore hari di taman"], answer: 2 },
+            { q: "Kerajaan Hindu tertua di Nusantara yang meninggalkan bukti sejarah berupa tujuh tiang batu (Prasasti Yupa) adalah kerajaan...", options: ["Majapahit", "Sriwijaya", "Tarumanegara", "Kutai"], answer: 3 },
+            { q: `Sesuai dengan topik "${topicInput}", manakah kelompok hewan di bawah ini yang semuanya bernapas menggunakan insang?`, options: ["Lumba-lumba dan Paus", "Ikan Nila dan Hiu", "Katak dan Buaya", "Kucing dan Tikus"], answer: 1 },
+            { q: "Andi bersepeda dari rumah ke sekolah sejauh 3 km, kemudian ia berjalan kaki sejauh 500 meter ke perpustakaan daerah. Berapa meter total jarak yang ditempuh Andi hari itu?", options: ["350 meter", "3.050 meter", "3.500 meter", "800 meter"], answer: 2 },
+            { q: "Letak astronomis membuat wilayah Indonesia memiliki iklim tropis. Salah satu ciri khas iklim tropis di Indonesia adalah...", options: ["Memiliki 4 musim dalam setahun", "Curah hujan dan kelembaban udara yang tinggi", "Sering turun salju pada bulan Desember", "Matahari jarang bersinar"], answer: 1 },
+            { q: "Kata dasar dari kata berimbuhan 'mempertanggungjawabkan' yang benar adalah...", options: ["Tanggung", "Jawab", "Tanggung jawab", "Pertanggungjawaban"], answer: 2 }
         ];
 
         activeQuestions = newQuestions;
         renderTeacherQuestionsEditor();
-        showCustomAlert("🎉 Hore! KAK AL berhasil membuat 10 Soal baru untukmu tentang '" + topicInput + "'.\n\nJangan lupa klik tombol 'SIMPAN KE CLOUD' di bagian bawah agar soalnya bisa dimainkan oleh siswa ya!");
+        showCustomAlert("🎉 Berhasil! KAK AL sudah menyiapkan 10 Soal (campuran soal cerita & nalar) tingkat SD Kelas 5.\n\nJangan lupa tekan tombol 'SIMPAN KE CLOUD' di bawah agar soal bisa dikerjakan siswa!");
     }
     
     // --- Dynamic Question Editor ---
@@ -1618,7 +1638,7 @@
         document.getElementById('res-skor').innerText = state.score;
         const p = document.getElementById('res-predikat');
         if (state.score === 100) {
-            p.innerText = 'MASTER IPA'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-yellow-400 to-yellow-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
+            p.innerText = 'MASTER KUIS'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-yellow-400 to-yellow-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         } else if (state.score >= 80) { 
             p.innerText = 'HEBAT'; p.className = 'text-xl font-black text-white bg-gradient-to-r from-blue-400 to-blue-600 px-6 py-2 rounded-full shadow-lg mb-6 z-10 border-2 border-white'; 
         } else if (state.score >= 60) { 
