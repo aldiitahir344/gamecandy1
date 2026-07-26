@@ -1174,8 +1174,16 @@ Catatan: "answer" adalah index dari array options (bernilai 0, 1, 2, atau 3). Ha
         const err = document.getElementById('teacher-error'); playSound('click');
         if(u === TEACHER_USER && p === TEACHER_PASS) {
             document.getElementById('teacher-username').value = ''; document.getElementById('teacher-password').value = ''; err.style.opacity = 0;
-            renderTeacherDashboardTable(); renderTeacherQuestionsEditor(); showScreen('screen-teacher-dashboard');
-        } else { err.style.opacity = 1; playSound('wrong'); }
+            // Pindahkan layar lebih dulu agar UI langsung merespons
+            showScreen('screen-teacher-dashboard');
+            // Gunakan try-catch agar jika grafik diblokir browser, tidak menyebabkan crash
+            try { renderTeacherDashboardTable(); } catch(e) { console.warn("Tabel error:", e); }
+            try { renderTeacherQuestionsEditor(); } catch(e) { console.warn("Soal error:", e); }
+        } else { 
+            err.style.opacity = 1; 
+            playSound('wrong'); 
+            showCustomAlert("Gagal Masuk:\nUsername atau Password salah!"); 
+        }
     }
     
     function logoutTeacher() { playSound('click'); showScreen('screen-menu'); }
@@ -1226,6 +1234,7 @@ Catatan: "answer" adalah index dari array options (bernilai 0, 1, 2, atau 3). Ha
     }
     
     function updateTeacherChart(data) {
+        if (typeof Chart === 'undefined') return; // Mencegah macet jika pustaka Chart.js diblokir
         const ctx = document.getElementById('scoreChart');
         if(!ctx) return;
         if(chartInstance) chartInstance.destroy();
