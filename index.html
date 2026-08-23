@@ -16,6 +16,7 @@
     
     <!-- Chart.js for Teacher Dashboard -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         :root {
             --primary: #4FC3F7;
@@ -96,13 +97,6 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        
-        /* Global Scrollbar agar semua menu bisa di-scroll dengan elegan */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.02); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.5); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(107, 114, 128, 0.8); }
-
         .glass-panel {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(16px);
@@ -111,16 +105,25 @@
             border-radius: 32px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1), inset 0 2px 0 rgba(255,255,255,0.8);
         }
-        
+
+        /* PERBAIKAN SCROLL MENU */
         .screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             display: none; flex-direction: column; z-index: 10;
             overflow-y: auto; overflow-x: hidden;
-            padding-bottom: 24px;
-            scroll-behavior: smooth;
         }
-        #screen-game { overflow: hidden !important; padding-bottom: 0 !important; }
+        .scroll-wrapper {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            padding-bottom: 60px; /* Jarak aman di bawah */
+        }
+        #screen-game { overflow: hidden; } /* Game tidak boleh di-scroll */
         
         .screen.active {
             display: flex;
@@ -176,6 +179,7 @@
         .btn-materi:active {
             box-shadow: 0 2px 0 #f57c00, 0 5px 10px -5px rgba(245,124,0,0.3);
         }
+        
         /* Menu Cards */
         .menu-card {
             background: rgba(255, 255, 255, 0.85);
@@ -190,6 +194,7 @@
             transition: all 0.2s ease;
             cursor: pointer;
             margin-bottom: 12px;
+            width: 100%;
         }
         .menu-card:hover {
             transform: translateY(-4px) scale(1.02);
@@ -228,6 +233,7 @@
             transform: scale(0.85);
             z-index: 10;
         }
+        
         /* Background Scenery Elements */
         .scenery-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -257,6 +263,7 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.2), 0 4px 10px rgba(0,0,0,0.05);
         }
+        
         /* Progress Bar */
         .progress-bar-bg {
             background: #e2e8f0; border-radius: 999px;
@@ -275,6 +282,12 @@
             animation: float-cloud 2s infinite linear;
         }
         
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
         #combo-text {
             position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
             font-family: 'Baloo 2', cursive; font-size: 3.5rem; font-weight: 900;
@@ -282,10 +295,38 @@
             z-index: 50; pointer-events: none; opacity: 0; text-align: center; line-height: 1;
             -webkit-text-stroke: 2px #e65100;
         }
+        
+        @keyframes pop-out { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2) translateY(-20px); opacity: 0; } }
     </style>
+
+    <!-- Script SINKRON untuk menahan tombol sebelum Firebase siap -->
+    <script>
+        window.isAppLoaded = false;
+        window.pendingStart = false;
+        window.pendingFinish = false;
+        
+        window.startIntroVideo = function() {
+            if (!window.isAppLoaded) {
+                const btnText = document.getElementById('mulai-btn-text');
+                if(btnText) btnText.innerText = "MEMUAT...";
+                window.pendingStart = true;
+                return;
+            }
+            if (window._doStartVideo) window._doStartVideo();
+        };
+        
+        window.finishIntroVideo = function() {
+            if (!window.isAppLoaded) {
+                window.pendingFinish = true;
+                return;
+            }
+            if (window._doFinishVideo) window._doFinishVideo();
+        };
+    </script>
 </head>
 <body>
 <div id="app-container">
+    <!-- Background Music -->
     <audio id="bg-music" loop>
         <source src="The_Golden_Tally.mp3" type="audio/mpeg">
     </audio>
@@ -310,37 +351,38 @@
         </div>
     </div>
     
-    <section id="screen-splash-video" class="screen active bg-white">
+    <!-- 1. SPLASH SCREEN -->
+    <section id="screen-splash-video" class="screen active justify-center items-center z-[100] bg-white">
         <video id="intro-video" class="w-full h-full object-contain max-w-md mx-auto" playsinline>
             <source src="opening.mp4" type="video/mp4">
         </video>
-        <button id="skip-video-btn" class="absolute top-6 right-6 bg-white/30 hover:bg-white/50 text-gray-800 font-bold px-5 py-2.5 rounded-full text-sm backdrop-blur-md z-20 transition-all shadow-lg border border-white/50" onclick="finishIntroVideo()">Lewati ⏭</button>
+        <button id="skip-video-btn" class="absolute top-6 right-6 bg-white/30 hover:bg-white/50 text-gray-800 font-bold px-5 py-2.5 rounded-full text-sm backdrop-blur-md z-[110] transition-all shadow-lg border border-white/50" onclick="finishIntroVideo()">Lewati ⏭</button>
         
-        <div id="start-video-overlay" class="absolute inset-0 flex flex-col justify-center items-center bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 z-10 overflow-y-auto pb-12 px-6">
-            <div class="my-auto flex flex-col items-center w-full mt-16">
-                <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC4yIi8+PC9zdmc+')] pointer-events-none"></div>
-                <div class="relative mb-8 mt-10">
-                    <div class="absolute inset-0 bg-white blur-[50px] rounded-full scale-150 opacity-50 animate-pulse"></div>
-                    <img src="MASKOT.png" alt="Maskot" class="h-56 relative z-10 animate-[bounce-soft_2s_infinite] drop-shadow-[0_20px_20px_rgba(0,0,0,0.3)]" onerror="this.src='https://placehold.co/200x200/transparent/white?text=M'">
-                </div>
-                
-                <h1 class="text-[3.8rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-100 to-yellow-400 drop-shadow-[0_8px_8px_rgba(0,0,0,0.4)] mb-2 text-center tracking-wide" style="line-height: 1.1; -webkit-text-stroke: 2px #d97706;">
-                    CERDIAKIA<br>MATCH
-                </h1>
-                <p class="text-white font-extrabold tracking-[0.1em] text-sm mb-16 shadow-lg bg-white/20 backdrop-blur-md px-6 py-2 rounded-full uppercase border-2 border-white/50 text-center">Belajar Sambil Bermain</p>
-                
-                <button class="btn-custom btn-primary !px-10 !py-5 !text-2xl z-20 group" onclick="startIntroVideo()">
-                    <div class="w-12 h-12 bg-white text-blue-500 rounded-full flex justify-center items-center shadow-inner group-hover:scale-110 transition-transform">
-                        <span class="text-2xl ml-1">▶</span>
-                    </div>
-                    <span>MULAI</span>
-                </button>
+        <div id="start-video-overlay" class="absolute inset-0 flex flex-col justify-center items-center bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 z-[105] overflow-hidden">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC4yIi8+PC9zdmc+')] pointer-events-none opacity-50 z-0"></div>
+            
+            <div class="relative mb-8 mt-10 z-10">
+                <div class="absolute inset-0 bg-white blur-[50px] rounded-full scale-150 opacity-50 animate-pulse"></div>
+                <img src="MASKOT.png" alt="Maskot" class="h-56 relative z-10 animate-[bounce-soft_2s_infinite] drop-shadow-[0_20px_20px_rgba(0,0,0,0.3)]" onerror="this.src='https://placehold.co/200x200/transparent/white?text=M'">
             </div>
+            
+            <h1 class="text-[3.8rem] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-100 to-yellow-400 drop-shadow-[0_8px_8px_rgba(0,0,0,0.4)] mb-2 text-center tracking-wide relative z-10" style="line-height: 1.1; -webkit-text-stroke: 2px #d97706;">
+                CERDIAKIA<br>MATCH
+            </h1>
+            <p class="text-white font-extrabold tracking-[0.1em] text-sm mb-16 shadow-lg bg-white/20 backdrop-blur-md px-6 py-2 rounded-full uppercase border-2 border-white/50 relative z-10">Belajar Sambil Bermain</p>
+            
+            <button class="btn-custom btn-primary !px-10 !py-5 !text-2xl relative z-[120] group" onclick="startIntroVideo()">
+                <div class="w-12 h-12 bg-white text-blue-500 rounded-full flex justify-center items-center shadow-inner group-hover:scale-110 transition-transform">
+                    <span class="text-2xl ml-1">▶</span>
+                </div>
+                <span id="mulai-btn-text">MULAI</span>
+            </button>
         </div>
     </section>
 
-    <section id="screen-loading" class="screen z-50 bg-gradient-to-b from-blue-50 to-white px-6">
-        <div class="animate-on-load text-center w-full mt-20 mb-10 py-10">
+    <!-- 2. LOADING SCREEN -->
+    <section id="screen-loading" class="screen justify-center items-center z-50 bg-gradient-to-b from-blue-50 to-white">
+        <div class="animate-on-load text-center w-full px-8">
             <img src="MASKOT.png" alt="Maskot Loading" class="h-32 mx-auto mb-6 animate-[bounce-soft_1.5s_infinite] drop-shadow-xl" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=M'">
             
             <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] drop-shadow-sm mb-2" style="line-height: 1.1;">CERDIAKIA<br>MATCH</h1>
@@ -360,208 +402,227 @@
         </div>
     </section>
     
-    <section id="screen-landing" class="screen relative px-6 pb-24">
-        <div class="absolute bottom-0 left-0 w-full h-32 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCAxMDBMMCA1MEw1MCAyMEwxMDAgNTBMMTAwIDEwMFoiIGZpbGw9IiM4MWM3ODQiIG9wYWNpdHk9IjAuMSIvPjwvc3ZnPg==')] bg-cover bg-bottom opacity-50 z-0 pointer-events-none"></div>
-        
-        <div class="flex-1 flex flex-col justify-center items-center w-full mt-10 mb-6 pt-10 relative z-10">
-            <div class="relative inline-block mb-4">
-                <div class="absolute inset-0 bg-yellow-200 blur-2xl rounded-full opacity-40 animate-pulse"></div>
-                <img src="MASKOT.png" alt="Maskot Menu" class="h-56 mx-auto drop-shadow-2xl relative z-10" style="animation: float 4s ease-in-out infinite;" onerror="this.src='https://placehold.co/200x200/transparent/blue?text=M'">
-            </div>
+    <!-- 3. LANDING SCREEN -->
+    <section id="screen-landing" class="screen relative">
+        <div class="scroll-wrapper justify-between">
+            <!-- Distant School Background -->
+            <div class="absolute bottom-0 left-0 w-full h-32 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCAxMDBMMCA1MEw1MCAyMEwxMDAgNTBMMTAwIDEwMFoiIGZpbGw9IiM4MWM3ODQiIG9wYWNpdHk9IjAuMSIvPjwvc3ZnPg==')] bg-cover bg-bottom opacity-50 z-0"></div>
             
-            <h1 class="text-[3.5rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] via-blue-400 to-[var(--secondary)] filter drop-shadow-md mb-2 text-center" style="line-height: 1.1; animation: pulse-glow 3s infinite;">
-                CERDIAKIA<br>MATCH
-            </h1>
-            <p class="text-sm text-gray-700 font-bold bg-white/80 backdrop-blur px-5 py-2 rounded-full inline-block shadow-sm border border-white text-center">Belajar Sambil Bermain</p>
-            
-            <div class="mt-4">
-                <div id="cloud-status" class="text-[10px] font-bold bg-green-100/80 backdrop-blur text-green-700 px-3 py-1 rounded-full inline-block shadow-sm border border-green-200">
-                    <span class="animate-pulse inline-block">🟢</span> Cloud Terhubung
-                </div>
-            </div>
-        </div>
-        
-        <div class="w-full flex flex-col gap-5 z-20 animate-on-load mt-10">
-            <button class="btn-custom btn-materi !w-full !m-0 group" onclick="openMateri(); playSound('click')">
-                <span class="text-2xl group-hover:rotate-12 transition-transform">📚</span> 
-                <span>MATERI BELAJAR</span>
-            </button>
-            <button class="btn-custom btn-primary !w-full !m-0 !py-5 !text-2xl group" onclick="startQuizFlow(); playSound('click')">
-                <span class="text-3xl group-hover:scale-110 transition-transform">🎮</span> 
-                <span>MULAI MAIN</span>
-            </button>
-        </div>
-    </section>
-    
-    <section id="screen-menu" class="screen bg-gray-50/50 backdrop-blur-sm px-6 pt-24 pb-16">
-        <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 active:scale-95 transition-all text-xl font-bold" onclick="showScreen('screen-landing'); playSound('click')">
-            ⬅
-        </button>
-        
-        <div class="text-center mb-8 animate-on-load">
-            <h1 class="text-4xl font-black text-gray-800 drop-shadow-sm">MENU <span class="text-[var(--primary)]">UTAMA</span></h1>
-            <p class="text-gray-500 font-medium text-sm mt-1">Pilih aktivitasmu hari ini</p>
-        </div>
-        <div class="w-full flex flex-col gap-1 animate-on-load" style="animation-delay: 0.1s;">
-            
-            <div class="menu-card border-[var(--primary)] border-b-4 border-b-[var(--primary)]" onclick="showScreen('screen-identity'); playSound('click')">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-blue-100 text-blue-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">🎮</div>
-                    <div class="text-left">
-                        <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Mulai Quiz</h3>
-                        <p class="font-poppins text-xs text-gray-500 font-medium">Masuk ke permainan</p>
-                    </div>
-                </div>
-                <div class="text-gray-300 font-bold text-xl">➔</div>
-            </div>
-            <div class="menu-card border-[var(--accent-yellow)] border-b-4 border-b-[var(--accent-yellow)]" onclick="showScreen('screen-tutorial'); playSound('click')">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-yellow-100 text-yellow-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">📖</div>
-                    <div class="text-left">
-                        <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Cara Bermain</h3>
-                        <p class="font-poppins text-xs text-gray-500 font-medium">Pelajari aturannya</p>
-                    </div>
-                </div>
-                <div class="text-gray-300 font-bold text-xl">➔</div>
-            </div>
-            <div class="menu-card border-[var(--secondary)] border-b-4 border-b-[var(--secondary)]" onclick="showLeaderboard(); playSound('click')">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-green-100 text-green-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">🏆</div>
-                    <div class="text-left">
-                        <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Papan Nilai</h3>
-                        <p class="font-poppins text-xs text-gray-500 font-medium">Lihat skor tertinggi</p>
-                    </div>
-                </div>
-                <div class="text-gray-300 font-bold text-xl">➔</div>
-            </div>
-            <div class="menu-card" onclick="showScreen('screen-settings'); playSound('click')">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-gray-100 text-gray-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">⚙️</div>
-                    <div class="text-left">
-                        <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Pengaturan</h3>
-                        <p class="font-poppins text-xs text-gray-500 font-medium">Atur suara & musik</p>
-                    </div>
-                </div>
-                <div class="text-gray-300 font-bold text-xl">➔</div>
-            </div>
-            <div class="menu-card border-purple-400 border-b-4 border-b-purple-400 mt-4" onclick="showScreen('screen-teacher-login'); playSound('click')">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 bg-purple-100 text-purple-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">👩‍🏫</div>
-                    <div class="text-left">
-                        <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Akses Guru</h3>
-                        <p class="font-poppins text-xs text-gray-500 font-medium">Kelola soal & nilai</p>
-                    </div>
-                </div>
-                <div class="text-gray-300 font-bold text-xl">➔</div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="screen-identity" class="screen px-6 bg-gradient-to-b from-blue-50 to-white pb-24">
-        <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 active:scale-95 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
-        
-        <div class="w-full relative animate-on-load mt-16 mb-10 pt-24">
-            <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 z-20">
-                <div class="w-32 h-32 bg-blue-100 rounded-full border-4 border-white shadow-lg flex justify-center items-center overflow-hidden">
-                    <img src="MASKOT.png" alt="Maskot" class="h-28 mt-4" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=👦'">
-                </div>
-            </div>
-            <div class="glass-panel w-full p-8 pt-20 flex flex-col gap-5 border-[var(--primary)] border-t-8 shadow-2xl">
-                <h2 class="text-2xl font-black text-center text-gray-800 mb-2">IDENTITAS <span class="text-[var(--primary)]">PEMAIN</span></h2>
-                
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">👤</div>
-                    <input type="text" id="input-name" placeholder="Tulis nama panggilanmu" class="input-modern">
-                </div>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">🏫</div>
-                    <input type="text" value="KELAS V" readonly class="input-modern bg-gray-200 text-gray-500 cursor-not-allowed">
-                </div>
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">🔢</div>
-                    <input type="number" id="input-absen" placeholder="Nomor Absen" class="input-modern">
+            <div class="text-center mt-8 animate-on-load z-10 w-full">
+                <div class="relative inline-block mb-4">
+                    <div class="absolute inset-0 bg-yellow-200 blur-2xl rounded-full opacity-40 animate-pulse"></div>
+                    <img src="MASKOT.png" alt="Maskot Menu" class="h-56 mx-auto drop-shadow-2xl relative z-10" style="animation: float 4s ease-in-out infinite;" onerror="this.src='https://placehold.co/200x200/transparent/blue?text=M'">
                 </div>
                 
-                <p id="identity-error" class="text-red-500 text-sm text-center font-bold h-5 opacity-0 transition-opacity bg-red-50 rounded-lg py-1">Lengkapi data terlebih dahulu!</p>
+                <h1 class="text-[3.5rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] via-blue-400 to-[var(--secondary)] filter drop-shadow-md mb-2" style="line-height: 1.1; animation: pulse-glow 3s infinite;">
+                    CERDIAKIA<br>MATCH
+                </h1>
+                <p class="text-sm text-gray-700 font-bold bg-white/80 backdrop-blur px-5 py-2 rounded-full inline-block shadow-sm border border-white">Belajar Sambil Bermain</p>
                 
-                <button class="btn-custom btn-primary !w-full !m-0 mt-2 text-xl" onclick="startGame()">▶ MASUK GAME</button>
-            </div>
-        </div>
-    </section>
-    
-    <section id="screen-tutorial" class="screen bg-white px-6 pt-24 pb-16">
-        <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
-        
-        <h2 class="text-3xl font-black text-center text-gray-800 mb-6 drop-shadow-sm animate-on-load">CARA <span class="text-[var(--accent-yellow)]">BERMAIN</span></h2>
-        
-        <div class="glass-panel w-full p-6 space-y-4 animate-on-load bg-blue-50/50 border-blue-100">
-            <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
-                <span class="bg-blue-100 text-blue-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">1</span> 
-                <p class="text-sm font-medium text-gray-600 mt-1">Geser emotikon ke Kanan, Kiri, Atas, atau Bawah.</p>
-            </div>
-            <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
-                <span class="bg-blue-100 text-blue-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">2</span> 
-                <div class="w-full">
-                    <p class="text-sm font-medium text-gray-600 mb-2">Susun minimal 3 emotikon yang sama.</p>
-                    <div class="flex justify-center items-center gap-2 bg-gray-50 p-3 rounded-xl shadow-inner">
-                        <span class="text-2xl">🌸</span><span class="text-2xl">🌸</span><span class="text-2xl">🌸</span>
-                        <span class="text-lg mx-1 text-gray-400">➔</span>
-                        <span class="text-2xl animate-ping">💥</span>
+                <div class="mt-4">
+                    <div id="cloud-status" class="text-[10px] font-bold bg-green-100/80 backdrop-blur text-green-700 px-3 py-1 rounded-full inline-block shadow-sm border border-green-200">
+                        <span class="animate-pulse inline-block">🟢</span> Cloud Terhubung
                     </div>
                 </div>
             </div>
-            <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
-                <span class="bg-green-100 text-green-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">3</span> 
-                <p class="text-sm font-medium text-gray-600 mt-1">Lakukan 3 kali Match untuk memunculkan soal Quiz.</p>
-            </div>
-            <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
-                <span class="bg-yellow-100 text-yellow-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">4</span> 
-                <p class="text-sm font-medium text-gray-600 mt-1">Jawab soal pilihan ganda. Jawaban salah tidak mengurangi skor.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section id="screen-settings" class="screen bg-white px-6 pt-24 pb-16">
-        <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
-        
-        <h2 class="text-3xl font-black text-center text-gray-800 mb-8 drop-shadow-sm animate-on-load">PENGATURAN</h2>
-        
-        <div class="glass-panel w-full p-6 bg-gray-50/80 animate-on-load space-y-4">
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-                <div class="flex justify-between items-center mb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-blue-100 text-blue-500 rounded-full flex justify-center items-center text-xl">🎵</div>
-                        <span class="font-bold text-gray-700">Musik Latar</span>
-                    </div>
-                    <button id="toggle-music" class="w-14 h-8 bg-[var(--secondary)] rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('music')">
-                        <div class="w-6 h-6 bg-white rounded-full absolute top-1 right-1 shadow-md transition-transform duration-300 transform translate-x-0"></div>
-                    </button>
-                </div>
-                <div class="bg-gray-50 p-3 rounded-xl">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-bold text-gray-500">Volume</span>
-                        <span id="volume-label" class="text-xs font-bold bg-blue-100 text-blue-600 px-2 py-0.5 rounded">40%</span>
-                    </div>
-                    <input type="range" id="music-volume" min="0" max="100" value="40" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[var(--primary)]" oninput="changeVolume(this.value)" onchange="saveUserSettings()">
-                </div>
-            </div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-green-100 text-green-500 rounded-full flex justify-center items-center text-xl">🔊</div>
-                    <span class="font-bold text-gray-700">Efek Suara</span>
-                </div>
-                <button id="toggle-sfx" class="w-14 h-8 bg-[var(--secondary)] rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('sfx')">
-                    <div class="w-6 h-6 bg-white rounded-full absolute top-1 right-1 shadow-md transition-transform duration-300"></div>
+            
+            <div class="w-full flex flex-col gap-5 px-4 sm:px-8 z-20 animate-on-load mt-10">
+                <button class="btn-custom btn-materi !w-full !m-0 group" onclick="openMateri(); playSound('click')">
+                    <span class="text-2xl group-hover:rotate-12 transition-transform">📚</span> 
+                    <span>MATERI BELAJAR</span>
+                </button>
+                <button class="btn-custom btn-primary !w-full !m-0 !py-5 !text-2xl group" onclick="startQuizFlow(); playSound('click')">
+                    <span class="text-3xl group-hover:scale-110 transition-transform">🎮</span> 
+                    <span>MULAI MAIN</span>
                 </button>
             </div>
         </div>
     </section>
+    
+    <!-- 4. MENU SCREEN -->
+    <section id="screen-menu" class="screen bg-gray-50/50 backdrop-blur-sm">
+        <div class="scroll-wrapper !justify-start pt-20 px-6">
+            <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 active:scale-95 transition-all text-xl font-bold" onclick="showScreen('screen-landing'); playSound('click')">⬅</button>
+            
+            <div class="text-center mb-8 animate-on-load w-full">
+                <h1 class="text-4xl font-black text-gray-800 drop-shadow-sm">MENU <span class="text-[var(--primary)]">UTAMA</span></h1>
+                <p class="text-gray-500 font-medium text-sm mt-1">Pilih aktivitasmu hari ini</p>
+            </div>
+            
+            <div class="w-full flex flex-col gap-1 animate-on-load" style="animation-delay: 0.1s;">
+                <div class="menu-card border-[var(--primary)] border-b-4 border-b-[var(--primary)]" onclick="showScreen('screen-identity'); playSound('click')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-blue-100 text-blue-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">🎮</div>
+                        <div class="text-left">
+                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Mulai Quiz</h3>
+                            <p class="font-poppins text-xs text-gray-500 font-medium">Masuk ke permainan</p>
+                        </div>
+                    </div>
+                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                </div>
+                <div class="menu-card border-[var(--accent-yellow)] border-b-4 border-b-[var(--accent-yellow)]" onclick="showScreen('screen-tutorial'); playSound('click')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-yellow-100 text-yellow-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">📖</div>
+                        <div class="text-left">
+                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Cara Bermain</h3>
+                            <p class="font-poppins text-xs text-gray-500 font-medium">Pelajari aturannya</p>
+                        </div>
+                    </div>
+                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                </div>
+                <div class="menu-card border-[var(--secondary)] border-b-4 border-b-[var(--secondary)]" onclick="showLeaderboard(); playSound('click')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-green-100 text-green-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">🏆</div>
+                        <div class="text-left">
+                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Papan Nilai</h3>
+                            <p class="font-poppins text-xs text-gray-500 font-medium">Lihat skor tertinggi</p>
+                        </div>
+                    </div>
+                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                </div>
+                <div class="menu-card" onclick="showScreen('screen-settings'); playSound('click')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-gray-100 text-gray-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">⚙️</div>
+                        <div class="text-left">
+                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Pengaturan</h3>
+                            <p class="font-poppins text-xs text-gray-500 font-medium">Atur suara & musik</p>
+                        </div>
+                    </div>
+                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                </div>
+                <div class="menu-card border-purple-400 border-b-4 border-b-purple-400 mt-4" onclick="showScreen('screen-teacher-login'); playSound('click')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 bg-purple-100 text-purple-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">👩‍🏫</div>
+                        <div class="text-left">
+                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Akses Guru</h3>
+                            <p class="font-poppins text-xs text-gray-500 font-medium">Kelola soal & nilai</p>
+                        </div>
+                    </div>
+                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- 5. IDENTITY SCREEN -->
+    <section id="screen-identity" class="screen bg-gradient-to-b from-blue-50 to-white">
+        <div class="scroll-wrapper px-6">
+            <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 active:scale-95 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
+            
+            <div class="w-full relative animate-on-load pt-16">
+                <!-- Mascot overlapping top -->
+                <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 z-20">
+                    <div class="w-32 h-32 bg-blue-100 rounded-full border-4 border-white shadow-lg flex justify-center items-center overflow-hidden">
+                        <img src="MASKOT.png" alt="Maskot" class="h-28 mt-4" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=👦'">
+                    </div>
+                </div>
+                <div class="glass-panel w-full p-8 pt-20 flex flex-col gap-5 border-[var(--primary)] border-t-8 shadow-2xl">
+                    <h2 class="text-2xl font-black text-center text-gray-800 mb-2">IDENTITAS <span class="text-[var(--primary)]">PEMAIN</span></h2>
+                    
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">👤</div>
+                        <input type="text" id="input-name" placeholder="Tulis nama panggilanmu" class="input-modern">
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">🏫</div>
+                        <input type="text" value="KELAS V" readonly class="input-modern bg-gray-200 text-gray-500 cursor-not-allowed">
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">🔢</div>
+                        <input type="number" id="input-absen" placeholder="Nomor Absen" class="input-modern">
+                    </div>
+                    
+                    <p id="identity-error" class="text-red-500 text-sm text-center font-bold h-5 opacity-0 transition-opacity bg-red-50 rounded-lg py-1">Lengkapi data terlebih dahulu!</p>
+                    
+                    <button class="btn-custom btn-primary !w-full !m-0 mt-2 text-xl" onclick="startGame()">▶ MASUK GAME</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. TUTORIAL SCREEN -->
+    <section id="screen-tutorial" class="screen bg-white">
+        <div class="scroll-wrapper !justify-start px-6 pt-24 pb-6">
+            <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
+            
+            <h2 class="text-3xl font-black text-center text-gray-800 mb-6 drop-shadow-sm animate-on-load w-full">CARA <span class="text-[var(--accent-yellow)]">BERMAIN</span></h2>
+            
+            <div class="glass-panel w-full p-6 space-y-4 animate-on-load bg-blue-50/50 border-blue-100">
+                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
+                    <span class="bg-blue-100 text-blue-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">1</span> 
+                    <p class="text-sm font-medium text-gray-600 mt-1">Geser emotikon ke Kanan, Kiri, Atas, atau Bawah.</p>
+                </div>
+                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
+                    <span class="bg-blue-100 text-blue-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">2</span> 
+                    <div class="w-full">
+                        <p class="text-sm font-medium text-gray-600 mb-2">Susun minimal 3 emotikon yang sama.</p>
+                        <div class="flex justify-center items-center gap-2 bg-gray-50 p-3 rounded-xl shadow-inner">
+                            <span class="text-2xl">🌸</span><span class="text-2xl">🌸</span><span class="text-2xl">🌸</span>
+                            <span class="text-lg mx-1 text-gray-400">➔</span>
+                            <span class="text-2xl animate-ping">💥</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
+                    <span class="bg-green-100 text-green-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">3</span> 
+                    <p class="text-sm font-medium text-gray-600 mt-1">Lakukan 3 kali Match untuk memunculkan soal Quiz.</p>
+                </div>
+                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
+                    <span class="bg-yellow-100 text-yellow-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">4</span> 
+                    <p class="text-sm font-medium text-gray-600 mt-1">Jawab soal pilihan ganda. Jawaban salah tidak mengurangi skor.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. SETTINGS SCREEN -->
+    <section id="screen-settings" class="screen bg-white">
+        <div class="scroll-wrapper !justify-start px-6 pt-24 pb-6">
+            <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
+            
+            <h2 class="text-3xl font-black text-center text-gray-800 mb-8 drop-shadow-sm animate-on-load w-full">PENGATURAN</h2>
+            
+            <div class="glass-panel w-full p-6 bg-gray-50/80 animate-on-load space-y-4">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 text-blue-500 rounded-full flex justify-center items-center text-xl">🎵</div>
+                            <span class="font-bold text-gray-700">Musik Latar</span>
+                        </div>
+                        <button id="toggle-music" class="w-14 h-8 bg-[var(--secondary)] rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('music')">
+                            <div class="w-6 h-6 bg-white rounded-full absolute top-1 right-1 shadow-md transition-transform duration-300 transform translate-x-0"></div>
+                        </button>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-xl">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-gray-500">Volume</span>
+                            <span id="volume-label" class="text-xs font-bold bg-blue-100 text-blue-600 px-2 py-0.5 rounded">40%</span>
+                        </div>
+                        <input type="range" id="music-volume" min="0" max="100" value="40" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[var(--primary)]" oninput="changeVolume(this.value)" onchange="saveUserSettings()">
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-100 text-green-500 rounded-full flex justify-center items-center text-xl">🔊</div>
+                        <span class="font-bold text-gray-700">Efek Suara</span>
+                    </div>
+                    <button id="toggle-sfx" class="w-14 h-8 bg-[var(--secondary)] rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('sfx')">
+                        <div class="w-6 h-6 bg-white rounded-full absolute top-1 right-1 shadow-md transition-transform duration-300"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. GAME SCREEN -->
     <section id="screen-game" class="screen bg-gradient-to-b from-blue-100 to-green-100">
         <div class="absolute inset-0 pointer-events-none z-0 opacity-40">
             <div class="absolute top-[10%] w-[200%] h-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')] bg-contain bg-repeat-x animate-[float-cloud_40s_linear_infinite]"></div>
         </div>
         
+        <!-- Modern HUD Top Bar -->
         <div class="w-full bg-white/90 backdrop-blur-xl shadow-lg rounded-b-[30px] p-5 flex flex-col justify-between z-20 border-b-4 border-white">
             <div class="flex justify-between items-center mb-3">
                 <div class="flex items-center gap-3 bg-gray-50 pl-2 pr-4 py-1.5 rounded-full border border-gray-100">
@@ -578,10 +639,13 @@
             </div>
             
             <div class="flex justify-between items-center">
+                <!-- Score Card -->
                 <div class="bg-gradient-to-r from-[var(--accent-yellow)] to-[var(--accent-orange)] px-4 py-2 rounded-2xl shadow-md border-2 border-white flex flex-col items-center min-w-[80px]">
                     <span class="text-[10px] text-yellow-900 font-black tracking-wider uppercase">Nilai</span>
                     <span id="hud-score" class="text-2xl font-black text-white drop-shadow-md leading-none">0</span>
                 </div>
+                
+                <!-- Progress & Match Info -->
                 <div class="flex flex-col gap-2 w-3/5">
                     <div class="bg-white p-2 rounded-xl shadow-sm border border-blue-50">
                         <div class="flex justify-between text-[10px] font-bold text-blue-600 mb-1 px-1">
@@ -599,14 +663,18 @@
             </div>
         </div>
         
-        <div class="flex-1 flex justify-center items-center relative p-4 z-10">
+        <!-- Game Board Area -->
+        <div class="flex-1 flex justify-center items-center relative p-4 z-10 w-full h-full pb-8">
             <div class="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.4)_0%,transparent_70%)] pointer-events-none"></div>
+            
             <div id="game-board" class="w-full aspect-square max-w-[380px] glass-panel p-3 grid grid-cols-7 grid-rows-7 gap-1.5 shadow-2xl relative touch-none">
+                <!-- Cells generated via JS -->
             </div>
             <div id="combo-text"></div>
         </div>
     </section>
-    
+
+    <!-- QUIZ MODAL -->
     <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-slate-900/40 backdrop-blur-md z-50 flex flex-col justify-center items-center p-5 hidden">
         <div class="bg-white w-full max-w-sm max-h-[85vh] flex flex-col rounded-[32px] shadow-2xl transform scale-95 transition-all duration-300 relative overflow-hidden" id="quiz-box">
             <div class="bg-[var(--primary)] p-6 pb-8 rounded-b-[40px] text-center relative shadow-md z-10">
@@ -616,87 +684,109 @@
                 </div>
                 <p id="quiz-question" class="text-lg font-bold text-white leading-relaxed drop-shadow-md relative z-10"></p>
             </div>
-            <div class="p-5 pt-6 overflow-y-auto bg-gray-50 flex-1 relative z-0 -mt-6">
+            <div class="p-5 pt-6 overflow-y-auto custom-scrollbar bg-gray-50 flex-1 relative z-0 -mt-6 pb-8">
                 <div id="quiz-options" class="flex flex-col gap-3 font-poppins pt-4">
+                    <!-- Options injected via JS -->
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div id="feedback-banner" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[60] flex flex-col items-center pointer-events-none opacity-0">
         <div id="feedback-icon" class="text-[5rem] drop-shadow-2xl mb-2">🎉</div>
         <div id="feedback-text" class="text-4xl font-black text-white drop-shadow-lg px-8 py-3 rounded-full border-4 shadow-xl">BENAR!</div>
         <div id="feedback-score" class="text-2xl font-black text-yellow-300 drop-shadow-md mt-3 bg-black/30 px-4 py-1 rounded-full backdrop-blur">+NILAI</div>
     </div>
-    
-    <section id="screen-result" class="screen p-6 bg-gradient-to-b from-[#FFF9C4] to-[#FFE082] pb-24">
-        <div class="absolute inset-0 opacity-20 bg-[repeating-conic-gradient(from_0deg,#FFD54F_0deg_15deg,transparent_15deg_30deg)] animate-[spin-slow_60s_linear_infinite]"></div>
-        <div class="glass-panel w-full p-8 flex flex-col items-center text-center relative overflow-hidden border-[var(--accent-yellow)] border-4 shadow-2xl animate-on-load bg-white/90 mt-10 mb-10 pt-12">
-            <div class="text-[5rem] mb-2 animate-[bounce-soft_2s_infinite] drop-shadow-xl relative z-10">🏆</div>
-            <h2 class="text-3xl font-black text-[var(--accent-orange)] mb-1 drop-shadow-sm relative z-10">PERMAINAN SELESAI</h2>
-            <div id="res-stars" class="flex gap-2 mb-6 text-4xl drop-shadow-md relative z-10"></div>
+
+    <!-- 9. RESULT SCREEN -->
+    <section id="screen-result" class="screen bg-gradient-to-b from-[#FFF9C4] to-[#FFE082]">
+        <div class="scroll-wrapper px-6 overflow-hidden relative">
+            <div class="absolute inset-0 opacity-20 bg-[repeating-conic-gradient(from_0deg,#FFD54F_0deg_15deg,transparent_15deg_30deg)] animate-[spin-slow_60s_linear_infinite] z-0"></div>
             
-            <div class="bg-gray-50 w-full rounded-2xl p-5 shadow-inner mb-6 relative z-10 border border-gray-200">
-                <p class="text-xs text-gray-400 font-bold mb-3 tracking-widest">RINGKASAN HASIL</p>
-                <div class="flex justify-between items-center border-b border-gray-200 py-2">
-                    <span class="text-gray-500 font-medium text-sm">Pemain</span>
-                    <span id="res-name" class="font-bold text-gray-800 text-lg"></span>
+            <div class="glass-panel w-full p-8 flex flex-col items-center text-center relative overflow-hidden border-[var(--accent-yellow)] border-4 shadow-2xl animate-on-load bg-white/90 z-10 mt-10">
+                <div class="text-[5rem] mb-2 animate-[bounce-soft_2s_infinite] drop-shadow-xl relative z-10">🏆</div>
+                <h2 class="text-3xl font-black text-[var(--accent-orange)] mb-1 drop-shadow-sm relative z-10">PERMAINAN SELESAI</h2>
+                
+                <div id="res-stars" class="flex gap-2 mb-6 text-4xl drop-shadow-md relative z-10">
+                    <!-- Stars updated via JS -->
                 </div>
-                <div class="flex justify-between items-center border-b border-gray-200 py-2">
-                    <div class="flex items-center gap-2"><span class="text-green-500 text-lg">✔</span> <span class="text-gray-600 font-medium text-sm">Benar</span></div>
-                    <span id="res-benar" class="font-bold text-gray-800 text-lg"></span>
+                
+                <div class="bg-gray-50 w-full rounded-2xl p-5 shadow-inner mb-6 relative z-10 border border-gray-200">
+                    <p class="text-xs text-gray-400 font-bold mb-3 tracking-widest">RINGKASAN HASIL</p>
+                    <div class="flex justify-between items-center border-b border-gray-200 py-2">
+                        <span class="text-gray-500 font-medium text-sm">Pemain</span>
+                        <span id="res-name" class="font-bold text-gray-800 text-lg"></span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-gray-200 py-2">
+                        <div class="flex items-center gap-2"><span class="text-green-500 text-lg">✔</span> <span class="text-gray-600 font-medium text-sm">Benar</span></div>
+                        <span id="res-benar" class="font-bold text-gray-800 text-lg"></span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-gray-200 py-2">
+                        <div class="flex items-center gap-2"><span class="text-red-500 text-lg">✖</span> <span class="text-gray-600 font-medium text-sm">Salah</span></div>
+                        <span id="res-salah" class="font-bold text-gray-800 text-lg"></span>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t-2 border-dashed border-gray-300 flex justify-between items-end">
+                        <span class="text-gray-800 font-black text-sm">SKOR AKHIR</span>
+                        <span id="res-skor" class="font-black text-[3rem] text-[var(--accent-orange)] leading-none drop-shadow-sm"></span>
+                    </div>
                 </div>
-                <div class="flex justify-between items-center border-b border-gray-200 py-2">
-                    <div class="flex items-center gap-2"><span class="text-red-500 text-lg">✖</span> <span class="text-gray-600 font-medium text-sm">Salah</span></div>
-                    <span id="res-salah" class="font-bold text-gray-800 text-lg"></span>
+                
+                <div id="res-predikat" class="text-lg font-black text-white px-8 py-3 rounded-full shadow-lg mb-8 z-10 border-2 border-white/50 tracking-wider w-full">
+                    MASTER KUIS
                 </div>
-                <div class="mt-4 pt-4 border-t-2 border-dashed border-gray-300 flex justify-between items-end">
-                    <span class="text-gray-800 font-black text-sm">SKOR AKHIR</span>
-                    <span id="res-skor" class="font-black text-[3rem] text-[var(--accent-orange)] leading-none drop-shadow-sm"></span>
+                
+                <div class="w-full flex flex-col gap-3 z-10">
+                    <button class="btn-custom btn-primary !w-full !m-0 !py-4 text-xl" onclick="startGame()">🔄 MAIN LAGI</button>
+                    <button class="btn-custom !w-full !m-0" onclick="showScreen('screen-landing')">🏠 MENU UTAMA</button>
                 </div>
             </div>
-            
-            <div id="res-predikat" class="text-lg font-black text-white px-8 py-3 rounded-full shadow-lg mb-8 z-10 border-2 border-white/50 tracking-wider w-full">
-                MASTER KUIS
-            </div>
-            
-            <div class="w-full flex flex-col gap-3 z-10">
-                <button class="btn-custom btn-primary !w-full !m-0 !py-4 text-xl" onclick="startGame()">🔄 MAIN LAGI</button>
-                <button class="btn-custom !w-full !m-0" onclick="showScreen('screen-landing')">🏠 MENU UTAMA</button>
-            </div>
-        </div>
-    </section>
-    
-    <section id="screen-leaderboard" class="screen bg-gray-50 pt-20 px-6 pb-16">
-        <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
-        <h2 class="text-3xl font-black text-center text-gray-800 mb-6 drop-shadow-sm animate-on-load">PAPAN <span class="text-[var(--secondary)]">JUARA</span></h2>
-        
-        <div class="glass-panel w-full p-2 pb-6 flex flex-col flex-1 min-h-[75vh] animate-on-load bg-white shadow-xl">
-            <div class="bg-blue-50 rounded-t-[28px] p-3 text-center border-b border-blue-100 mb-2">
-                <p class="text-xs font-bold text-blue-600">🏆 TOP 10 SKOR CLOUD</p>
-            </div>
-            <div id="leaderboard-list" class="flex-1 overflow-y-auto space-y-3 font-poppins px-3 pb-6"></div>
         </div>
     </section>
 
-    <section id="screen-teacher-login" class="screen bg-gradient-to-br from-purple-50 to-indigo-50 px-6 pb-24">
-        <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-purple-500 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
-        
-        <div class="glass-panel w-full p-8 animate-on-load border-purple-200 border-t-8 shadow-2xl bg-white/90 mt-20 mb-10 pt-10">
-            <div class="text-center text-[4rem] mb-2 drop-shadow-md">👩‍🏫</div>
-            <h2 class="text-2xl font-black text-center text-purple-700 mb-2">PORTAL GURU</h2>
-            <p class="text-xs text-center text-gray-500 font-medium mb-8">Masuk untuk kelola soal & lihat nilai siswa</p>
+    <!-- 10. LEADERBOARD SCREEN -->
+    <section id="screen-leaderboard" class="screen bg-gray-50">
+        <div class="scroll-wrapper !justify-start pt-20 px-6 pb-6">
+            <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
             
-            <div class="space-y-4">
-                <input type="text" id="teacher-username" placeholder="Username" class="input-modern !bg-purple-50 focus:!border-purple-400 focus:!ring-purple-200">
-                <input type="password" id="teacher-password" placeholder="Password" class="input-modern !bg-purple-50 focus:!border-purple-400 focus:!ring-purple-200">
+            <h2 class="text-3xl font-black text-center text-gray-800 mb-6 drop-shadow-sm animate-on-load w-full">PAPAN <span class="text-[var(--secondary)]">JUARA</span></h2>
+            
+            <div class="glass-panel w-full p-2 pb-6 flex flex-col h-[75vh] animate-on-load bg-white shadow-xl">
+                <div class="bg-blue-50 rounded-t-[28px] p-3 text-center border-b border-blue-100 mb-2">
+                    <p class="text-xs font-bold text-blue-600">🏆 TOP 10 SKOR CLOUD</p>
+                </div>
+                <div id="leaderboard-list" class="flex-1 overflow-y-auto space-y-3 font-poppins px-3 custom-scrollbar">
+                    <!-- Injected via JS -->
+                </div>
             </div>
-            <p id="teacher-error" class="text-red-500 text-sm text-center font-bold h-5 opacity-0 transition-opacity mt-4 bg-red-50 rounded-lg py-1">Username/Password salah!</p>
-            <button class="btn-custom !bg-gradient-to-b !from-purple-500 !to-purple-700 !text-white !border-purple-400 !shadow-[0_8px_0_#6b21a8] hover:!brightness-110 active:!shadow-[0_2px_0_#6b21a8] !w-full !m-0 mt-6 text-xl" onclick="loginTeacher()">MASUK</button>
         </div>
     </section>
-    
+
+    <!-- 11. TEACHER LOGIN SCREEN -->
+    <section id="screen-teacher-login" class="screen bg-gradient-to-br from-purple-50 to-indigo-50">
+        <div class="scroll-wrapper px-6">
+            <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-purple-500 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
+            
+            <div class="glass-panel w-full p-8 animate-on-load border-purple-200 border-t-8 shadow-2xl bg-white/90">
+                <div class="text-center text-[4rem] mb-2 drop-shadow-md">👩‍🏫</div>
+                <h2 class="text-2xl font-black text-center text-purple-700 mb-2">PORTAL GURU</h2>
+                <p class="text-xs text-center text-gray-500 font-medium mb-8">Masuk untuk kelola soal & lihat nilai siswa</p>
+                
+                <div class="space-y-4">
+                    <input type="text" id="teacher-username" placeholder="Username" class="input-modern !bg-purple-50 focus:!border-purple-400 focus:!ring-purple-200">
+                    <input type="password" id="teacher-password" placeholder="Password" class="input-modern !bg-purple-50 focus:!border-purple-400 focus:!ring-purple-200">
+                </div>
+                
+                <p id="teacher-error" class="text-red-500 text-sm text-center font-bold h-5 opacity-0 transition-opacity mt-4 bg-red-50 rounded-lg py-1">Username/Password salah!</p>
+                
+                <button class="btn-custom !bg-gradient-to-b !from-purple-500 !to-purple-700 !text-white !border-purple-400 !shadow-[0_8px_0_#6b21a8] hover:!brightness-110 active:!shadow-[0_2px_0_#6b21a8] !w-full !m-0 mt-6 text-xl" onclick="loginTeacher()">MASUK</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12. TEACHER DASHBOARD SCREEN -->
     <section id="screen-teacher-dashboard" class="screen bg-gray-100">
+        <!-- Top Navbar -->
         <div class="w-full bg-gradient-to-r from-purple-700 to-indigo-700 text-white p-5 flex justify-between items-center shadow-lg z-20 rounded-b-2xl">
             <div>
                 <h2 class="font-black text-xl leading-none font-baloo">DASHBOARD</h2>
@@ -705,13 +795,15 @@
             <button class="bg-white/20 hover:bg-white/30 backdrop-blur text-white px-4 py-2 rounded-xl text-sm font-bold shadow transition-all border border-white/30" onclick="logoutTeacher()">Keluar</button>
         </div>
         
+        <!-- Modern Tabs -->
         <div class="flex w-full bg-white shadow-sm z-10 font-poppins text-sm font-bold mt-4 mx-4 rounded-xl overflow-hidden shrink-0" style="width: calc(100% - 32px);">
             <button id="tab-nilai" class="flex-1 py-4 text-purple-600 border-b-4 border-purple-600 bg-purple-50 transition-colors" onclick="switchTeacherTab('nilai')">📊 Rekap Nilai</button>
             <button id="tab-soal" class="flex-1 py-4 text-gray-500 border-b-4 border-transparent hover:bg-gray-50 transition-colors" onclick="switchTeacherTab('soal')">📝 Kelola Soal</button>
             <button id="tab-materi" class="flex-1 py-4 text-gray-500 border-b-4 border-transparent hover:bg-gray-50 transition-colors" onclick="switchTeacherTab('materi')">📚 Materi</button>
         </div>
         
-        <div id="content-nilai" class="flex-1 overflow-y-auto p-4 pb-24">
+        <!-- Tab: NILAI -->
+        <div id="content-nilai" class="flex-1 overflow-y-auto p-4 custom-scrollbar pb-10 w-full">
             <div class="grid grid-cols-2 gap-3 mb-4 font-poppins">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
                     <span class="text-xs font-bold text-gray-500 mb-1">Total Siswa</span>
@@ -730,12 +822,14 @@
                     <span id="stat-pass" class="text-2xl font-black text-orange-500">0%</span>
                 </div>
             </div>
+            
             <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100 mb-4">
                 <h3 class="font-bold text-gray-700 text-sm mb-3">Grafik Distribusi Nilai</h3>
                 <div class="relative h-40 w-full">
                     <canvas id="scoreChart"></canvas>
                 </div>
             </div>
+            
             <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-bold text-gray-700 text-sm">Tabel Nilai Siswa</h3>
@@ -743,6 +837,7 @@
                         📋 Salin Excel
                     </button>
                 </div>
+                
                 <div class="overflow-x-auto border border-gray-100 rounded-xl">
                     <table class="w-full text-xs font-poppins text-left min-w-[400px]">
                         <thead class="bg-gray-50 text-gray-500 border-b border-gray-200">
@@ -754,7 +849,9 @@
                                 <th class="p-3 text-center text-purple-600 font-bold">Skor</th>
                             </tr>
                         </thead>
-                        <tbody id="teacher-table-body" class="divide-y divide-gray-100 text-gray-700 font-medium"></tbody>
+                        <tbody id="teacher-table-body" class="divide-y divide-gray-100 text-gray-700 font-medium">
+                            <!-- Injected via JS -->
+                        </tbody>
                     </table>
                 </div>
                 <button class="w-full mt-4 bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 rounded-xl text-sm border border-red-100 transition-colors" onclick="resetData()">🗑 Hapus Semua Data</button>
@@ -762,13 +859,13 @@
         </div>
         
         <!-- Tab: SOAL -->
-        <div id="content-soal" class="flex-1 overflow-y-auto p-4 pb-28 hidden">
-            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-5 mb-5 font-poppins relative shadow-sm overflow-hidden">
+        <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden w-full relative">
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-5 mb-5 font-poppins relative shadow-sm overflow-hidden shrink-0">
                 <div class="absolute -right-10 -top-10 text-[8rem] opacity-5">🤖</div>
                 <div class="inline-block bg-blue-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-sm mb-3">✨ AI GENERATOR</div>
                 
                 <h3 class="font-black text-gray-800 text-lg mb-1 font-baloo">KAK AL (Asisten Pintar)</h3>
-                <p class="text-xs text-gray-500 font-medium mb-4 leading-relaxed">Buat soal otomatis dari buku referensi.</p>
+                <p class="text-xs text-gray-500 font-medium mb-4 leading-relaxed">Tarik soal otomatis dari file soal.json lokal.</p>
                 
                 <div class="space-y-4 relative z-10">
                     <div>
@@ -788,30 +885,34 @@
                         <label class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">Jumlah Soal</label>
                         <input type="number" id="ai-num-questions" min="1" max="50" value="10" class="w-full p-3 rounded-xl border border-gray-200 text-sm font-bold text-gray-700 bg-white focus:ring-2 focus:ring-blue-400 outline-none shadow-sm text-center">
                     </div>
-                    
                     <button onclick="processAIChapter()" id="btn-ai-generate" class="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-3.5 rounded-xl text-sm font-bold shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2">
                         ✨ MINTA KAK AL BUAT SOAL
                     </button>
                 </div>
+                
+                <!-- AI Loading State -->
                 <div id="ai-loading-container" class="hidden mt-4 bg-white/80 backdrop-blur p-4 rounded-xl border border-blue-100 shadow-sm text-center relative z-10">
                     <div class="text-3xl animate-bounce mb-2">🤖</div>
-                    <p id="ai-loading-text" class="text-xs font-bold text-blue-600 mb-3">Kak AL sedang membuat soal...</p>
+                    <p id="ai-loading-text" class="text-xs font-bold text-blue-600 mb-3">Kak AL sedang menyiapkan soal...</p>
                     <div class="progress-bar-bg !h-2">
                         <div id="ai-progress-bar" class="progress-bar-fill !bg-blue-500" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
             
-            <div id="questions-editor" class="space-y-4 font-poppins pb-6"></div>
+            <div id="questions-editor" class="space-y-4 font-poppins pb-32">
+                <!-- Injected via JS -->
+            </div>
             
             <!-- Sticky Bottom Actions -->
-            <div class="absolute bottom-0 left-0 w-full p-4 bg-white/90 backdrop-blur border-t border-gray-100 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] z-20 flex gap-3">
+            <div class="absolute bottom-0 left-0 w-full p-4 bg-white/90 backdrop-blur border-t border-gray-100 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] z-20 flex gap-3 pb-8">
                 <button class="w-1/3 bg-gray-100 text-gray-700 hover:bg-gray-200 font-bold py-3 rounded-xl shadow-sm active:scale-95 transition-all text-sm border border-gray-200" onclick="addNewQuestion()">➕ Tambah</button>
                 <button class="w-2/3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-all text-sm" onclick="saveQuestions()">💾 SIMPAN KE CLOUD</button>
             </div>
         </div>
         
-        <div id="content-materi" class="flex-1 overflow-y-auto p-6 pb-24 hidden font-poppins">
+        <!-- Tab: MATERI -->
+        <div id="content-materi" class="flex-1 overflow-y-auto p-6 custom-scrollbar hidden font-poppins w-full">
             <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 text-center">
                 <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-2xl flex justify-center items-center text-3xl mx-auto mb-4">📚</div>
                 <h3 class="font-black text-gray-800 text-lg mb-2 font-baloo">Tautan Buku Interaktif</h3>
@@ -821,12 +922,15 @@
             </div>
         </div>
     </section>
-    
-    <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-slate-900/50 backdrop-blur-sm z-[100] flex flex-col justify-center items-center p-6 hidden">
+
+    <!-- CUSTOM MODAL ALERT -->
+    <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-slate-900/50 backdrop-blur-sm z-[200] flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full max-w-sm rounded-[32px] p-6 shadow-2xl text-center relative animate-on-load">
             <div class="w-12 h-12 bg-blue-100 text-blue-500 rounded-full flex justify-center items-center text-2xl mx-auto -mt-12 mb-4 border-4 border-white shadow-md">🔔</div>
             <p id="custom-modal-text" class="text-gray-700 font-medium mb-6 font-poppins text-sm leading-relaxed"></p>
-            <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full font-baloo"></div>
+            <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full font-baloo">
+                <!-- Buttons injected here -->
+            </div>
         </div>
     </div>
 </div>
@@ -860,7 +964,7 @@
     const TEACHER_USER = 'aldi260605';
     const TEACHER_PASS = '111111aldi';
     
-    // Default fallback questions
+    // Cadangan soal jika gagal terhubung ke soal.json
     const DEFAULT_QUESTIONS = [
         { q: "Andi membeli 3 buku tulis. Harga satu buku adalah Rp 4.500. Jika Andi membayar dengan uang Rp 20.000, berapakah kembaliannya?", options: ["Rp 6.500", "Rp 7.500", "Rp 5.500", "Rp 8.000"], answer: 0 },
         { q: "Pancasila adalah dasar negara Indonesia. Sila yang berbunyi 'Keadilan Sosial bagi Seluruh Rakyat Indonesia' dilambangkan dengan...", options: ["Bintang", "Rantai", "Pohon Beringin", "Padi dan Kapas"], answer: 3 },
@@ -881,7 +985,9 @@
     };
     let settings = { music: true, sfx: true, volume: 0.4 };
 
-    // File Fetcher from Local / GitHub logic
+    // ==================================
+    // FUNGSI TARIK SOAL DARI LOCAL JSON
+    // ==================================
     async function processAIChapter() {
         const selectElement = document.getElementById('ai-chapter');
         const chapterId = selectElement.value;
@@ -902,81 +1008,68 @@
         loadingContainer.classList.remove('hidden');
         
         try {
-            progressBar.style.width = '30%'; loadingText.innerText = "Kak AL sedang menyiapkan materi...";
+            progressBar.style.width = '20%'; loadingText.innerText = "Kak AL membuka modul...";
+            await new Promise(r => setTimeout(r, 600));
             
-            let bankSoalJSON = {};
-            try {
-                const response = await fetch('soal.json');
-                if (!response.ok) throw new Error("Gagal mengambil file soal.json");
-                bankSoalJSON = await response.json();
+            progressBar.style.width = '50%'; loadingText.innerText = `Kak AL membaca ${chapterName}...`;
+            
+            // FUNGSI FETCH FILE LOKAL
+            const response = await fetch('soal.json');
+            if (!response.ok) throw new Error("File soal.json tidak ditemukan di folder!");
+            const bankSoal = await response.json();
+            
+            if (!bankSoal[chapterId]) throw new Error(`Bab ${chapterId} tidak ditemukan di soal.json!`);
+            
+            progressBar.style.width = '80%'; loadingText.innerText = "Kak AL merangkai soal...";
+            await new Promise(r => setTimeout(r, 600));
+            
+            let soalBabIni = bankSoal[chapterId];
+            
+            // Acak seluruh soal di Bab tersebut
+            soalBabIni.sort(() => 0.5 - Math.random());
+            let soalTerpilih = soalBabIni.slice(0, jumlahSoal);
+            
+            // Format soal & acak pilihan gandanya
+            let formattedQuestions = soalTerpilih.map(s => {
+                let opts = [s.correct, ...s.wrongs];
+                let mappedOpts = opts.map((opt, i) => ({ text: opt, isCorrect: i === 0 }));
                 
-                progressBar.style.width = '70%'; loadingText.innerText = `Kak AL sedang membuat soal ${chapterName}...`;
-            } catch (fetchError) {
-                console.warn("Gagal mengambil dari soal.json lokal.", fetchError);
-                throw new Error("File soal.json tidak ditemukan. Pastikan file berada di folder yang sama dengan aplikasi ini.");
-            }
+                // Acak opsi (Fisher-Yates)
+                for (let i = mappedOpts.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [mappedOpts[i], mappedOpts[j]] = [mappedOpts[j], mappedOpts[i]];
+                }
+                
+                return {
+                    q: s.q,
+                    options: mappedOpts.map(m => m.text),
+                    answer: mappedOpts.findIndex(m => m.isCorrect)
+                };
+            });
             
-            await new Promise(r => setTimeout(r, 1000));
-            progressBar.style.width = '100%'; loadingText.innerText = "✅ Kak AL Selesai!";
+            // MENGGABUNGKAN (CONCAT) soal baru dengan soal yang sudah ada, BUKAN menimpa
+            activeQuestions = activeQuestions.concat(formattedQuestions);
+            
+            progressBar.style.width = '100%'; loadingText.innerText = "✅ Selesai!";
             await new Promise(r => setTimeout(r, 500));
             
-            generateQuestionsFromBank(bankSoalJSON, chapterId, chapterName, jumlahSoal);
+            renderTeacherQuestionsEditor();
+            showCustomAlert(`✅ Kak AL berhasil menambahkan ${formattedQuestions.length} Soal baru ke daftar.\n\nJangan lupa tekan 'SIMPAN KE CLOUD'!`);
             
         } catch (error) {
-            showCustomAlert(`Error: ${error.message}`);
+            showCustomAlert(`Error: ${error.message}\nPastikan file soal.json ada di folder yang sama dengan file ini.`);
         } finally {
             btn.disabled = false; btn.classList.remove('opacity-50', 'cursor-not-allowed');
             loadingContainer.classList.add('hidden'); progressBar.style.width = '0%';
         }
     }
 
-    // Logic to select, shuffle, and add the questions.
-    function generateQuestionsFromBank(bankSoal, chapterId, chapterName, jumlahSoal) {
-        let soalBabIni = bankSoal[chapterId];
-        
-        if (!soalBabIni || soalBabIni.length === 0) {
-            showCustomAlert(`Maaf, Kak AL tidak menemukan soal untuk ${chapterName} di dalam file soal.json.`);
-            return;
-        }
-
-        syncQuestionsFromDOM(); // sync any manual typed edits first
-
-        // Shuffle the bank
-        let soalAcak = [...soalBabIni].sort(() => 0.5 - Math.random());
-        
-        // Pick requested amount
-        let soalTerpilih = soalAcak.slice(0, jumlahSoal);
-        
-        // Shuffle options A B C D internally for each question
-        let soalBaru = soalTerpilih.map(item => {
-            let options = [
-                { text: item.correct, isCorrect: true },
-                { text: item.wrongs[0] || "Salah 1", isCorrect: false },
-                { text: item.wrongs[1] || "Salah 2", isCorrect: false },
-                { text: item.wrongs[2] || "Salah 3", isCorrect: false }
-            ];
-            options.sort(() => 0.5 - Math.random());
-            
-            return {
-                q: item.q,
-                options: options.map(o => o.text),
-                answer: options.findIndex(o => o.isCorrect)
-            };
-        });
-        
-        // Append to existing
-        activeQuestions = activeQuestions.concat(soalBaru);
-        
-        renderTeacherQuestionsEditor();
-        showCustomAlert(`✅ Kak AL berhasil membuat dan menambahkan ${soalBaru.length} Soal baru ke daftar Anda!\n\nJangan lupa tekan 'SIMPAN KE CLOUD'!`);
-    }
-
+    // Modal Helper
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
         document.getElementById('custom-modal-buttons').innerHTML = `<button class="btn-custom btn-primary !w-full !m-0 !py-3 text-sm" onclick="closeCustomModal()">MENGERTI</button>`;
         document.getElementById('custom-modal').classList.remove('hidden');
     }
-    
     function showCustomConfirm(message, onConfirm) {
         document.getElementById('custom-modal-text').innerText = message;
         document.getElementById('custom-modal-buttons').innerHTML = `
@@ -986,17 +1079,18 @@
         window._confirmAction = onConfirm;
         document.getElementById('custom-modal').classList.remove('hidden');
     }
-    
     function closeCustomModal() { document.getElementById('custom-modal').classList.add('hidden'); }
     
+    // UI Navigation
     function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => {
-            s.classList.remove('active'); s.style.display = 'none';
-        });
+        document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.style.display = 'none'; });
         const target = document.getElementById(id);
         target.style.display = 'flex'; void target.offsetWidth; target.classList.add('active');
     }
 
+    // Audio Logic
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = new AudioContext();
     function playTone(freq, type, duration, vol=0.1) {
         if (!settings.sfx) return;
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -1019,6 +1113,7 @@
         }
     }
 
+    // Initialization
     function initApp() {
         showScreen('screen-loading'); updateSettingsUI();
         let progress = 0; const tips = ["Bermain sambil belajar", "Kumpulkan poin tinggi", "Jawab dengan teliti"];
@@ -1033,9 +1128,7 @@
             progress += 2;
             document.getElementById('loading-progress').style.width = `${progress}%`;
             document.getElementById('loading-percentage').innerText = `${progress}%`;
-            if (progress === 50) {
-                document.getElementById('loading-cloud').style.opacity = 1; initFirebaseAuth();
-            }
+            if (progress === 50) { document.getElementById('loading-cloud').style.opacity = 1; initFirebaseAuth(); }
             if (progress >= 100) {
                 clearInterval(intv); clearInterval(tipInterval);
                 setTimeout(() => { showScreen('screen-landing'); }, 500);
@@ -1043,6 +1136,7 @@
         }, 40); 
     }
 
+    // Firebase Logic
     async function initFirebaseAuth() {
         try {
             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token);
@@ -1054,11 +1148,10 @@
     }
     onAuthStateChanged(auth, (user) => {
         currentUser = user;
-        if (user) {
-            loadActiveQuestionsFromCloud(); listenToScoresFromCloud(); loadSettingsFromCloud(); loadUserSettings(); 
-        }
+        if (user) { loadActiveQuestionsFromCloud(); listenToScoresFromCloud(); loadSettingsFromCloud(); loadUserSettings(); }
     });
 
+    // User Settings
     function loadUserSettings() {
         if (!currentUser) return;
         const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'user_settings', 'preferences');
@@ -1069,8 +1162,7 @@
                 if (data.music !== undefined) settings.music = data.music;
                 if (data.sfx !== undefined) settings.sfx = data.sfx;
                 
-                const volEl = document.getElementById('music-volume');
-                const labelEl = document.getElementById('volume-label');
+                const volEl = document.getElementById('music-volume'); const labelEl = document.getElementById('volume-label');
                 if (volEl) volEl.value = Math.round(settings.volume * 100);
                 if (labelEl) labelEl.innerText = Math.round(settings.volume * 100) + '%';
                 document.getElementById('bg-music').volume = settings.volume;
@@ -1080,8 +1172,7 @@
     }
     async function saveUserSettings() {
         if (!currentUser) return;
-        try { await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'user_settings', 'preferences'), { music: settings.music, sfx: settings.sfx, volume: settings.volume }, { merge: true });
-        } catch (e) {}
+        try { await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'user_settings', 'preferences'), { music: settings.music, sfx: settings.sfx, volume: settings.volume }, { merge: true }); } catch (e) {}
     }
     function loadSettingsFromCloud() {
         if (!currentUser) return;
@@ -1094,15 +1185,13 @@
         });
     }
     async function saveMateriLink() {
-        playSound('click');
-        if (!currentUser) return showCustomAlert("Terputus dari Cloud.");
+        playSound('click'); if (!currentUser) return showCustomAlert("Terputus dari Cloud.");
         const link = document.getElementById('input-heyzine-link').value.trim();
-        try {
-            await setDoc(doc(db, getQuestionsCollectionPath(), 'app_settings'), { materiLink: link }, { merge: true });
-            showCustomAlert("✅ Tautan materi berhasil disimpan!");
-        } catch (e) { showCustomAlert('Gagal menyimpan tautan.'); }
+        try { await setDoc(doc(db, getQuestionsCollectionPath(), 'app_settings'), { materiLink: link }, { merge: true }); showCustomAlert("✅ Tautan materi berhasil disimpan!"); } 
+        catch (e) { showCustomAlert('Gagal menyimpan tautan.'); }
     }
-    
+
+    // Media & UI Function
     function openMateri() {
         document.getElementById('bg-music').pause(); 
         if (heyzineLink && heyzineLink.trim() !== "") {
@@ -1112,13 +1201,11 @@
         } else showCustomAlert("Tautan materi belum ditambahkan oleh Guru.");
     }
     function startQuizFlow() {
-        showScreen('screen-menu');
-        const bgMusic = document.getElementById('bg-music');
+        showScreen('screen-menu'); const bgMusic = document.getElementById('bg-music');
         if (settings.music && settings.volume > 0) { bgMusic.volume = settings.volume; bgMusic.play().catch(e=>{}); }
     }
     function changeVolume(val) {
-        settings.volume = val / 100;
-        document.getElementById('volume-label').innerText = val + '%';
+        settings.volume = val / 100; document.getElementById('volume-label').innerText = val + '%';
         const bgMusic = document.getElementById('bg-music'); bgMusic.volume = settings.volume;
         if (settings.volume > 0 && !settings.music) { settings.music = true; updateSettingsUI(); bgMusic.play().catch(e=>{}); }
         else if (settings.volume == 0 && settings.music) { settings.music = false; updateSettingsUI(); bgMusic.pause(); }
@@ -1139,8 +1226,7 @@
         const btn = document.querySelector('button[onclick="toggleMuteInGame()"]');
         btn.innerHTML = settings.sfx ? '🔊' : '🔇';
         const bgMusic = document.getElementById('bg-music');
-        if (settings.music) { bgMusic.volume = settings.volume; bgMusic.play().catch(e=>{}); }
-        else bgMusic.pause();
+        if (settings.music) { bgMusic.volume = settings.volume; bgMusic.play().catch(e=>{}); } else bgMusic.pause();
         updateSettingsUI(); saveUserSettings();
     }
     function updateSettingsUI() {
@@ -1153,6 +1239,7 @@
         toggleClass('toggle-music', settings.music); toggleClass('toggle-sfx', settings.sfx);
     }
 
+    // Sync Logic
     function loadActiveQuestionsFromCloud() {
         if (!currentUser) return;
         onSnapshot(collection(db, getQuestionsCollectionPath()), (snapshot) => {
@@ -1172,6 +1259,7 @@
         });
     }
 
+    // Teacher Logic
     function loginTeacher() {
         const u = document.getElementById('teacher-username').value; const p = document.getElementById('teacher-password').value;
         const err = document.getElementById('teacher-error'); playSound('click');
@@ -1189,10 +1277,8 @@
             else { btn.className = "flex-1 py-4 text-gray-500 border-b-4 border-transparent hover:bg-gray-50 transition-colors"; content.classList.add('hidden'); }
         });
     }
-    
     function renderTeacherDashboardTable() {
         const list = document.getElementById('teacher-table-body'); list.innerHTML = '';
-        
         let total = allScores.length; let avg = 0, high = 0, low = 0, passing = 0;
         let scoreDistribution = { '90-100':0, '70-89':0, '50-69':0, '<50':0 };
         if(total === 0) {
@@ -1200,12 +1286,8 @@
         } else {
             let sum = 0; high = allScores[0].score; low = allScores[total-1].score;
             allScores.forEach(s => {
-                sum += s.score;
-                if(s.score >= 70) passing++;
-                if(s.score >= 90) scoreDistribution['90-100']++;
-                else if(s.score >= 70) scoreDistribution['70-89']++;
-                else if(s.score >= 50) scoreDistribution['50-69']++;
-                else scoreDistribution['<50']++;
+                sum += s.score; if(s.score >= 70) passing++;
+                if(s.score >= 90) scoreDistribution['90-100']++; else if(s.score >= 70) scoreDistribution['70-89']++; else if(s.score >= 50) scoreDistribution['50-69']++; else scoreDistribution['<50']++;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="p-3 truncate max-w-[120px] font-bold text-gray-800">${s.name}</td>
@@ -1213,67 +1295,38 @@
                     <td class="p-3 text-center text-green-600 font-bold">${s.correct}</td>
                     <td class="p-3 text-center text-red-500 font-bold">${s.wrong}</td>
                     <td class="p-3 text-center text-purple-600 font-black text-sm bg-purple-50">${s.score}</td>
-                `;
-                list.appendChild(tr);
+                `; list.appendChild(tr);
             });
-            avg = (sum / total).toFixed(1);
-            passing = Math.round((passing / total) * 100);
+            avg = (sum / total).toFixed(1); passing = Math.round((passing / total) * 100);
         }
-        document.getElementById('stat-total').innerText = total;
-        document.getElementById('stat-avg').innerText = avg;
-        document.getElementById('stat-high').innerText = high;
-        document.getElementById('stat-pass').innerText = passing + '%';
+        document.getElementById('stat-total').innerText = total; document.getElementById('stat-avg').innerText = avg;
+        document.getElementById('stat-high').innerText = high; document.getElementById('stat-pass').innerText = passing + '%';
         updateTeacherChart(scoreDistribution);
     }
-    
     function updateTeacherChart(data) {
-        const ctx = document.getElementById('scoreChart');
-        if(!ctx) return;
+        const ctx = document.getElementById('scoreChart'); if(!ctx) return;
         if(chartInstance) chartInstance.destroy();
-        
         chartInstance = new Chart(ctx, {
             type: 'bar',
-            data: {
-                labels: ['90-100', '70-89', '50-69', '<50'],
-                datasets: [{
-                    label: 'Jumlah Siswa',
-                    data: [data['90-100'], data['70-89'], data['50-69'], data['<50']],
-                    backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'],
-                    borderRadius: 6,
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "'Poppins', sans-serif", size: 10 } } },
-                    x: { ticks: { font: { family: "'Poppins', sans-serif", size: 10 } } }
-                }
-            }
+            data: { labels: ['90-100', '70-89', '50-69', '<50'], datasets: [{ label: 'Jumlah Siswa', data: [data['90-100'], data['70-89'], data['50-69'], data['<50']], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444'], borderRadius: 6 }] },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "'Poppins', sans-serif", size: 10 } } }, x: { ticks: { font: { family: "'Poppins', sans-serif", size: 10 } } } } }
         });
     }
-
     function syncQuestionsFromDOM() {
         const items = document.querySelectorAll('.question-item'); if (items.length === 0) return;
         let synced = [];
         items.forEach((item, idx) => {
             const qText = document.getElementById(`q${idx}-text`).value;
-            const opts = [
-                document.getElementById(`q${idx}-opt0`).value, document.getElementById(`q${idx}-opt1`).value,
-                document.getElementById(`q${idx}-opt2`).value, document.getElementById(`q${idx}-opt3`).value
-            ];
-            let ans = 0; const radios = document.getElementsByName(`q${idx}-answer`);
-            radios.forEach(r => { if(r.checked) ans = parseInt(r.value); });
+            const opts = [ document.getElementById(`q${idx}-opt0`).value, document.getElementById(`q${idx}-opt1`).value, document.getElementById(`q${idx}-opt2`).value, document.getElementById(`q${idx}-opt3`).value ];
+            let ans = 0; const radios = document.getElementsByName(`q${idx}-answer`); radios.forEach(r => { if(r.checked) ans = parseInt(r.value); });
             synced.push({ q: qText, options: opts, answer: ans });
         });
         activeQuestions = synced;
     }
-    
     function renderTeacherQuestionsEditor() {
         const editor = document.getElementById('questions-editor'); editor.innerHTML = '';
         activeQuestions.forEach((q, idx) => {
-            const div = document.createElement('div');
-            div.className = 'question-item bg-white p-5 rounded-2xl border border-gray-100 shadow-sm relative';
+            const div = document.createElement('div'); div.className = 'question-item bg-white p-5 rounded-2xl border border-gray-100 shadow-sm relative';
             let optionsHTML = ''; const labels = ['A', 'B', 'C', 'D'];
             for(let i=0; i<4; i++) {
                 optionsHTML += `
@@ -1290,26 +1343,21 @@
                 </div>
                 <textarea id="q${idx}-text" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 text-sm focus:border-purple-400 focus:ring-2 focus:ring-purple-100 outline-none resize-none h-20 transition-all">${q.q}</textarea>
                 ${optionsHTML}
-            `;
-            editor.appendChild(div);
+            `; editor.appendChild(div);
         });
     }
-    
     function addNewQuestion() {
         playSound('click'); syncQuestionsFromDOM();
         activeQuestions.push({q: "Tulis pertanyaan di sini...", options: ["Opsi A", "Opsi B", "Opsi C", "Opsi D"], answer: 0});
         renderTeacherQuestionsEditor(); setTimeout(() => { const el = document.getElementById('content-soal'); el.scrollTop = el.scrollHeight; }, 50);
     }
-    
     function deleteQuestion(idx) { playSound('click'); syncQuestionsFromDOM(); if(activeQuestions.length <= 1) return showCustomAlert("Minimal 1 soal harus tersisa."); activeQuestions.splice(idx, 1); renderTeacherQuestionsEditor(); }
-    
     async function saveQuestions() {
         playSound('click'); if (!currentUser) return showCustomAlert("Terputus dari Cloud.");
         syncQuestionsFromDOM();
         try { await setDoc(doc(db, getQuestionsCollectionPath(), 'active_questions'), { questions: activeQuestions }); showCustomAlert(`✅ ${activeQuestions.length} Soal berhasil disimpan ke Cloud!`); } 
         catch (e) { showCustomAlert('Gagal menyimpan soal.'); }
     }
-    
     function copyScoresToClipboard() {
         playSound('click'); if(allScores.length === 0) return showCustomAlert('Tidak ada data.');
         let text = "Nama\tKelas\tNo. Absen\tBenar\tSalah\tNilai Akhir\n";
@@ -1318,36 +1366,27 @@
         try { document.execCommand('copy'); showCustomAlert('✅ Data berhasil disalin! Buka Excel dan Paste.'); } catch(e) {} document.body.removeChild(el);
     }
 
+    // GAMEPLAY
     function startGame() {
         playSound('click'); if(audioCtx.state === 'suspended') audioCtx.resume();
-        const name = document.getElementById('input-name').value.trim();
-        const absen = document.getElementById('input-absen').value.trim();
+        const name = document.getElementById('input-name').value.trim(); const absen = document.getElementById('input-absen').value.trim();
         const err = document.getElementById('identity-error');
         if (!name || !absen) { err.style.opacity = 1; setTimeout(() => err.style.opacity = 0, 2000); return; }
         
         state = {
-            name: name, absen: absen, score: 0, correct: 0, wrong: 0, questionIndex: 0, isAnimating: false,
-            dragStart: null, dragElement: null, comboCount: 0, matchesSinceLastQuiz: 0,
+            name: name, absen: absen, score: 0, correct: 0, wrong: 0, questionIndex: 0, isAnimating: false, dragStart: null, dragElement: null, comboCount: 0, matchesSinceLastQuiz: 0,
             currentShuffledQuestions: [...activeQuestions].sort(() => Math.random() - 0.5)
         };
         updateHUD(); createBoard(); showScreen('screen-game');
     }
-    
     function updateHUD() {
         const totalQ = state.currentShuffledQuestions.length;
-        document.getElementById('hud-name').innerText = state.name;
-        document.getElementById('hud-absen').innerText = state.absen;
-        
-        let currentDisplayScore = Math.round((state.correct / totalQ) * 100);
-        document.getElementById('hud-score').innerText = isNaN(currentDisplayScore) ? 0 : currentDisplayScore;
-        
+        document.getElementById('hud-name').innerText = state.name; document.getElementById('hud-absen').innerText = state.absen;
+        let currentDisplayScore = Math.round((state.correct / totalQ) * 100); document.getElementById('hud-score').innerText = isNaN(currentDisplayScore) ? 0 : currentDisplayScore;
         document.getElementById('hud-progress').innerText = Math.min(state.questionIndex + 1, totalQ) + "/" + totalQ;
-        
-        let progressPercent = (Math.min(state.questionIndex, totalQ) / totalQ) * 100;
-        document.getElementById('hud-progress-bar').style.width = `${progressPercent}%`;
+        let progressPercent = (Math.min(state.questionIndex, totalQ) / totalQ) * 100; document.getElementById('hud-progress-bar').style.width = `${progressPercent}%`;
         if(document.getElementById('hud-match-progress')) document.getElementById('hud-match-progress').innerText = state.matchesSinceLastQuiz;
     }
-    
     function createBoard() {
         board = []; const boardEl = document.getElementById('game-board'); boardEl.innerHTML = '';
         for (let r = 0; r < ROWS; r++) {
@@ -1357,35 +1396,26 @@
                 do { emoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)]; } 
                 while ((c >= 2 && row[c-1] === emoji && row[c-2] === emoji) || (r >= 2 && board[r-1][c] === emoji && board[r-2][c] === emoji));
                 row.push(emoji);
-                
                 const cell = document.createElement('div'); cell.className = 'grid-cell';
-                const span = document.createElement('span'); span.className = 'emoticon pop-in';
-                span.innerText = emoji; span.dataset.r = r; span.dataset.c = c;
+                const span = document.createElement('span'); span.className = 'emoticon pop-in'; span.innerText = emoji; span.dataset.r = r; span.dataset.c = c;
                 span.addEventListener('mousedown', handleDragStart); span.addEventListener('touchstart', handleDragStart, {passive: false});
                 cell.appendChild(span); boardEl.appendChild(cell);
-            }
-            board.push(row);
+            } board.push(row);
         }
         document.addEventListener('mouseup', handleDragEnd); document.addEventListener('touchend', handleDragEnd);
     }
-    
     function getDOMCell(r, c) { return document.querySelector(`.emoticon[data-r="${r}"][data-c="${c}"]`); }
     let dragOrigin = {x:0, y:0};
-    
     function handleDragStart(e) {
         if (state.isAnimating) return; if(e.type === 'touchstart') e.preventDefault(); 
         state.dragElement = e.target; state.dragStart = { r: parseInt(e.target.dataset.r), c: parseInt(e.target.dataset.c) };
-        dragOrigin.x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX; dragOrigin.y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-        e.target.style.transform = 'scale(0.85)';
+        dragOrigin.x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX; dragOrigin.y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY; e.target.style.transform = 'scale(0.85)';
     }
-    
     function handleDragEnd(e) {
         if (!state.dragElement || state.isAnimating) return;
         state.dragElement.style.transform = '';
-        let endX = e.type.includes('mouse') ? e.clientX : e.changedTouches[0].clientX;
-        let endY = e.type.includes('mouse') ? e.clientY : e.changedTouches[0].clientY;
+        let endX = e.type.includes('mouse') ? e.clientX : e.changedTouches[0].clientX; let endY = e.type.includes('mouse') ? e.clientY : e.changedTouches[0].clientY;
         let dx = endX - dragOrigin.x; let dy = endY - dragOrigin.y;
-        
         if (Math.abs(dx) < 20 && Math.abs(dy) < 20) { state.dragElement = null; return; }
         
         let targetR = state.dragStart.r; let targetC = state.dragStart.c;
@@ -1393,111 +1423,68 @@
         if (targetR >= 0 && targetR < ROWS && targetC >= 0 && targetC < COLS) attemptSwap(state.dragStart.r, state.dragStart.c, targetR, targetC);
         state.dragElement = null;
     }
-    
     function attemptSwap(r1, c1, r2, c2) {
         state.isAnimating = true; const el1 = getDOMCell(r1, c1); const el2 = getDOMCell(r2, c2);
         const tempText = el1.innerText; el1.innerText = el2.innerText; el2.innerText = tempText;
-        const tempType = board[r1][c1]; board[r1][c1] = board[r2][c2]; board[r2][c2] = tempType;
-        playSound('click');
+        const tempType = board[r1][c1]; board[r1][c1] = board[r2][c2]; board[r2][c2] = tempType; playSound('click');
         setTimeout(() => {
             const matches = findMatches();
             if (matches.length > 0) { state.comboCount = 0; processMatches(matches, true); } 
             else { el2.innerText = el1.innerText; el1.innerText = tempText; board[r2][c2] = board[r1][c1]; board[r1][c1] = tempType; state.isAnimating = false; playSound('wrong'); }
         }, 200);
     }
-    
     function findMatches() {
         let matchedSet = new Set();
-        for (let r = 0; r < ROWS; r++) {
-            for (let c = 0; c < COLS - 2; c++) {
-                let type = board[r][c]; if (!type) continue;
-                if (board[r][c+1] === type && board[r][c+2] === type) { matchedSet.add(`${r},${c}`); matchedSet.add(`${r},${c+1}`); matchedSet.add(`${r},${c+2}`); }
-            }
-        }
-        for (let c = 0; c < COLS; c++) {
-            for (let r = 0; r < ROWS - 2; r++) {
-                let type = board[r][c]; if (!type) continue;
-                if (board[r+1][c] === type && board[r+2][c] === type) { matchedSet.add(`${r},${c}`); matchedSet.add(`${r+1},${c}`); matchedSet.add(`${r+2},${c}`); }
-            }
-        }
+        for (let r = 0; r < ROWS; r++) { for (let c = 0; c < COLS - 2; c++) { let type = board[r][c]; if (!type) continue; if (board[r][c+1] === type && board[r][c+2] === type) { matchedSet.add(`${r},${c}`); matchedSet.add(`${r},${c+1}`); matchedSet.add(`${r},${c+2}`); } } }
+        for (let c = 0; c < COLS; c++) { for (let r = 0; r < ROWS - 2; r++) { let type = board[r][c]; if (!type) continue; if (board[r+1][c] === type && board[r+2][c] === type) { matchedSet.add(`${r},${c}`); matchedSet.add(`${r+1},${c}`); matchedSet.add(`${r+2},${c}`); } } }
         return Array.from(matchedSet).map(str => { let parts = str.split(','); return {r: parseInt(parts[0]), c: parseInt(parts[1])}; });
     }
-    
     function processMatches(matches, showQuizTrigger) {
-        state.comboCount++; playSound('pop');
-        if (state.comboCount > 1) { playSound('combo'); showComboText(); }
-        matches.forEach(m => {
-            const el = getDOMCell(m.r, m.c); el.style.transform = 'scale(1.5)'; el.style.opacity = '0';
-            board[m.r][m.c] = null; createParticle(el.parentElement);
-        });
+        state.comboCount++; playSound('pop'); if (state.comboCount > 1) { playSound('combo'); showComboText(); }
+        matches.forEach(m => { const el = getDOMCell(m.r, m.c); el.style.transform = 'scale(1.5)'; el.style.opacity = '0'; board[m.r][m.c] = null; createParticle(el.parentElement); });
         setTimeout(() => {
             if (showQuizTrigger && state.questionIndex < state.currentShuffledQuestions.length) {
                 state.matchesSinceLastQuiz++; updateHUD();
-                if (state.matchesSinceLastQuiz >= 3) { state.matchesSinceLastQuiz = 0; showQuizModal(() => { updateHUD(); applyGravity(); }); } 
-                else applyGravity();
+                if (state.matchesSinceLastQuiz >= 3) { state.matchesSinceLastQuiz = 0; showQuizModal(() => { updateHUD(); applyGravity(); }); } else applyGravity();
             } else applyGravity();
         }, 300);
     }
-    
     function applyGravity() {
-        for (let c = 0; c < COLS; c++) {
-            for (let r = ROWS - 1; r >= 0; r--) {
-                if (board[r][c] === null) {
-                    for (let k = r - 1; k >= 0; k--) {
-                        if (board[k][c] !== null) { board[r][c] = board[k][c]; board[k][c] = null; break; }
-                    }
-                }
-            }
-        }
+        for (let c = 0; c < COLS; c++) { for (let r = ROWS - 1; r >= 0; r--) { if (board[r][c] === null) { for (let k = r - 1; k >= 0; k--) { if (board[k][c] !== null) { board[r][c] = board[k][c]; board[k][c] = null; break; } } } } }
         for (let c = 0; c < COLS; c++) { for (let r = 0; r < ROWS; r++) { if (board[r][c] === null) { board[r][c] = EMOJIS[Math.floor(Math.random() * EMOJIS.length)]; } } }
-        for (let r = 0; r < ROWS; r++) {
-            for (let c = 0; c < COLS; c++) { const el = getDOMCell(r, c); el.innerText = board[r][c]; el.style.transform = ''; el.style.opacity = '1'; }
-        }
-        setTimeout(() => {
-            const newMatches = findMatches();
-            if (newMatches.length > 0) processMatches(newMatches, false); 
-            else { state.isAnimating = false; if (state.questionIndex >= state.currentShuffledQuestions.length) endGame(); }
-        }, 300);
+        for (let r = 0; r < ROWS; r++) { for (let c = 0; c < COLS; c++) { const el = getDOMCell(r, c); el.innerText = board[r][c]; el.style.transform = ''; el.style.opacity = '1'; } }
+        setTimeout(() => { const newMatches = findMatches(); if (newMatches.length > 0) processMatches(newMatches, false); else { state.isAnimating = false; if (state.questionIndex >= state.currentShuffledQuestions.length) endGame(); } }, 300);
     }
-    
     function createParticle(parent) {
         if(Math.random() > 0.5) return; 
         const p = document.createElement('div'); p.innerText = '✨'; p.style.position = 'absolute'; p.style.fontSize = '1.8rem';
         p.style.animation = 'pop-out 0.6s ease-out forwards'; parent.appendChild(p); setTimeout(() => p.remove(), 600);
     }
-    
     function showComboText() {
         const texts = ["", "", "HEBAT!", "KEREN!", "SUPER!", "LUAR BIASA!"];
         const t = document.getElementById('combo-text'); t.innerText = texts[Math.min(state.comboCount, 5)];
-        t.style.opacity = 1; t.style.transform = 'translate(-50%, -50%) scale(1)';
-        t.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        t.style.opacity = 1; t.style.transform = 'translate(-50%, -50%) scale(1)'; t.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
         setTimeout(() => { t.style.opacity = 0; t.style.transform = 'translate(-50%, -50%) scale(0.5)'; }, 1000);
     }
-    
     let postQuizCallback = null;
     function showQuizModal(callback) {
         postQuizCallback = callback; const qData = state.currentShuffledQuestions[state.questionIndex];
         document.getElementById('quiz-number').innerText = `${state.questionIndex + 1} / ${state.currentShuffledQuestions.length}`;
         document.getElementById('quiz-question').innerText = qData.q;
         
-        const optsContainer = document.getElementById('quiz-options'); optsContainer.innerHTML = '';
-        const labels = ['A', 'B', 'C', 'D'];
+        const optsContainer = document.getElementById('quiz-options'); optsContainer.innerHTML = ''; const labels = ['A', 'B', 'C', 'D'];
         qData.options.forEach((opt, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'w-full text-left bg-white border-2 border-gray-200 p-4 rounded-[20px] flex items-center gap-4 hover:border-[var(--primary)] hover:bg-blue-50 transition-all shadow-sm active:scale-95 group';
+            const btn = document.createElement('button'); btn.className = 'w-full text-left bg-white border-2 border-gray-200 p-4 rounded-[20px] flex items-center gap-4 hover:border-[var(--primary)] hover:bg-blue-50 transition-all shadow-sm active:scale-95 group';
             btn.innerHTML = `<span class="bg-gray-100 text-gray-500 font-black w-10 h-10 rounded-xl flex justify-center items-center shrink-0 group-hover:bg-[var(--primary)] group-hover:text-white transition-colors">${labels[idx]}</span> <span class="font-semibold text-gray-700 text-sm">${opt}</span>`;
-            btn.onclick = () => submitAnswer(idx, qData.answer);
-            optsContainer.appendChild(btn);
+            btn.onclick = () => submitAnswer(idx, qData.answer); optsContainer.appendChild(btn);
         });
         const modal = document.getElementById('modal-quiz'); const box = document.getElementById('quiz-box');
         modal.classList.remove('hidden'); setTimeout(() => box.classList.remove('scale-95'), 10);
     }
-    
     function submitAnswer(selectedIdx, correctIdx) {
         document.getElementById('modal-quiz').classList.add('hidden'); document.getElementById('quiz-box').classList.add('scale-95');
         const isCorrect = selectedIdx === correctIdx; state.questionIndex++; showFeedback(isCorrect);
     }
-    
     function showFeedback(isCorrect) {
         const banner = document.getElementById('feedback-banner'); const icon = document.getElementById('feedback-icon'); const text = document.getElementById('feedback-text'); const scoreStr = document.getElementById('feedback-score');
         const totalQ = state.currentShuffledQuestions.length;
@@ -1508,37 +1495,30 @@
         } else {
             playSound('wrong'); state.wrong++; icon.innerText = '❌'; text.innerText = 'SALAH'; text.className = 'text-4xl font-black text-white bg-red-500 px-8 py-3 rounded-full border-4 shadow-xl'; scoreStr.style.display = 'none';
         }
-        
         state.score = Math.round((state.correct / totalQ) * 100); updateHUD();
         banner.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; banner.style.opacity = 1; banner.style.transform = 'translate(-50%, -50%) scale(1.1)';
         setTimeout(() => { banner.style.opacity = 0; banner.style.transform = 'translate(-50%, -50%) scale(0.8)'; if(postQuizCallback) postQuizCallback(); }, 1500);
     }
-    
     function endGame() {
         playSound('win'); saveScoreToCloud(); 
         document.getElementById('res-name').innerText = state.name; document.getElementById('res-benar').innerText = state.correct; document.getElementById('res-salah').innerText = state.wrong; document.getElementById('res-skor').innerText = state.score;
-        
         const p = document.getElementById('res-predikat'); const stars = document.getElementById('res-stars');
-        
         if (state.score === 100) { p.innerText = 'MASTER KUIS'; p.className = 'text-lg font-black text-white bg-gradient-to-r from-yellow-400 to-orange-500 px-8 py-3 rounded-full shadow-lg mb-8 z-10 border-2 border-white/50 tracking-wider w-full'; stars.innerHTML = '⭐ ⭐ ⭐ ⭐ ⭐';} 
         else if (state.score >= 80) { p.innerText = 'SANGAT HEBAT'; p.className = 'text-lg font-black text-white bg-gradient-to-r from-blue-400 to-blue-600 px-8 py-3 rounded-full shadow-lg mb-8 z-10 border-2 border-white/50 tracking-wider w-full'; stars.innerHTML = '⭐ ⭐ ⭐ ⭐ 🌑';} 
         else if (state.score >= 60) { p.innerText = 'BAGUS'; p.className = 'text-lg font-black text-white bg-gradient-to-r from-green-400 to-green-600 px-8 py-3 rounded-full shadow-lg mb-8 z-10 border-2 border-white/50 tracking-wider w-full'; stars.innerHTML = '⭐ ⭐ ⭐ 🌑 🌑';} 
         else { p.innerText = 'TERUS BELAJAR'; p.className = 'text-lg font-black text-white bg-gradient-to-r from-gray-400 to-gray-600 px-8 py-3 rounded-full shadow-lg mb-8 z-10 border-2 border-white/50 tracking-wider w-full'; stars.innerHTML = '⭐ 🌑 🌑 🌑 🌑';}
-        
         showScreen('screen-result');
         let endConfetti = setInterval(() => { confetti({ particleCount: 30, angle: 60, spread: 55, origin: { x: 0 } }); confetti({ particleCount: 30, angle: 120, spread: 55, origin: { x: 1 } }); }, 1000);
         setTimeout(() => clearInterval(endConfetti), 4000);
     }
-    
     function quitGame() { showCustomConfirm("Yakin ingin keluar? Progres tidak akan tersimpan.", () => { showScreen('screen-landing'); }); }
-    
     async function saveScoreToCloud() {
         if (!currentUser) return;
         try { await addDoc(collection(db, getScoresCollectionPath()), { name: state.name, absen: state.absen, score: state.score, correct: state.correct, wrong: state.wrong, date: new Date().getTime(), userId: currentUser.uid }); } catch(e) {}
     }
     
+    // Leaderboard
     function showLeaderboard() { renderLeaderboardUI(); showScreen('screen-leaderboard'); }
-    
     function renderLeaderboardUI() {
         const list = document.getElementById('leaderboard-list'); list.innerHTML = '';
         if (allScores.length === 0) { list.innerHTML = '<p class="text-center text-gray-400 mt-10 text-sm font-medium">Belum ada data nilai</p>'; } 
@@ -1548,7 +1528,6 @@
                 const isTop3 = i < 3;
                 const m = isTop3 ? `<span class="text-3xl drop-shadow-md">${medals[i]}</span>` : `<span class="w-8 h-8 rounded-full bg-gray-100 flex justify-center items-center text-gray-500 font-bold shadow-inner text-sm">${i+1}</span>`;
                 const bgClass = isTop3 ? (i===0 ? 'bg-yellow-50 border-yellow-200' : (i===1 ? 'bg-gray-100 border-gray-300' : 'bg-orange-50 border-orange-200')) : 'bg-white border-gray-100';
-                
                 const div = document.createElement('div');
                 div.className = `${bgClass} p-3 rounded-2xl flex justify-between items-center shadow-sm border`;
                 div.innerHTML = `
@@ -1562,12 +1541,10 @@
                     <div class="text-right">
                         <span class="font-black text-[var(--accent-orange)] text-xl drop-shadow-sm">${s.score}</span>
                     </div>
-                `;
-                list.appendChild(div);
+                `; list.appendChild(div);
             });
         }
     }
-    
     async function resetData() {
         if (!currentUser) return;
         showCustomConfirm("Hapus SEMUA data nilai secara permanen?", async () => {
@@ -1575,18 +1552,7 @@
         });
     }
 
-    window.startIntroVideo = function() {
-        playSound('click'); document.getElementById('start-video-overlay').style.display = 'none';
-        const vid = document.getElementById('intro-video');
-        vid.play().catch(e => { window.finishIntroVideo(); }); vid.onended = window.finishIntroVideo;
-    };
-    window.finishIntroVideo = function() {
-        const vidScreen = document.getElementById('screen-splash-video');
-        if (vidScreen) { vidScreen.classList.remove('active'); vidScreen.style.display = 'none'; const vid = document.getElementById('intro-video'); if (vid) { vid.pause(); vid.currentTime = 0; } }
-        initApp();
-    };
-    
-    // Exporting functions
+    // Exports to Global window
     window.showScreen = showScreen; window.playSound = playSound; window.startGame = startGame; window.showLeaderboard = showLeaderboard;
     window.loginTeacher = loginTeacher; window.logoutTeacher = logoutTeacher; window.switchTeacherTab = switchTeacherTab;
     window.copyScoresToClipboard = copyScoresToClipboard; window.resetData = resetData; window.saveQuestions = saveQuestions;
@@ -1594,6 +1560,11 @@
     window.toggleMuteInGame = toggleMuteInGame; window.quitGame = quitGame; window.closeCustomModal = closeCustomModal;
     window.saveMateriLink = saveMateriLink; window.openMateri = openMateri; window.startQuizFlow = startQuizFlow;
     window.changeVolume = changeVolume; window.saveUserSettings = saveUserSettings; window.processAIChapter = processAIChapter;
+    
+    // Safety check for pending triggers
+    window.isAppLoaded = true;
+    if (window.pendingStart) window._doStartVideo();
+    else if (window.pendingFinish) window._doFinishVideo();
 </script>
 </body>
 </html>
