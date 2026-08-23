@@ -16,7 +16,6 @@
     
     <!-- Chart.js for Teacher Dashboard -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <style>
         :root {
             --primary: #4FC3F7;
@@ -30,7 +29,6 @@
             --text-main: #374151;
             --bg-light: #f0fdfa;
         }
-
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #0f172a;
@@ -43,11 +41,9 @@
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
         }
-
         h1, h2, h3, .font-baloo {
             font-family: 'Baloo 2', cursive;
         }
-
         #app-container {
             width: 100%;
             max-width: 450px;
@@ -67,7 +63,6 @@
                 box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 4px rgba(255,255,255,0.2);
             }
         }
-
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-15px) rotate(2deg); }
@@ -101,7 +96,6 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-
         .glass-panel {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(16px);
@@ -110,7 +104,6 @@
             border-radius: 32px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1), inset 0 2px 0 rgba(255,255,255,0.8);
         }
-
         .screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -127,7 +120,6 @@
         .screen.active .animate-on-load {
             animation: slide-up 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-
         /* Flat 3D Buttons */
         .btn-custom {
             font-family: 'Baloo 2', cursive;
@@ -164,7 +156,6 @@
         .btn-primary:active {
             box-shadow: 0 2px 0 #0288d1, 0 5px 10px -5px rgba(2,136,209,0.3);
         }
-
         .btn-materi {
             background: linear-gradient(to bottom, var(--accent-orange), var(--accent-orange-dark));
             color: white;
@@ -175,7 +166,6 @@
         .btn-materi:active {
             box-shadow: 0 2px 0 #f57c00, 0 5px 10px -5px rgba(245,124,0,0.3);
         }
-
         /* Menu Cards */
         .menu-card {
             background: rgba(255, 255, 255, 0.85);
@@ -200,7 +190,6 @@
             transform: translateY(2px);
             box-shadow: 0 5px 10px rgba(0,0,0,0.05);
         }
-
         .grid-cell {
             background: rgba(255, 255, 255, 0.5);
             border-radius: 16px;
@@ -229,7 +218,6 @@
             transform: scale(0.85);
             z-index: 10;
         }
-
         /* Background Scenery Elements */
         .scenery-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -259,7 +247,6 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.2), 0 4px 10px rgba(0,0,0,0.05);
         }
-
         /* Progress Bar */
         .progress-bar-bg {
             background: #e2e8f0; border-radius: 999px;
@@ -277,7 +264,6 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
             animation: float-cloud 2s infinite linear;
         }
-
         /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
@@ -413,7 +399,6 @@
             <h1 class="text-4xl font-black text-gray-800 drop-shadow-sm">MENU <span class="text-[var(--primary)]">UTAMA</span></h1>
             <p class="text-gray-500 font-medium text-sm mt-1">Pilih aktivitasmu hari ini</p>
         </div>
-
         <div class="w-full flex flex-col gap-1 animate-on-load" style="animation-delay: 0.1s;">
             
             <!-- Card: Mulai Quiz -->
@@ -427,7 +412,6 @@
                 </div>
                 <div class="text-gray-300 font-bold text-xl">➔</div>
             </div>
-
             <!-- Card: Cara Bermain -->
             <div class="menu-card border-[var(--accent-yellow)] border-b-4 border-b-[var(--accent-yellow)]" onclick="showScreen('screen-tutorial'); playSound('click')">
                 <div class="flex items-center gap-4">
@@ -439,7 +423,6 @@
                 </div>
                 <div class="text-gray-300 font-bold text-xl">➔</div>
             </div>
-
             <!-- Card: Leaderboard -->
             <div class="menu-card border-[var(--secondary)] border-b-4 border-b-[var(--secondary)]" onclick="showLeaderboard(); playSound('click')">
                 <div class="flex items-center gap-4">
@@ -451,7 +434,6 @@
                 </div>
                 <div class="text-gray-300 font-bold text-xl">➔</div>
             </div>
-
             <!-- Card: Pengaturan -->
             <div class="menu-card" onclick="showScreen('screen-settings'); playSound('click')">
                 <div class="flex items-center gap-4">
@@ -463,7 +445,6 @@
                 </div>
                 <div class="text-gray-300 font-bold text-xl">➔</div>
             </div>
-
             <!-- Card: Akses Guru -->
             <div class="menu-card border-purple-400 border-b-4 border-b-purple-400 mt-4" onclick="showScreen('screen-teacher-login'); playSound('click')">
                 <div class="flex items-center gap-4">
@@ -475,10 +456,9 @@
                 </div>
                 <div class="text-gray-300 font-bold text-xl">➔</div>
             </div>
-
         </div>
     </section>
-
+    
     <section id="screen-identity" class="screen justify-center items-center px-6 bg-gradient-to-b from-blue-50 to-white">
         <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 active:scale-95 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
         
@@ -489,7 +469,6 @@
                     <img src="MASKOT.png" alt="Maskot" class="h-28 mt-4" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=👦'">
                 </div>
             </div>
-
             <div class="glass-panel w-full p-8 pt-20 flex flex-col gap-5 border-[var(--primary)] border-t-8 shadow-2xl">
                 <h2 class="text-2xl font-black text-center text-gray-800 mb-2">IDENTITAS <span class="text-[var(--primary)]">PEMAIN</span></h2>
                 
@@ -514,7 +493,7 @@
             </div>
         </div>
     </section>
-
+    
     <section id="screen-tutorial" class="screen bg-white px-6 pt-24 pb-6">
         <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
         
@@ -546,7 +525,7 @@
             </div>
         </div>
     </section>
-
+    
     <section id="screen-settings" class="screen bg-white px-6 pt-24">
         <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
         
@@ -574,7 +553,6 @@
                     <input type="range" id="music-volume" min="0" max="100" value="40" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[var(--primary)]" oninput="changeVolume(this.value)" onchange="saveUserSettings()">
                 </div>
             </div>
-
             <!-- SFX Setting -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
                 <div class="flex items-center gap-3">
@@ -588,13 +566,12 @@
             
         </div>
     </section>
-
+    
     <section id="screen-game" class="screen bg-gradient-to-b from-blue-100 to-green-100">
         <!-- Moving Background specific to Game -->
         <div class="absolute inset-0 pointer-events-none z-0 opacity-40">
             <div class="absolute top-[10%] w-[200%] h-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')] bg-contain bg-repeat-x animate-[float-cloud_40s_linear_infinite]"></div>
         </div>
-
         <!-- Modern HUD Top Bar -->
         <div class="w-full bg-white/90 backdrop-blur-xl shadow-lg rounded-b-[30px] p-5 flex flex-col justify-between z-20 border-b-4 border-white">
             <div class="flex justify-between items-center mb-3">
@@ -646,7 +623,6 @@
             <div id="combo-text"></div>
         </div>
     </section>
-
     <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-slate-900/40 backdrop-blur-md z-50 flex flex-col justify-center items-center p-5 hidden">
         <div class="bg-white w-full max-w-sm max-h-[85vh] flex flex-col rounded-[32px] shadow-2xl transform scale-95 transition-all duration-300 relative overflow-hidden" id="quiz-box">
             
@@ -667,17 +643,16 @@
             </div>
         </div>
     </div>
-
+    
     <div id="feedback-banner" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[60] flex flex-col items-center pointer-events-none opacity-0">
         <div id="feedback-icon" class="text-[5rem] drop-shadow-2xl mb-2">🎉</div>
         <div id="feedback-text" class="text-4xl font-black text-white drop-shadow-lg px-8 py-3 rounded-full border-4 shadow-xl">BENAR!</div>
         <div id="feedback-score" class="text-2xl font-black text-yellow-300 drop-shadow-md mt-3 bg-black/30 px-4 py-1 rounded-full backdrop-blur">+NILAI</div>
     </div>
-
+    
     <section id="screen-result" class="screen justify-center items-center p-6 bg-gradient-to-b from-[#FFF9C4] to-[#FFE082] overflow-hidden">
         <!-- Sunburst Background -->
         <div class="absolute inset-0 opacity-20 bg-[repeating-conic-gradient(from_0deg,#FFD54F_0deg_15deg,transparent_15deg_30deg)] animate-[spin-slow_60s_linear_infinite]"></div>
-
         <div class="glass-panel w-full p-8 flex flex-col items-center text-center relative overflow-hidden border-[var(--accent-yellow)] border-4 shadow-2xl animate-on-load bg-white/90">
             
             <div class="text-[5rem] mb-2 animate-[bounce-soft_2s_infinite] drop-shadow-xl relative z-10">🏆</div>
@@ -719,7 +694,7 @@
             </div>
         </div>
     </section>
-
+    
     <section id="screen-leaderboard" class="screen bg-gray-50 pt-20 px-6 pb-6">
         <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
         
@@ -735,7 +710,7 @@
             </div>
         </div>
     </section>
-
+    
     <section id="screen-teacher-login" class="screen bg-gradient-to-br from-purple-50 to-indigo-50 justify-center items-center px-6">
         <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-purple-500 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
         
@@ -754,7 +729,7 @@
             <button class="btn-custom !bg-gradient-to-b !from-purple-500 !to-purple-700 !text-white !border-purple-400 !shadow-[0_8px_0_#6b21a8] hover:!brightness-110 active:!shadow-[0_2px_0_#6b21a8] !w-full !m-0 mt-6 text-xl" onclick="loginTeacher()">MASUK</button>
         </div>
     </section>
-
+    
     <section id="screen-teacher-dashboard" class="screen bg-gray-100">
         <!-- Top Navbar -->
         <div class="w-full bg-gradient-to-r from-purple-700 to-indigo-700 text-white p-5 flex justify-between items-center shadow-lg z-20 rounded-b-2xl">
@@ -794,7 +769,6 @@
                     <span id="stat-pass" class="text-2xl font-black text-orange-500">0%</span>
                 </div>
             </div>
-
             <!-- Chart Area (New Addition) -->
             <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100 mb-4">
                 <h3 class="font-bold text-gray-700 text-sm mb-3">Grafik Distribusi Nilai</h3>
@@ -802,7 +776,6 @@
                     <canvas id="scoreChart"></canvas>
                 </div>
             </div>
-
             <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-bold text-gray-700 text-sm">Tabel Nilai Siswa</h3>
@@ -835,12 +808,12 @@
         <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden">
             <!-- AI Generator Modern UI -->
             <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-5 mb-5 font-poppins relative shadow-sm overflow-hidden">
-                <div class="absolute -right-10 -top-10 text-[8rem] opacity-5">🤖</div>
+                <div class="absolute -right-10 -top-10 text-[8rem] opacity-5">☁️</div>
                 
-                <div class="inline-block bg-blue-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-sm mb-3">✨ AI GENERATOR</div>
+                <div class="inline-block bg-blue-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-sm mb-3">☁️ CLOUD DATABASE</div>
                 
-                <h3 class="font-black text-gray-800 text-lg mb-1 font-baloo">KAK AL (Asisten Pintar)</h3>
-                <p class="text-xs text-gray-500 font-medium mb-4 leading-relaxed">Buat soal HOTS B. Indonesia Kelas 5 otomatis dari buku referensi.</p>
+                <h3 class="font-black text-gray-800 text-lg mb-1 font-baloo">SINKRONISASI GITHUB</h3>
+                <p class="text-xs text-gray-500 font-medium mb-4 leading-relaxed">Tarik soal secara acak dari database GitHub (B. Indonesia Kelas 5).</p>
                 
                 <div class="space-y-4 relative z-10">
                     <div>
@@ -852,6 +825,8 @@
                             <option value="bab4">Bab 4 - Belajar Berwirausaha</option>
                             <option value="bab5">Bab 5 - Menjadi Warga Dunia</option>
                             <option value="bab6">Bab 6 - Cinta Indonesia</option>
+                            <option value="bab7">Bab 7 - Sayangi Bumi</option>
+                            <option value="bab8">Bab 8 - Bergerak Bersama</option>
                         </select>
                     </div>
                     <div>
@@ -860,10 +835,9 @@
                     </div>
                     
                     <button onclick="processAIChapter()" id="btn-ai-generate" class="w-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-3.5 rounded-xl text-sm font-bold shadow-lg hover:shadow-xl active:scale-95 transition-all flex items-center justify-center gap-2">
-                        ✨ BUAT SOAL OTOMATIS
+                        📥 TARIK SOAL DARI GITHUB
                     </button>
                 </div>
-
                 <!-- AI Loading State -->
                 <div id="ai-loading-container" class="hidden mt-4 bg-white/80 backdrop-blur p-4 rounded-xl border border-blue-100 shadow-sm text-center relative z-10">
                     <div class="text-3xl animate-bounce mb-2">🤖</div>
@@ -898,7 +872,7 @@
             </div>
         </div>
     </section>
-
+    
     <div id="custom-modal" class="absolute top-0 left-0 w-full h-full bg-slate-900/50 backdrop-blur-sm z-[100] flex flex-col justify-center items-center p-6 hidden">
         <div class="bg-white w-full max-w-sm rounded-[32px] p-6 shadow-2xl text-center relative animate-on-load">
             <div class="w-12 h-12 bg-blue-100 text-blue-500 rounded-full flex justify-center items-center text-2xl mx-auto -mt-12 mb-4 border-4 border-white shadow-md">🔔</div>
@@ -939,26 +913,58 @@
     const TEACHER_USER = 'aldi260605';
     const TEACHER_PASS = '111111aldi';
     
-    const DEFAULT_QUESTIONS = [
-        { q: "Andi membeli 3 buku tulis. Harga satu buku adalah Rp 4.500. Jika Andi membayar dengan uang Rp 20.000, berapakah kembaliannya?", options: ["Rp 6.500", "Rp 7.500", "Rp 5.500", "Rp 8.000"], answer: 0 },
-        { q: "Pancasila adalah dasar negara Indonesia. Sila yang berbunyi 'Keadilan Sosial bagi Seluruh Rakyat Indonesia' dilambangkan dengan...", options: ["Bintang", "Rantai", "Pohon Beringin", "Padi dan Kapas"], answer: 3 },
-        { q: "Ibu memasak air menggunakan panci aluminium. Gagang panci terbuat dari plastik keras. Tujuan penggunaan plastik pada gagang panci adalah...", options: ["Menghantarkan panas dengan cepat", "Menahan panas agar tidak sampai ke tangan", "Membuat masakan lebih cepat matang", "Agar panci terlihat lebih indah"], answer: 1 }
-    ];
-    let activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
-    let allScores = [];
-    let currentUser = null;
-    let heyzineLink = ""; 
-    let chartInstance = null; // For Teacher Chart
-    
-    let board = [];
-    let state = {
-        name: '', absen: '', score: 0, correct: 0, wrong: 0,
-        questionIndex: 0, isAnimating: false,
-        dragStart: null, dragElement: null, comboCount: 0, matchesSinceLastQuiz: 0,
-        currentShuffledQuestions: []
+    // Default Fallback Data (Data cadangan kecil agar game tidak rusak jika Github belum diisi)
+    const defaultBankSoal = {
+        "bab1": [
+            { "q": "Kata yang digunakan untuk menggambarkan sifat atau karakter seseorang disebut ....", "correct": "Kata sifat", "wrongs": ["Kata kerja", "Kata benda", "Kata bilangan"] },
+            { "q": "Sinonim dari kata 'pintar' adalah...", "correct": "Pandai", "wrongs": ["Malas", "Bodoh", "Lambat"] },
+            { "q": "Sifat yang berarti mudah bergaul dan suka berbicara dengan orang lain adalah", "correct": "Supel", "wrongs": ["Pendiam", "Pemarah", "Pemalu"] },
+            { "q": "Antonim dari 'mahal' adalah...", "correct": "Murah", "wrongs": ["Tinggi", "Banyak", "Sedikit"] }
+        ],
+        "bab2": [
+            { "q": "Buku yang berisi cerita berdasarkan imajinasi atau rekaan disebut buku...", "correct": "Fiksi", "wrongs": ["Nonfiksi", "Referensi", "Ensiklopedia"] },
+            { "q": "Unsur intrinsik yang membahas tentang apa cerita tersebut disebut...", "correct": "Tema", "wrongs": ["Latar", "Amanat", "Alur"] },
+            { "q": "Majas metafora digunakan untuk...", "correct": "Menggunakan simbol mewakili makna sebenarnya", "wrongs": ["Sifat manusia pada benda", "Makna yang berlebihan", "Menyampaikan percakapan"] },
+            { "q": "Salah satu ciri utama kalimat langsung adalah menggunakan...", "correct": "Tanda petik", "wrongs": ["Tanda kurung", "Tanda miring", "Tanda hubung"] }
+        ],
+        "bab3": [
+            { "q": "Teks prosedur adalah tulisan yang memuat...", "correct": "Petunjuk urut menghasilkan karya", "wrongs": ["Cerita khayalan", "Pendapat seseorang", "Daftar nama tokoh"] },
+            { "q": "Awalan me- merupakan...", "correct": "Awalan pembentuk kata dasar menjadi kata kerja", "wrongs": ["Akhiran", "Tanda baca", "Kata tanya"] },
+            { "q": "Bagian surat yang berisi pesan utama dari pengirim kepada penerima disebut...", "correct": "Isi surat", "wrongs": ["Judul", "Salam penutup", "Alamat pengirim"] },
+            { "q": "Kata 'gambarlah' menggunakan akhiran...", "correct": "-lah", "wrongs": ["-kan", "me-", "ber-"] }
+        ],
+        "bab4": [
+            { "q": "Ide pokok adalah...", "correct": "Gagasan utama tentang isi teks", "wrongs": ["Kalimat penutup", "Nama pengarang", "Judul buku"] },
+            { "q": "Idiom 'gulung tikar' bermakna...", "correct": "Bangkrut", "wrongs": ["Kerja keras", "Terkenal", "Tidak sombong"] },
+            { "q": "Orang yang memberikan informasi dalam wawancara disebut...", "correct": "Narasumber", "wrongs": ["Pewawancara", "Pembaca", "Penulis"] },
+            { "q": "Kata tanya 'siapa' digunakan untuk menanyakan...", "correct": "Pelaku", "wrongs": ["Waktu", "Tempat", "Alasan"] }
+        ],
+        "bab5": [
+            { "q": "Singkatan adalah...", "correct": "Gabungan huruf awal", "wrongs": ["Gabungan kalimat", "Gabungan paragraf", "Gabungan kata panjang"] },
+            { "q": "Fakta adalah...", "correct": "Sesuatu yang benar-benar terjadi", "wrongs": ["Pendapat seseorang", "Sesuatu yang dibayangkan", "Perkiraan seseorang"] },
+            { "q": "Surel digunakan untuk...", "correct": "Berkirim surat melalui jaringan internet", "wrongs": ["Mencetak buku", "Menggambar di kertas", "Menghitung angka"] },
+            { "q": "Kata kunci digunakan untuk mencari informasi di...", "correct": "Mesin pencari", "wrongs": ["Papan tulis", "Buku gambar", "Kalender"] }
+        ],
+        "bab6": [
+            { "q": "Huruf pertama nama orang harus menggunakan huruf...", "correct": "Kapital", "wrongs": ["Kecil", "Miring", "Sambung"] },
+            { "q": "Metode atau gaya rancangan suatu bangunan disebut...", "correct": "Arsitektur", "wrongs": ["Koleksi", "Kunjungan", "Petunjuk"] },
+            { "q": "Pengumuman sebaiknya ditulis secara...", "correct": "Ringkas, padat, dan jelas", "wrongs": ["Panjang dan sulit", "Berbelit-belit", "Tidak lengkap"] },
+            { "q": "Membaca memindai atau scanning digunakan untuk...", "correct": "Mencari informasi khusus dengan cepat", "wrongs": ["Membaca seluruh teks pelan", "Menghafal isi buku", "Menulis cerita"] }
+        ],
+        "bab7": [
+            { "q": "Skimming adalah teknik membaca untuk...", "correct": "Mendapat gambaran isi teks", "wrongs": ["Menghafal seluruh teks", "Mencari kesalahan ejaan", "Menyalin teks"] },
+            { "q": "Sampah organik adalah sampah yang...", "correct": "Mudah terurai", "wrongs": ["Sulit terurai", "Selalu berbentuk plastik", "Tidak bisa dikelola"] },
+            { "q": "Teks eksposisi bertujuan untuk...", "correct": "Menjelaskan maksud dan tujuan", "wrongs": ["Menghibur dengan cerita khayalan", "Menulis percakapan", "Menceritakan pengalaman pribadi"] },
+            { "q": "Kalimat majemuk bertingkat adalah gabungan...", "correct": "Induk kalimat dan anak kalimat", "wrongs": ["Dua kata", "Dua judul", "Dua paragraf saja"] }
+        ],
+        "bab8": [
+            { "q": "Tanggapan adalah...", "correct": "Reaksi terhadap apa yang dilihat, didengar, atau dirasa", "wrongs": ["Anjuran menyelesaikan masalah", "Cerita khayalan", "Pesan dalam pantun"] },
+            { "q": "Baris pertama dan kedua dalam pantun disebut...", "correct": "Sampiran", "wrongs": ["Isi", "Judul", "Amanat"] },
+            { "q": "Pidato adalah kegiatan...", "correct": "Berbicara mengungkapkan pikiran di depan orang banyak", "wrongs": ["Membaca puisi di dalam hati", "Menulis cerita khayalan", "Membuat pantun"] },
+            { "q": "Perundungan adalah perbuatan...", "correct": "Mengusik, menyakiti, mengejek berulang kali", "wrongs": ["Membantu teman", "Memberi nasihat", "Bermain bersama"] }
+        ]
     };
-    let settings = { music: true, sfx: true, volume: 0.4 };
-
+    
     async function processAIChapter() {
         const selectElement = document.getElementById('ai-chapter');
         const chapterId = selectElement.value;
@@ -979,16 +985,37 @@
         loadingContainer.classList.remove('hidden');
         
         try {
-            progressBar.style.width = '20%'; loadingText.innerText = "Membuka modul...";
-            await new Promise(r => setTimeout(r, 1000));
-            progressBar.style.width = '50%'; loadingText.innerText = `Menganalisis: ${chapterName}...`;
-            await new Promise(r => setTimeout(r, 1500));
-            progressBar.style.width = '80%'; loadingText.innerText = "Merangkai soal HOTS...";
+            progressBar.style.width = '30%'; loadingText.innerText = "Menghubungkan ke GitHub...";
+            
+            let bankSoalJSON = {};
+            try {
+                // =========================================================================
+                // GANTI URL DI BAWAH INI DENGAN URL RAW FILE JSON GITHUB ANDA NANTINYA
+                // Cth: 'https://raw.githubusercontent.com/Username/Repo/main/soal.json' 
+                // =========================================================================
+                const githubRawURL = 'soal.json'; 
+                
+                if(githubRawURL === 'soal.json') {
+                    throw new Error("URL GitHub belum diatur");
+                }
+
+                const response = await fetch(githubRawURL);
+                if (!response.ok) throw new Error("Gagal mengambil JSON dari GitHub");
+                bankSoalJSON = await response.json();
+                
+                progressBar.style.width = '70%'; loadingText.innerText = `Menarik soal ${chapterName}...`;
+            } catch (fetchError) {
+                console.warn("Gagal mengambil dari GitHub, menggunakan soal bawaan lokal.", fetchError);
+                progressBar.style.width = '70%'; loadingText.innerText = `Memuat soal bawaan ${chapterName}...`;
+                bankSoalJSON = defaultBankSoal; // Fallback ke database internal
+            }
+            
             await new Promise(r => setTimeout(r, 1000));
             progressBar.style.width = '100%'; loadingText.innerText = "✅ Selesai!";
             await new Promise(r => setTimeout(r, 500));
             
-            generateQuestionsByChapter(chapterId, chapterName, jumlahSoal);
+            generateQuestionsFromBank(bankSoalJSON, chapterId, jumlahSoal);
+            
         } catch (error) {
             showCustomAlert(`Error: ${error.message}`);
         } finally {
@@ -997,42 +1024,56 @@
         }
     }
 
-    function generateQuestionsByChapter(chapterId, chapterName, jumlahSoal) {
-        let finalQuestions = []; let usedQ = new Set();
-        function buildQ(qText, correctOpt, wrong1, wrong2, wrong3) {
-            let opts = [correctOpt, wrong1, wrong2, wrong3];
-            let mapped = opts.map((opt, i) => ({ text: opt, isCorrect: i === 0 }));
-            for (let i = mapped.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [mapped[i], mapped[j]] = [mapped[j], mapped[i]];
-            }
-            return { q: qText, options: mapped.map(m => m.text), answer: mapped.findIndex(m => m.isCorrect) };
-        }
+    function generateQuestionsFromBank(bankSoal, chapterId, jumlahSoal) {
+        let soalBabIni = bankSoal[chapterId];
         
-        const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
-        const getWrongs = (arr, correct) => arr.filter(x => x !== correct).sort(() => 0.5 - Math.random()).slice(0, 3);
-        const names = ["Andi", "Budi", "Siti", "Bela"];
-        const sifatList = [{desc:"berkata jujur", word:"Jujur"}, {desc:"suka menolong", word:"Dermawan"}];
-        
-        let templates = [];
-        if(chapterId === 'bab1') {
-            templates.push(() => buildQ(`Antonim dari kata 'Besar' adalah...`, "Kecil", "Panjang", "Pendek", "Tinggi"));
-            templates.push(() => buildQ(`Sinonim kata 'Pintar' adalah...`, "Cerdas", "Rajin", "Gagah", "Cantik"));
-        } else {
-             templates.push(() => buildQ(`Contoh kalimat yang benar adalah...`, "Budi rajin belajar.", "budi Rajin belajar", "Budi rajin Belajar", "budi rajin belajar"));
+        if (!soalBabIni || soalBabIni.length === 0) {
+            showCustomAlert(`Maaf, soal untuk ${chapterId} belum tersedia di database.`);
+            return;
         }
+
+        // 1. Mengacak seluruh ketersediaan bank soal di Bab yang dipilih
+        let soalAcak = [...soalBabIni].sort(() => 0.5 - Math.random());
         
-        for(let i = 0; i < jumlahSoal; i++) {
-            let attempt = 0; let generated; let qText;
-            do {
-                generated = rand(templates)(); qText = generated.q; attempt++;
-            } while (usedQ.has(qText) && attempt < 50); 
-            if(usedQ.has(qText)) generated.q = qText + ` (No.${Math.floor(Math.random()*900)})`;
-            usedQ.add(generated.q); finalQuestions.push(generated);
-        }
-        activeQuestions = finalQuestions; renderTeacherQuestionsEditor();
-        showCustomAlert(`✅ Berhasil meracik ${jumlahSoal} Soal.\n\nJangan lupa tekan 'SIMPAN KE CLOUD'!`);
+        // 2. Mengambil sejumlah soal sesuai inputan yang diminta Guru
+        let soalTerpilih = soalAcak.slice(0, jumlahSoal);
+        
+        // 3. Membentuk format soal (Dan mengacak opsi A,B,C,D agar jawaban benar tidak selalu di urutan pertama)
+        activeQuestions = soalTerpilih.map(item => {
+            let options = [
+                { text: item.correct, isCorrect: true },
+                { text: item.wrongs[0] || "Salah 1", isCorrect: false },
+                { text: item.wrongs[1] || "Salah 2", isCorrect: false },
+                { text: item.wrongs[2] || "Salah 3", isCorrect: false }
+            ];
+            // Acak posisi pilihan ganda
+            options.sort(() => 0.5 - Math.random());
+            
+            return {
+                q: item.q,
+                options: options.map(o => o.text),
+                answer: options.findIndex(o => o.isCorrect)
+            };
+        });
+        
+        renderTeacherQuestionsEditor();
+        showCustomAlert(`✅ Berhasil menarik ${activeQuestions.length} Soal dari Database.\n\nJangan lupa tekan 'SIMPAN KE CLOUD'!`);
     }
+
+    let activeQuestions = JSON.parse(JSON.stringify(defaultBankSoal.bab1)); // Setup awal
+    let allScores = [];
+    let currentUser = null;
+    let heyzineLink = ""; 
+    let chartInstance = null; // For Teacher Chart
+    
+    let board = [];
+    let state = {
+        name: '', absen: '', score: 0, correct: 0, wrong: 0,
+        questionIndex: 0, isAnimating: false,
+        dragStart: null, dragElement: null, comboCount: 0, matchesSinceLastQuiz: 0,
+        currentShuffledQuestions: []
+    };
+    let settings = { music: true, sfx: true, volume: 0.4 };
 
     function showCustomAlert(message) {
         document.getElementById('custom-modal-text').innerText = message;
@@ -1083,7 +1124,6 @@
             case 'combo': playTone(800 + (state.comboCount * 100), 'sine', 0.2, 0.1); break;
         }
     }
-
     function initApp() {
         showScreen('screen-loading'); updateSettingsUI();
         let progress = 0; const tips = ["Bermain sambil belajar", "Kumpulkan poin tinggi", "Jawab dengan teliti"];
@@ -1117,7 +1157,6 @@
             document.getElementById('cloud-status').className = "text-[10px] font-bold bg-red-100 text-red-700 px-3 py-1 rounded-full inline-block border border-red-200";
         }
     }
-
     onAuthStateChanged(auth, (user) => {
         currentUser = user;
         if (user) {
@@ -1144,13 +1183,11 @@
             }
         });
     }
-
     async function saveUserSettings() {
         if (!currentUser) return;
         try { await setDoc(doc(db, 'artifacts', appId, 'users', currentUser.uid, 'user_settings', 'preferences'), { music: settings.music, sfx: settings.sfx, volume: settings.volume }, { merge: true });
         } catch (e) {}
     }
-
     function loadSettingsFromCloud() {
         if (!currentUser) return;
         onSnapshot(doc(db, getQuestionsCollectionPath(), 'app_settings'), (docSnap) => {
@@ -1161,7 +1198,6 @@
             }
         });
     }
-
     async function saveMateriLink() {
         playSound('click');
         if (!currentUser) return showCustomAlert("Terputus dari Cloud.");
@@ -1171,7 +1207,6 @@
             showCustomAlert("✅ Tautan materi berhasil disimpan!");
         } catch (e) { showCustomAlert('Gagal menyimpan tautan.'); }
     }
-
     function openMateri() {
         document.getElementById('bg-music').pause(); 
         if (heyzineLink && heyzineLink.trim() !== "") {
@@ -1180,13 +1215,11 @@
             window.open(finalLink, '_blank');
         } else showCustomAlert("Tautan materi belum ditambahkan oleh Guru.");
     }
-
     function startQuizFlow() {
         showScreen('screen-menu');
         const bgMusic = document.getElementById('bg-music');
         if (settings.music && settings.volume > 0) { bgMusic.volume = settings.volume; bgMusic.play().catch(e=>{}); }
     }
-
     function changeVolume(val) {
         settings.volume = val / 100;
         document.getElementById('volume-label').innerText = val + '%';
@@ -1194,7 +1227,6 @@
         if (settings.volume > 0 && !settings.music) { settings.music = true; updateSettingsUI(); bgMusic.play().catch(e=>{}); }
         else if (settings.volume == 0 && settings.music) { settings.music = false; updateSettingsUI(); bgMusic.pause(); }
     }
-
     function toggleSetting(type) {
         settings[type] = !settings[type]; updateSettingsUI(); playSound('click');
         if (type === 'music') {
@@ -1206,7 +1238,6 @@
         }
         saveUserSettings();
     }
-
     function toggleMuteInGame() {
         settings.sfx = !settings.sfx; settings.music = !settings.music; playSound('click');
         const btn = document.querySelector('button[onclick="toggleMuteInGame()"]');
@@ -1216,7 +1247,6 @@
         else bgMusic.pause();
         updateSettingsUI(); saveUserSettings();
     }
-
     function updateSettingsUI() {
         const toggleClass = (id, val) => {
             const el = document.getElementById(id); if(!el) return;
@@ -1226,17 +1256,16 @@
         };
         toggleClass('toggle-music', settings.music); toggleClass('toggle-sfx', settings.sfx);
     }
-
+    
     function loadActiveQuestionsFromCloud() {
         if (!currentUser) return;
         onSnapshot(collection(db, getQuestionsCollectionPath()), (snapshot) => {
             let loaded = false;
             snapshot.forEach(doc => { if (doc.id === 'active_questions') { activeQuestions = doc.data().questions; loaded = true; } });
-            if (!loaded || !activeQuestions || activeQuestions.length === 0) activeQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+            if (!loaded || !activeQuestions || activeQuestions.length === 0) activeQuestions = JSON.parse(JSON.stringify(defaultBankSoal.bab1));
             if (document.getElementById('screen-teacher-dashboard').classList.contains('active')) renderTeacherQuestionsEditor();
         });
     }
-
     function listenToScoresFromCloud() {
         if (!currentUser) return;
         onSnapshot(collection(db, getScoresCollectionPath()), (snapshot) => {
@@ -1255,9 +1284,7 @@
             renderTeacherDashboardTable(); renderTeacherQuestionsEditor(); showScreen('screen-teacher-dashboard');
         } else { err.style.opacity = 1; playSound('wrong'); }
     }
-    
     function logoutTeacher() { playSound('click'); showScreen('screen-menu'); }
-
     function switchTeacherTab(tab) {
         playSound('click'); const tabs = ['nilai', 'soal', 'materi'];
         tabs.forEach(t => {
@@ -1266,13 +1293,11 @@
             else { btn.className = "flex-1 py-4 text-gray-500 border-b-4 border-transparent hover:bg-gray-50 transition-colors"; content.classList.add('hidden'); }
         });
     }
-
     function renderTeacherDashboardTable() {
         const list = document.getElementById('teacher-table-body'); list.innerHTML = '';
         
         let total = allScores.length; let avg = 0, high = 0, low = 0, passing = 0;
         let scoreDistribution = { '90-100':0, '70-89':0, '50-69':0, '<50':0 };
-
         if(total === 0) {
             list.innerHTML = '<tr><td colspan="5" class="text-center py-6 text-gray-400 text-sm">Belum ada data nilai di Cloud</td></tr>';
         } else {
@@ -1284,7 +1309,6 @@
                 else if(s.score >= 70) scoreDistribution['70-89']++;
                 else if(s.score >= 50) scoreDistribution['50-69']++;
                 else scoreDistribution['<50']++;
-
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="p-3 truncate max-w-[120px] font-bold text-gray-800">${s.name}</td>
@@ -1298,15 +1322,12 @@
             avg = (sum / total).toFixed(1);
             passing = Math.round((passing / total) * 100);
         }
-
         document.getElementById('stat-total').innerText = total;
         document.getElementById('stat-avg').innerText = avg;
         document.getElementById('stat-high').innerText = high;
         document.getElementById('stat-pass').innerText = passing + '%';
-
         updateTeacherChart(scoreDistribution);
     }
-
     function updateTeacherChart(data) {
         const ctx = document.getElementById('scoreChart');
         if(!ctx) return;
@@ -1349,7 +1370,6 @@
         });
         activeQuestions = synced;
     }
-
     function renderTeacherQuestionsEditor() {
         const editor = document.getElementById('questions-editor'); editor.innerHTML = '';
         activeQuestions.forEach((q, idx) => {
@@ -1375,22 +1395,18 @@
             editor.appendChild(div);
         });
     }
-
     function addNewQuestion() {
         playSound('click'); syncQuestionsFromDOM();
         activeQuestions.push({q: "Tulis pertanyaan di sini...", options: ["Opsi A", "Opsi B", "Opsi C", "Opsi D"], answer: 0});
         renderTeacherQuestionsEditor(); setTimeout(() => { const el = document.getElementById('content-soal'); el.scrollTop = el.scrollHeight; }, 50);
     }
-    
     function deleteQuestion(idx) { playSound('click'); syncQuestionsFromDOM(); if(activeQuestions.length <= 1) return showCustomAlert("Minimal 1 soal harus tersisa."); activeQuestions.splice(idx, 1); renderTeacherQuestionsEditor(); }
-
     async function saveQuestions() {
         playSound('click'); if (!currentUser) return showCustomAlert("Terputus dari Cloud.");
         syncQuestionsFromDOM();
         try { await setDoc(doc(db, getQuestionsCollectionPath(), 'active_questions'), { questions: activeQuestions }); showCustomAlert(`✅ ${activeQuestions.length} Soal berhasil disimpan ke Cloud!`); } 
         catch (e) { showCustomAlert('Gagal menyimpan soal.'); }
     }
-
     function copyScoresToClipboard() {
         playSound('click'); if(allScores.length === 0) return showCustomAlert('Tidak ada data.');
         let text = "Nama\tKelas\tNo. Absen\tBenar\tSalah\tNilai Akhir\n";
@@ -1413,7 +1429,6 @@
         };
         updateHUD(); createBoard(); showScreen('screen-game');
     }
-
     function updateHUD() {
         const totalQ = state.currentShuffledQuestions.length;
         document.getElementById('hud-name').innerText = state.name;
@@ -1426,10 +1441,8 @@
         
         let progressPercent = (Math.min(state.questionIndex, totalQ) / totalQ) * 100;
         document.getElementById('hud-progress-bar').style.width = `${progressPercent}%`;
-
         if(document.getElementById('hud-match-progress')) document.getElementById('hud-match-progress').innerText = state.matchesSinceLastQuiz;
     }
-
     function createBoard() {
         board = []; const boardEl = document.getElementById('game-board'); boardEl.innerHTML = '';
         for (let r = 0; r < ROWS; r++) {
@@ -1453,14 +1466,12 @@
     
     function getDOMCell(r, c) { return document.querySelector(`.emoticon[data-r="${r}"][data-c="${c}"]`); }
     let dragOrigin = {x:0, y:0};
-
     function handleDragStart(e) {
         if (state.isAnimating) return; if(e.type === 'touchstart') e.preventDefault(); 
         state.dragElement = e.target; state.dragStart = { r: parseInt(e.target.dataset.r), c: parseInt(e.target.dataset.c) };
         dragOrigin.x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX; dragOrigin.y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
         e.target.style.transform = 'scale(0.85)';
     }
-
     function handleDragEnd(e) {
         if (!state.dragElement || state.isAnimating) return;
         state.dragElement.style.transform = '';
@@ -1487,7 +1498,6 @@
             else { el2.innerText = el1.innerText; el1.innerText = tempText; board[r2][c2] = board[r1][c1]; board[r1][c1] = tempType; state.isAnimating = false; playSound('wrong'); }
         }, 200);
     }
-
     function findMatches() {
         let matchedSet = new Set();
         for (let r = 0; r < ROWS; r++) {
@@ -1504,7 +1514,6 @@
         }
         return Array.from(matchedSet).map(str => { let parts = str.split(','); return {r: parseInt(parts[0]), c: parseInt(parts[1])}; });
     }
-
     function processMatches(matches, showQuizTrigger) {
         state.comboCount++; playSound('pop');
         if (state.comboCount > 1) { playSound('combo'); showComboText(); }
@@ -1520,7 +1529,6 @@
             } else applyGravity();
         }, 300);
     }
-
     function applyGravity() {
         for (let c = 0; c < COLS; c++) {
             for (let r = ROWS - 1; r >= 0; r--) {
@@ -1541,13 +1549,11 @@
             else { state.isAnimating = false; if (state.questionIndex >= state.currentShuffledQuestions.length) endGame(); }
         }, 300);
     }
-
     function createParticle(parent) {
         if(Math.random() > 0.5) return; 
         const p = document.createElement('div'); p.innerText = '✨'; p.style.position = 'absolute'; p.style.fontSize = '1.8rem';
         p.style.animation = 'pop-out 0.6s ease-out forwards'; parent.appendChild(p); setTimeout(() => p.remove(), 600);
     }
-
     function showComboText() {
         const texts = ["", "", "HEBAT!", "KEREN!", "SUPER!", "LUAR BIASA!"];
         const t = document.getElementById('combo-text'); t.innerText = texts[Math.min(state.comboCount, 5)];
@@ -1574,12 +1580,10 @@
         const modal = document.getElementById('modal-quiz'); const box = document.getElementById('quiz-box');
         modal.classList.remove('hidden'); setTimeout(() => box.classList.remove('scale-95'), 10);
     }
-
     function submitAnswer(selectedIdx, correctIdx) {
         document.getElementById('modal-quiz').classList.add('hidden'); document.getElementById('quiz-box').classList.add('scale-95');
         const isCorrect = selectedIdx === correctIdx; state.questionIndex++; showFeedback(isCorrect);
     }
-
     function showFeedback(isCorrect) {
         const banner = document.getElementById('feedback-banner'); const icon = document.getElementById('feedback-icon'); const text = document.getElementById('feedback-text'); const scoreStr = document.getElementById('feedback-score');
         const totalQ = state.currentShuffledQuestions.length;
@@ -1595,7 +1599,6 @@
         banner.style.transition = 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; banner.style.opacity = 1; banner.style.transform = 'translate(-50%, -50%) scale(1.1)';
         setTimeout(() => { banner.style.opacity = 0; banner.style.transform = 'translate(-50%, -50%) scale(0.8)'; if(postQuizCallback) postQuizCallback(); }, 1500);
     }
-
     function endGame() {
         playSound('win'); saveScoreToCloud(); 
         document.getElementById('res-name').innerText = state.name; document.getElementById('res-benar').innerText = state.correct; document.getElementById('res-salah').innerText = state.wrong; document.getElementById('res-skor').innerText = state.score;
@@ -1611,16 +1614,13 @@
         let endConfetti = setInterval(() => { confetti({ particleCount: 30, angle: 60, spread: 55, origin: { x: 0 } }); confetti({ particleCount: 30, angle: 120, spread: 55, origin: { x: 1 } }); }, 1000);
         setTimeout(() => clearInterval(endConfetti), 4000);
     }
-
     function quitGame() { showCustomConfirm("Yakin ingin keluar? Progres tidak akan tersimpan.", () => { showScreen('screen-landing'); }); }
-
+    
     async function saveScoreToCloud() {
         if (!currentUser) return;
         try { await addDoc(collection(db, getScoresCollectionPath()), { name: state.name, absen: state.absen, score: state.score, correct: state.correct, wrong: state.wrong, date: new Date().getTime(), userId: currentUser.uid }); } catch(e) {}
     }
-
     function showLeaderboard() { renderLeaderboardUI(); showScreen('screen-leaderboard'); }
-
     function renderLeaderboardUI() {
         const list = document.getElementById('leaderboard-list'); list.innerHTML = '';
         if (allScores.length === 0) { list.innerHTML = '<p class="text-center text-gray-400 mt-10 text-sm font-medium">Belum ada data nilai</p>'; } 
@@ -1649,14 +1649,12 @@
             });
         }
     }
-
     async function resetData() {
         if (!currentUser) return;
         showCustomConfirm("Hapus SEMUA data nilai secara permanen?", async () => {
             try { for(let s of allScores) { await deleteDoc(doc(db, getScoresCollectionPath(), s.id)); } showCustomAlert("Data berhasil dihapus!"); } catch(e) {}
         });
     }
-
     window.startIntroVideo = function() {
         playSound('click'); document.getElementById('start-video-overlay').style.display = 'none';
         const vid = document.getElementById('intro-video');
@@ -1667,7 +1665,6 @@
         if (vidScreen) { vidScreen.classList.remove('active'); vidScreen.style.display = 'none'; const vid = document.getElementById('intro-video'); if (vid) { vid.pause(); vid.currentTime = 0; } }
         initApp();
     };
-
     // Exports
     window.showScreen = showScreen; window.playSound = playSound; window.startGame = startGame; window.showLeaderboard = showLeaderboard;
     window.loginTeacher = loginTeacher; window.logoutTeacher = logoutTeacher; window.switchTeacherTab = switchTeacherTab;
