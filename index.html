@@ -510,6 +510,8 @@
                         <option value="bab4">Bab 4 - Belajar Berwirausaha (Wawancara, Ide Pokok)</option>
                         <option value="bab5">Bab 5 - Menjadi Warga Dunia (Fakta, Opini)</option>
                         <option value="bab6">Bab 6 - Cinta Indonesia (Kalimat Perintah, Pengumuman)</option>
+                        <option value="bab7">Bab 7 - Sayangi Bumi (Pantun, Surat Undangan)</option>
+                        <option value="bab8">Bab 8 - Bergerak Bersama (Pidato, Cerita Rakyat)</option>
                     </select>
                 </div>
                 <!-- MENU INPUT JUMLAH SOAL -->
@@ -527,26 +529,6 @@
                     <div class="w-full bg-gray-200 rounded-full h-2.5">
                         <div id="ai-progress-bar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
                     </div>
-                </div>
-            </div>
-
-            <!-- PANEL IMPORT JSON -->
-            <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-4 mb-4 font-sans relative overflow-hidden shadow-sm">
-                <div class="absolute top-0 right-0 bg-indigo-500 text-white text-[10px] font-black px-3 py-1 rounded-bl-lg shadow-sm">
-                    📁 FILE LOKAL
-                </div>
-                <h3 class="font-bold text-indigo-800 mb-1 flex items-center gap-2 text-base">
-                    📂 Ambil Soal dari soal.json
-                </h3>
-                <p class="text-xs text-indigo-600 mb-4">Pilih file <b>soal.json</b> dari perangkat Anda, atau muat langsung dari server.</p>
-                <div class="flex gap-2">
-                    <button onclick="fetchFromJson()" class="w-1/2 bg-blue-500 text-white px-2 py-3 rounded-lg text-xs font-bold shadow-md hover:bg-blue-600 active:scale-95 transition-transform flex items-center justify-center gap-1 border-b-4 border-blue-700">
-                        🌐 MUAT DARI SERVER
-                    </button>
-                    <label class="w-1/2 bg-indigo-500 text-white px-2 py-3 rounded-lg text-xs font-bold shadow-md hover:bg-indigo-600 active:scale-95 transition-transform flex items-center justify-center gap-1 border-b-4 border-indigo-700 cursor-pointer">
-                        📂 PILIH FILE LOKAL
-                        <input type="file" accept=".json" class="hidden" onchange="importFromJson(event)">
-                    </label>
                 </div>
             </div>
             
@@ -990,6 +972,28 @@
                 return buildQ(`"Mari kita bersihkan lingkungan sekolah ini bersama-sama agar terhindar dari penyakit demam berdarah!"\nPenggunaan kata penanda "Mari" pada kalimat di atas menunjukkan bahwa ini adalah variasi kalimat perintah berbentuk...`, "Ajakan atau himbauan", "Larangan keras", "Paksaan", "Syarat dan ketentuan");
             });
         }
+        else if (chapterId === 'bab7') {
+            templates.push(() => {
+                return buildQ(`Perhatikan pantun berikut:\n"Jalan-jalan ke kota Blitar,\nJangan lupa beli sukun.\nJika kamu ingin pintar,\nBelajarlah dengan tekun."\nPesan atau amanat yang terkandung dalam pantun tersebut adalah...`, "Kita harus belajar dengan tekun agar menjadi pintar", "Membeli buah sukun saat pergi ke kota Blitar", "Rajin jalan-jalan agar tubuh menjadi sehat dan pintar", "Bermain dengan tekun bersama teman-teman");
+            });
+            templates.push(() => {
+                return buildQ(`Surat undangan resmi yang dikeluarkan oleh sekolah atau instansi biasanya menggunakan kepala surat (kop surat) di bagian atas. Fungsi utama dari kop surat tersebut adalah...`, "Menunjukkan identitas resmi lembaga atau instansi pengirim surat", "Memperindah tampilan surat agar menarik perhatian penerima", "Menuliskan nama orang yang akan diundang secara spesifik", "Sebagai tempat menempelkan prangko saat dikirim via pos");
+            });
+            templates.push(() => {
+                return buildQ(`Cara yang paling tepat dan efektif untuk membuat ringkasan dari sebuah teks bacaan yang panjang adalah dengan...`, "Mencatat dan menggabungkan ide pokok dari setiap paragraf menjadi satu kesatuan", "Menyalin ulang seluruh kalimat dari awal hingga akhir secara utuh", "Hanya membaca dan menuliskan kalimat pertama dan kalimat terakhir bacaan", "Mengarang cerita baru yang lebih seru berdasarkan judul teks tersebut");
+            });
+        }
+        else if (chapterId === 'bab8') {
+            templates.push(() => {
+                return buildQ(`Berikut ini yang merupakan contoh kalimat penutup pidato persuasif yang paling tepat adalah...`, "Demikian yang dapat saya sampaikan, semoga bermanfaat. Mohon maaf atas segala kekurangan.", "Selamat pagi semuanya, mari kita mulai acara peringatan hari pahlawan ini.", "Pada kesempatan kali ini, saya akan membahas tentang pentingnya menjaga kebersihan.", "Hadirin yang saya hormati, kebersihan adalah sebagian dari iman yang harus dijaga.");
+            });
+            templates.push(() => {
+                return buildQ(`Cerita rakyat "Sangkuriang" dan "Malin Kundang" merupakan contoh cerita yang mengisahkan asal-usul terjadinya suatu tempat, gunung, atau bentuk alam lainnya. Jenis cerita rakyat seperti ini disebut...`, "Legenda", "Mite (Mitos)", "Fabel", "Sage");
+            });
+            templates.push(() => {
+                return buildQ(`Dalam membaca sebuah naskah drama, terdapat teks petunjuk lakuan atau tindakan yang harus dilakukan oleh tokoh (misalnya: menangis, berjalan lambat). Biasanya petunjuk ini ditulis di dalam...`, "Tanda Kurung ()", "Tanda Kutip Ganda (\"\")", "Tanda Seru (!)", "Tanda Tanya (?)");
+            });
+        }
         else {
             templates.push(() => buildQ("Soal Kritis Analisis: Jika kamu melihat seorang teman membuang bungkus makanannya di taman sekolah yang baru saja dibersihkan, tindakan paling tepat yang harus kamu lakukan adalah...", "Menegurnya dengan sopan agar mengambil dan membuangnya ke tempat sampah", "Membentaknya di depan teman-teman lain agar ia merasa malu", "Mendiamkannya saja karena itu bukan urusanmu", "Ikut membuang sampah sembarangan di tempat tersebut"));
         }
@@ -1043,95 +1047,6 @@
         document.getElementById('custom-modal').classList.add('hidden');
     }
 
-    // --- JSON Import/Fetch ---
-    function importFromJson(event) {
-        playSound('click');
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                const importedData = JSON.parse(e.target.result);
-                if (Array.isArray(importedData)) {
-                    let isValid = true;
-                    const newQuestions = [];
-                    for(let i = 0; i < importedData.length; i++) {
-                        let item = importedData[i];
-                        if(item.q && item.options && Array.isArray(item.options) && item.answer !== undefined) {
-                            newQuestions.push({
-                                q: item.q,
-                                options: item.options,
-                                answer: parseInt(item.answer)
-                            });
-                        } else {
-                            isValid = false;
-                            break;
-                        }
-                    }
-
-                    if(isValid && newQuestions.length > 0) {
-                        activeQuestions = newQuestions;
-                        renderTeacherQuestionsEditor();
-                        showCustomAlert(`🎉 Berhasil memuat ${newQuestions.length} soal dari file JSON lokal!\n\nJangan lupa tekan 'SIMPAN KE CLOUD' agar soal ini tersimpan.`);
-                    } else {
-                        showCustomAlert("❌ Format file soal.json tidak sesuai. Pastikan format array mengandung 'q', 'options', dan 'answer'.");
-                    }
-                } else {
-                     showCustomAlert("❌ File harus berupa Array JSON.");
-                }
-            } catch (error) {
-                console.error(error);
-                showCustomAlert("❌ Terjadi kesalahan saat membaca file JSON. Pastikan formatnya benar.");
-            }
-            event.target.value = '';
-        };
-        reader.readAsText(file);
-    }
-
-    async function fetchFromJson() {
-        playSound('click');
-        try {
-            const response = await fetch('soal.json');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const importedData = await response.json();
-            
-            if (Array.isArray(importedData)) {
-                let isValid = true;
-                const newQuestions = [];
-                for(let i = 0; i < importedData.length; i++) {
-                    let item = importedData[i];
-                    if(item.q && item.options && Array.isArray(item.options) && item.answer !== undefined) {
-                        newQuestions.push({
-                            q: item.q,
-                            options: item.options,
-                            answer: parseInt(item.answer)
-                        });
-                    } else {
-                        isValid = false;
-                        break;
-                    }
-                }
-
-                if(isValid && newQuestions.length > 0) {
-                    activeQuestions = newQuestions;
-                    renderTeacherQuestionsEditor();
-                    showCustomAlert(`🎉 Berhasil memuat ${newQuestions.length} soal dari server (soal.json)!\n\nJangan lupa tekan 'SIMPAN KE CLOUD' agar soal ini tersimpan.`);
-                } else {
-                    showCustomAlert("❌ Format file soal.json tidak sesuai. Pastikan format array mengandung 'q', 'options', dan 'answer'.");
-                }
-            } else {
-                 showCustomAlert("❌ File harus berupa Array JSON.");
-            }
-
-        } catch (error) {
-            console.error(error);
-            showCustomAlert("❌ Gagal memuat soal.json dari server. Pastikan file soal.json berada di folder yang sama dan Anda menggunakan Web Server (Hosting / Localhost).");
-        }
-    }
-    
     // --- Audio System ---
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     let audioCtx = new AudioContext();
@@ -2150,8 +2065,6 @@
     window.changeVolume = changeVolume;
     window.saveUserSettings = saveUserSettings;
     window.processAIChapter = processAIChapter;
-    window.importFromJson = importFromJson;
-    window.fetchFromJson = fetchFromJson;
     
     // CSS Keyframe Injection for dynamic stuff
     const style = document.createElement('style');
