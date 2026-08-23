@@ -64,39 +64,17 @@
                 box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 4px rgba(255,255,255,0.2);
             }
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
-        }
-        @keyframes float-cloud {
-            0% { transform: translateX(120%); opacity: 0.8; }
-            100% { transform: translateX(-120%); opacity: 0.8; }
-        }
-        @keyframes pulse-glow {
-            0%, 100% { filter: drop-shadow(0 0 8px rgba(79, 195, 247, 0.6)); }
-            50% { filter: drop-shadow(0 0 20px rgba(79, 195, 247, 1)); }
-        }
-        @keyframes bounce-soft {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-        @keyframes pop-in {
-            0% { transform: scale(0.8); opacity: 0; }
-            70% { transform: scale(1.05); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes slide-up {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes fade-in {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(2deg); } }
+        @keyframes float-cloud { 0% { transform: translateX(120%); opacity: 0.8; } 100% { transform: translateX(-120%); opacity: 0.8; } }
+        @keyframes pulse-glow { 0%, 100% { filter: drop-shadow(0 0 8px rgba(79, 195, 247, 0.6)); } 50% { filter: drop-shadow(0 0 20px rgba(79, 195, 247, 1)); } }
+        @keyframes bounce-soft { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        @keyframes pop-in { 0% { transform: scale(0.8); opacity: 0; } 70% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes slide-up { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pop-out { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2) translateY(-20px); opacity: 0; } }
+
         .glass-panel {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(16px);
@@ -105,8 +83,7 @@
             border-radius: 32px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1), inset 0 2px 0 rgba(255,255,255,0.8);
         }
-
-        /* PERBAIKAN SCROLL MENU */
+        
         .screen {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -121,9 +98,9 @@
             justify-content: center;
             align-items: center;
             padding: 24px;
-            padding-bottom: 60px; /* Jarak aman di bawah */
+            padding-bottom: 80px; /* Jarak ekstra di bawah agar tidak terpotong */
         }
-        #screen-game { overflow: hidden; } /* Game tidak boleh di-scroll */
+        #screen-game { overflow: hidden; } /* Game board tidak boleh di-scroll */
         
         .screen.active {
             display: flex;
@@ -132,8 +109,7 @@
         .screen.active .animate-on-load {
             animation: slide-up 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-        
-        /* Flat 3D Buttons */
+
         .btn-custom {
             font-family: 'Baloo 2', cursive;
             background: linear-gradient(to bottom, #ffffff, #f3f4f6);
@@ -154,152 +130,79 @@
             align-items: center;
             gap: 10px;
         }
-        .btn-custom:active {
-            transform: translateY(6px);
-            box-shadow: 0 2px 0 #d1d5db, 0 5px 10px -5px rgba(0,0,0,0.15);
-        }
+        .btn-custom:active { transform: translateY(6px); box-shadow: 0 2px 0 #d1d5db, 0 5px 10px -5px rgba(0,0,0,0.15); }
         
         .btn-primary {
             background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
-            color: white;
-            border-color: #81d4fa;
+            color: white; border-color: #81d4fa;
             box-shadow: 0 8px 0 #0288d1, 0 15px 20px -5px rgba(2,136,209,0.3);
             text-shadow: 0 2px 0 rgba(0,0,0,0.2);
         }
-        .btn-primary:active {
-            box-shadow: 0 2px 0 #0288d1, 0 5px 10px -5px rgba(2,136,209,0.3);
-        }
+        .btn-primary:active { box-shadow: 0 2px 0 #0288d1, 0 5px 10px -5px rgba(2,136,209,0.3); }
+        
         .btn-materi {
             background: linear-gradient(to bottom, var(--accent-orange), var(--accent-orange-dark));
-            color: white;
-            border-color: #ffcc80;
+            color: white; border-color: #ffcc80;
             box-shadow: 0 8px 0 #f57c00, 0 15px 20px -5px rgba(245,124,0,0.3);
             text-shadow: 0 2px 0 rgba(0,0,0,0.2);
         }
-        .btn-materi:active {
-            box-shadow: 0 2px 0 #f57c00, 0 5px 10px -5px rgba(245,124,0,0.3);
-        }
-        
-        /* Menu Cards */
+        .btn-materi:active { box-shadow: 0 2px 0 #f57c00, 0 5px 10px -5px rgba(245,124,0,0.3); }
+
         .menu-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);
+            border-radius: 24px; padding: 16px; display: flex; align-items: center; justify-content: space-between;
             box-shadow: 0 10px 20px rgba(0,0,0,0.05), inset 0 2px 0 white;
-            border: 2px solid rgba(255,255,255,0.5);
-            transition: all 0.2s ease;
-            cursor: pointer;
-            margin-bottom: 12px;
-            width: 100%;
+            border: 2px solid rgba(255,255,255,0.5); transition: all 0.2s ease; cursor: pointer; margin-bottom: 12px; width: 100%;
         }
-        .menu-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.1), inset 0 2px 0 white;
-            background: rgba(255, 255, 255, 0.95);
-        }
-        .menu-card:active {
-            transform: translateY(2px);
-            box-shadow: 0 5px 10px rgba(0,0,0,0.05);
-        }
+        .menu-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 15px 25px rgba(0,0,0,0.1), inset 0 2px 0 white; background: rgba(255, 255, 255, 0.95); }
+        .menu-card:active { transform: translateY(2px); box-shadow: 0 5px 10px rgba(0,0,0,0.05); }
+        
         .grid-cell {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.5); border-radius: 16px;
             box-shadow: inset 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(255,255,255,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.8);
+            display: flex; justify-content: center; align-items: center; position: relative; border: 1px solid rgba(255,255,255,0.8);
         }
         .emoticon {
-            font-size: 2.8rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            user-select: none;
-            cursor: grab;
+            font-size: 2.8rem; display: flex; justify-content: center; align-items: center;
+            width: 100%; height: 100%; user-select: none; cursor: grab;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2;
         }
-        .emoticon:active {
-            cursor: grabbing;
-            transform: scale(0.85);
-            z-index: 10;
-        }
+        .emoticon:active { cursor: grabbing; transform: scale(0.85); z-index: 10; }
+
+        .scenery-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .cloud { position: absolute; background: white; border-radius: 50px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
+        .cloud::before, .cloud::after { content: ''; position: absolute; background: white; border-radius: 50%; }
         
-        /* Background Scenery Elements */
-        .scenery-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0; overflow: hidden;
-        }
-        .cloud {
-            position: absolute; background: white; border-radius: 50px;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
-        }
-        .cloud::before, .cloud::after {
-            content: ''; position: absolute; background: white; border-radius: 50%;
-        }
-        
-        /* Modern Inputs */
         .input-modern {
-            width: 100%; padding: 16px 16px 16px 48px;
-            border-radius: 20px;
-            border: 2px solid transparent;
-            background-color: #f3f4f6;
-            box-shadow: inset 0 4px 6px rgba(0,0,0,0.05), 0 2px 0 rgba(255,255,255,0.8);
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600; color: #374151;
-            transition: all 0.3s ease;
+            width: 100%; padding: 16px 16px 16px 48px; border-radius: 20px; border: 2px solid transparent;
+            background-color: #f3f4f6; box-shadow: inset 0 4px 6px rgba(0,0,0,0.05), 0 2px 0 rgba(255,255,255,0.8);
+            font-family: 'Poppins', sans-serif; font-weight: 600; color: #374151; transition: all 0.3s ease;
         }
-        .input-modern:focus {
-            outline: none; background-color: white;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.2), 0 4px 10px rgba(0,0,0,0.05);
-        }
+        .input-modern:focus { outline: none; background-color: white; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 195, 247, 0.2), 0 4px 10px rgba(0,0,0,0.05); }
         
-        /* Progress Bar */
-        .progress-bar-bg {
-            background: #e2e8f0; border-radius: 999px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-            height: 12px; width: 100%; overflow: hidden;
-            position: relative;
-        }
+        .progress-bar-bg { background: #e2e8f0; border-radius: 999px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); height: 12px; width: 100%; overflow: hidden; position: relative; }
         .progress-bar-fill {
             height: 100%; background: linear-gradient(90deg, var(--secondary), #a7f3d0);
-            border-radius: 999px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
+            border-radius: 999px; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;
         }
         .progress-bar-fill::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-            animation: float-cloud 2s infinite linear;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent); animation: float-cloud 2s infinite linear;
         }
         
-        /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
         #combo-text {
             position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
             font-family: 'Baloo 2', cursive; font-size: 3.5rem; font-weight: 900;
             color: #fff; text-shadow: 0 6px 0 #f57c00, 0 10px 15px rgba(0,0,0,0.4);
-            z-index: 50; pointer-events: none; opacity: 0; text-align: center; line-height: 1;
-            -webkit-text-stroke: 2px #e65100;
+            z-index: 50; pointer-events: none; opacity: 0; text-align: center; line-height: 1; -webkit-text-stroke: 2px #e65100;
         }
-        
-        @keyframes pop-out { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2) translateY(-20px); opacity: 0; } }
     </style>
 
-    <!-- Script SINKRON untuk menahan tombol sebelum Firebase siap -->
     <script>
         window.isAppLoaded = false;
         window.pendingStart = false;
@@ -307,6 +210,7 @@
         
         window.startIntroVideo = function() {
             if (!window.isAppLoaded) {
+                // Jika sistem Firebase/App belum selesai dimuat, tampilkan tulisan "MEMUAT..."
                 const btnText = document.getElementById('mulai-btn-text');
                 if(btnText) btnText.innerText = "MEMUAT...";
                 window.pendingStart = true;
@@ -326,24 +230,18 @@
 </head>
 <body>
 <div id="app-container">
-    <!-- Background Music -->
     <audio id="bg-music" loop>
         <source src="The_Golden_Tally.mp3" type="audio/mpeg">
     </audio>
     
     <div class="scenery-bg z-0" id="global-scenery">
-        <!-- Sun -->
         <div class="absolute top-10 right-10 w-24 h-24 bg-yellow-300 rounded-full blur-[2px] shadow-[0_0_40px_rgba(255,213,79,0.8)] animate-[spin-slow_20s_linear_infinite]" style="box-shadow: 0 0 60px #FFD54F, inset 0 0 20px #FFF9C4;"></div>
-        
-        <!-- Clouds -->
         <div class="cloud w-24 h-8 top-16 left-[-100px] animate-[float-cloud_25s_linear_infinite]" style="animation-delay: 0s;">
             <div class="w-12 h-12 -top-6 left-2"></div><div class="w-10 h-10 -top-4 right-2"></div>
         </div>
         <div class="cloud w-32 h-10 top-32 left-[-150px] animate-[float-cloud_35s_linear_infinite]" style="animation-delay: -10s; transform: scale(0.8); opacity: 0.6;">
             <div class="w-16 h-16 -top-8 left-4"></div><div class="w-12 h-12 -top-5 right-4"></div>
         </div>
-        
-        <!-- Floating Particles -->
         <div class="absolute inset-0 pointer-events-none">
             <div class="absolute top-[20%] left-[10%] text-2xl animate-[float_4s_ease-in-out_infinite]" style="opacity: 0.3;">✨</div>
             <div class="absolute top-[60%] left-[85%] text-xl animate-[float_5s_ease-in-out_infinite]" style="animation-delay: 1s; opacity: 0.4;">✨</div>
@@ -351,14 +249,13 @@
         </div>
     </div>
     
-    <!-- 1. SPLASH SCREEN -->
     <section id="screen-splash-video" class="screen active justify-center items-center z-[100] bg-white">
         <video id="intro-video" class="w-full h-full object-contain max-w-md mx-auto" playsinline>
             <source src="opening.mp4" type="video/mp4">
         </video>
-        <button id="skip-video-btn" class="absolute top-6 right-6 bg-white/30 hover:bg-white/50 text-gray-800 font-bold px-5 py-2.5 rounded-full text-sm backdrop-blur-md z-[110] transition-all shadow-lg border border-white/50" onclick="finishIntroVideo()">Lewati ⏭</button>
+        <button id="skip-video-btn" class="absolute top-6 right-6 bg-white/30 hover:bg-white/50 text-gray-800 font-bold px-5 py-2.5 rounded-full text-sm backdrop-blur-md z-[130] transition-all shadow-lg border border-white/50" onclick="finishIntroVideo()">Lewati ⏭</button>
         
-        <div id="start-video-overlay" class="absolute inset-0 flex flex-col justify-center items-center bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 z-[105] overflow-hidden">
+        <div id="start-video-overlay" class="absolute inset-0 flex flex-col justify-center items-center bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 z-[110] overflow-hidden">
             <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC4yIi8+PC9zdmc+')] pointer-events-none opacity-50 z-0"></div>
             
             <div class="relative mb-8 mt-10 z-10">
@@ -371,6 +268,7 @@
             </h1>
             <p class="text-white font-extrabold tracking-[0.1em] text-sm mb-16 shadow-lg bg-white/20 backdrop-blur-md px-6 py-2 rounded-full uppercase border-2 border-white/50 relative z-10">Belajar Sambil Bermain</p>
             
+            <!-- Tombol MULAI ini sekarang ditaruh di lapisan teratas (z-120) agar tidak macet/tertutup elemen lain -->
             <button class="btn-custom btn-primary !px-10 !py-5 !text-2xl relative z-[120] group" onclick="startIntroVideo()">
                 <div class="w-12 h-12 bg-white text-blue-500 rounded-full flex justify-center items-center shadow-inner group-hover:scale-110 transition-transform">
                     <span class="text-2xl ml-1">▶</span>
@@ -380,32 +278,30 @@
         </div>
     </section>
 
-    <!-- 2. LOADING SCREEN -->
-    <section id="screen-loading" class="screen justify-center items-center z-50 bg-gradient-to-b from-blue-50 to-white">
-        <div class="animate-on-load text-center w-full px-8">
-            <img src="MASKOT.png" alt="Maskot Loading" class="h-32 mx-auto mb-6 animate-[bounce-soft_1.5s_infinite] drop-shadow-xl" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=M'">
-            
-            <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] drop-shadow-sm mb-2" style="line-height: 1.1;">CERDIAKIA<br>MATCH</h1>
-            <p class="text-gray-500 font-bold mb-10 text-sm bg-gray-100 px-4 py-1 rounded-full inline-block">Menyiapkan permainan...</p>
-            
-            <div class="progress-bar-bg mb-2">
-                <div id="loading-progress" class="progress-bar-fill" style="width: 0%;"></div>
-            </div>
-            <div class="flex justify-between items-center px-2 mb-8">
-                <span id="loading-cloud" class="text-xs font-bold text-[var(--primary)] opacity-0 transition-opacity">☁️ Cloud Sync...</span>
-                <span id="loading-percentage" class="text-sm font-black text-gray-700">0%</span>
-            </div>
-            
-            <div class="glass-panel px-6 py-4 text-center">
-                <p id="loading-tip" class="text-sm font-bold text-gray-600 transition-opacity duration-300">Tips: Kumpulkan kombo untuk skor tinggi!</p>
+    <section id="screen-loading" class="screen bg-gradient-to-b from-blue-50 to-white">
+        <div class="scroll-wrapper">
+            <div class="animate-on-load text-center w-full px-8">
+                <img src="MASKOT.png" alt="Maskot Loading" class="h-32 mx-auto mb-6 animate-[bounce-soft_1.5s_infinite] drop-shadow-xl" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=M'">
+                <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] drop-shadow-sm mb-2" style="line-height: 1.1;">CERDIAKIA<br>MATCH</h1>
+                <p class="text-gray-500 font-bold mb-10 text-sm bg-gray-100 px-4 py-1 rounded-full inline-block">Menyiapkan permainan...</p>
+                
+                <div class="progress-bar-bg mb-2">
+                    <div id="loading-progress" class="progress-bar-fill" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between items-center px-2 mb-8">
+                    <span id="loading-cloud" class="text-xs font-bold text-[var(--primary)] opacity-0 transition-opacity">☁️ Cloud Sync...</span>
+                    <span id="loading-percentage" class="text-sm font-black text-gray-700">0%</span>
+                </div>
+                
+                <div class="glass-panel px-6 py-4 text-center">
+                    <p id="loading-tip" class="text-sm font-bold text-gray-600 transition-opacity duration-300">Tips: Kumpulkan kombo untuk skor tinggi!</p>
+                </div>
             </div>
         </div>
     </section>
     
-    <!-- 3. LANDING SCREEN -->
     <section id="screen-landing" class="screen relative">
-        <div class="scroll-wrapper justify-between">
-            <!-- Distant School Background -->
+        <div class="scroll-wrapper justify-between pb-10">
             <div class="absolute bottom-0 left-0 w-full h-32 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48cGF0aCBkPSJNMCAxMDBMMCA1MEw1MCAyMEwxMDAgNTBMMTAwIDEwMFoiIGZpbGw9IiM4MWM3ODQiIG9wYWNpdHk9IjAuMSIvPjwvc3ZnPg==')] bg-cover bg-bottom opacity-50 z-0"></div>
             
             <div class="text-center mt-8 animate-on-load z-10 w-full">
@@ -413,12 +309,10 @@
                     <div class="absolute inset-0 bg-yellow-200 blur-2xl rounded-full opacity-40 animate-pulse"></div>
                     <img src="MASKOT.png" alt="Maskot Menu" class="h-56 mx-auto drop-shadow-2xl relative z-10" style="animation: float 4s ease-in-out infinite;" onerror="this.src='https://placehold.co/200x200/transparent/blue?text=M'">
                 </div>
-                
                 <h1 class="text-[3.5rem] font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary)] via-blue-400 to-[var(--secondary)] filter drop-shadow-md mb-2" style="line-height: 1.1; animation: pulse-glow 3s infinite;">
                     CERDIAKIA<br>MATCH
                 </h1>
                 <p class="text-sm text-gray-700 font-bold bg-white/80 backdrop-blur px-5 py-2 rounded-full inline-block shadow-sm border border-white">Belajar Sambil Bermain</p>
-                
                 <div class="mt-4">
                     <div id="cloud-status" class="text-[10px] font-bold bg-green-100/80 backdrop-blur text-green-700 px-3 py-1 rounded-full inline-block shadow-sm border border-green-200">
                         <span class="animate-pulse inline-block">🟢</span> Cloud Terhubung
@@ -428,18 +322,15 @@
             
             <div class="w-full flex flex-col gap-5 px-4 sm:px-8 z-20 animate-on-load mt-10">
                 <button class="btn-custom btn-materi !w-full !m-0 group" onclick="openMateri(); playSound('click')">
-                    <span class="text-2xl group-hover:rotate-12 transition-transform">📚</span> 
-                    <span>MATERI BELAJAR</span>
+                    <span class="text-2xl group-hover:rotate-12 transition-transform">📚</span> <span>MATERI BELAJAR</span>
                 </button>
                 <button class="btn-custom btn-primary !w-full !m-0 !py-5 !text-2xl group" onclick="startQuizFlow(); playSound('click')">
-                    <span class="text-3xl group-hover:scale-110 transition-transform">🎮</span> 
-                    <span>MULAI MAIN</span>
+                    <span class="text-3xl group-hover:scale-110 transition-transform">🎮</span> <span>MULAI MAIN</span>
                 </button>
             </div>
         </div>
     </section>
     
-    <!-- 4. MENU SCREEN -->
     <section id="screen-menu" class="screen bg-gray-50/50 backdrop-blur-sm">
         <div class="scroll-wrapper !justify-start pt-20 px-6">
             <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 active:scale-95 transition-all text-xl font-bold" onclick="showScreen('screen-landing'); playSound('click')">⬅</button>
@@ -453,64 +344,42 @@
                 <div class="menu-card border-[var(--primary)] border-b-4 border-b-[var(--primary)]" onclick="showScreen('screen-identity'); playSound('click')">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 bg-blue-100 text-blue-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">🎮</div>
-                        <div class="text-left">
-                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Mulai Quiz</h3>
-                            <p class="font-poppins text-xs text-gray-500 font-medium">Masuk ke permainan</p>
-                        </div>
-                    </div>
-                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                        <div class="text-left"><h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Mulai Quiz</h3><p class="font-poppins text-xs text-gray-500 font-medium">Masuk ke permainan</p></div>
+                    </div><div class="text-gray-300 font-bold text-xl">➔</div>
                 </div>
                 <div class="menu-card border-[var(--accent-yellow)] border-b-4 border-b-[var(--accent-yellow)]" onclick="showScreen('screen-tutorial'); playSound('click')">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 bg-yellow-100 text-yellow-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">📖</div>
-                        <div class="text-left">
-                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Cara Bermain</h3>
-                            <p class="font-poppins text-xs text-gray-500 font-medium">Pelajari aturannya</p>
-                        </div>
-                    </div>
-                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                        <div class="text-left"><h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Cara Bermain</h3><p class="font-poppins text-xs text-gray-500 font-medium">Pelajari aturannya</p></div>
+                    </div><div class="text-gray-300 font-bold text-xl">➔</div>
                 </div>
                 <div class="menu-card border-[var(--secondary)] border-b-4 border-b-[var(--secondary)]" onclick="showLeaderboard(); playSound('click')">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 bg-green-100 text-green-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">🏆</div>
-                        <div class="text-left">
-                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Papan Nilai</h3>
-                            <p class="font-poppins text-xs text-gray-500 font-medium">Lihat skor tertinggi</p>
-                        </div>
-                    </div>
-                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                        <div class="text-left"><h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Papan Nilai</h3><p class="font-poppins text-xs text-gray-500 font-medium">Lihat skor tertinggi</p></div>
+                    </div><div class="text-gray-300 font-bold text-xl">➔</div>
                 </div>
                 <div class="menu-card" onclick="showScreen('screen-settings'); playSound('click')">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 bg-gray-100 text-gray-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">⚙️</div>
-                        <div class="text-left">
-                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Pengaturan</h3>
-                            <p class="font-poppins text-xs text-gray-500 font-medium">Atur suara & musik</p>
-                        </div>
-                    </div>
-                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                        <div class="text-left"><h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Pengaturan</h3><p class="font-poppins text-xs text-gray-500 font-medium">Atur suara & musik</p></div>
+                    </div><div class="text-gray-300 font-bold text-xl">➔</div>
                 </div>
                 <div class="menu-card border-purple-400 border-b-4 border-b-purple-400 mt-4" onclick="showScreen('screen-teacher-login'); playSound('click')">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 bg-purple-100 text-purple-500 rounded-2xl flex justify-center items-center text-3xl shadow-inner">👩‍🏫</div>
-                        <div class="text-left">
-                            <h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Akses Guru</h3>
-                            <p class="font-poppins text-xs text-gray-500 font-medium">Kelola soal & nilai</p>
-                        </div>
-                    </div>
-                    <div class="text-gray-300 font-bold text-xl">➔</div>
+                        <div class="text-left"><h3 class="font-baloo text-xl font-bold text-gray-800 leading-tight">Akses Guru</h3><p class="font-poppins text-xs text-gray-500 font-medium">Kelola soal & nilai</p></div>
+                    </div><div class="text-gray-300 font-bold text-xl">➔</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 5. IDENTITY SCREEN -->
     <section id="screen-identity" class="screen bg-gradient-to-b from-blue-50 to-white">
         <div class="scroll-wrapper px-6">
             <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 active:scale-95 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
             
             <div class="w-full relative animate-on-load pt-16">
-                <!-- Mascot overlapping top -->
                 <div class="absolute -top-16 left-1/2 transform -translate-x-1/2 z-20">
                     <div class="w-32 h-32 bg-blue-100 rounded-full border-4 border-white shadow-lg flex justify-center items-center overflow-hidden">
                         <img src="MASKOT.png" alt="Maskot" class="h-28 mt-4" onerror="this.src='https://placehold.co/100x100/transparent/blue?text=👦'">
@@ -518,119 +387,53 @@
                 </div>
                 <div class="glass-panel w-full p-8 pt-20 flex flex-col gap-5 border-[var(--primary)] border-t-8 shadow-2xl">
                     <h2 class="text-2xl font-black text-center text-gray-800 mb-2">IDENTITAS <span class="text-[var(--primary)]">PEMAIN</span></h2>
-                    
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">👤</div>
-                        <input type="text" id="input-name" placeholder="Tulis nama panggilanmu" class="input-modern">
-                    </div>
-                    
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">🏫</div>
-                        <input type="text" value="KELAS V" readonly class="input-modern bg-gray-200 text-gray-500 cursor-not-allowed">
-                    </div>
-                    
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">🔢</div>
-                        <input type="number" id="input-absen" placeholder="Nomor Absen" class="input-modern">
-                    </div>
-                    
+                    <div class="relative"><div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">👤</div><input type="text" id="input-name" placeholder="Tulis nama panggilanmu" class="input-modern"></div>
+                    <div class="relative"><div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">🏫</div><input type="text" value="KELAS V" readonly class="input-modern bg-gray-200 text-gray-500 cursor-not-allowed"></div>
+                    <div class="relative"><div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 text-xl">🔢</div><input type="number" id="input-absen" placeholder="Nomor Absen" class="input-modern"></div>
                     <p id="identity-error" class="text-red-500 text-sm text-center font-bold h-5 opacity-0 transition-opacity bg-red-50 rounded-lg py-1">Lengkapi data terlebih dahulu!</p>
-                    
                     <button class="btn-custom btn-primary !w-full !m-0 mt-2 text-xl" onclick="startGame()">▶ MASUK GAME</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 6. TUTORIAL SCREEN -->
     <section id="screen-tutorial" class="screen bg-white">
         <div class="scroll-wrapper !justify-start px-6 pt-24 pb-6">
             <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
-            
             <h2 class="text-3xl font-black text-center text-gray-800 mb-6 drop-shadow-sm animate-on-load w-full">CARA <span class="text-[var(--accent-yellow)]">BERMAIN</span></h2>
-            
             <div class="glass-panel w-full p-6 space-y-4 animate-on-load bg-blue-50/50 border-blue-100">
-                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
-                    <span class="bg-blue-100 text-blue-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">1</span> 
-                    <p class="text-sm font-medium text-gray-600 mt-1">Geser emotikon ke Kanan, Kiri, Atas, atau Bawah.</p>
-                </div>
-                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
-                    <span class="bg-blue-100 text-blue-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">2</span> 
-                    <div class="w-full">
-                        <p class="text-sm font-medium text-gray-600 mb-2">Susun minimal 3 emotikon yang sama.</p>
-                        <div class="flex justify-center items-center gap-2 bg-gray-50 p-3 rounded-xl shadow-inner">
-                            <span class="text-2xl">🌸</span><span class="text-2xl">🌸</span><span class="text-2xl">🌸</span>
-                            <span class="text-lg mx-1 text-gray-400">➔</span>
-                            <span class="text-2xl animate-ping">💥</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
-                    <span class="bg-green-100 text-green-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">3</span> 
-                    <p class="text-sm font-medium text-gray-600 mt-1">Lakukan 3 kali Match untuk memunculkan soal Quiz.</p>
-                </div>
-                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm">
-                    <span class="bg-yellow-100 text-yellow-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">4</span> 
-                    <p class="text-sm font-medium text-gray-600 mt-1">Jawab soal pilihan ganda. Jawaban salah tidak mengurangi skor.</p>
-                </div>
+                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm"><span class="bg-blue-100 text-blue-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">1</span><p class="text-sm font-medium text-gray-600 mt-1">Geser emotikon ke Kanan, Kiri, Atas, atau Bawah.</p></div>
+                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm"><span class="bg-blue-100 text-blue-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">2</span><div class="w-full"><p class="text-sm font-medium text-gray-600 mb-2">Susun minimal 3 emotikon yang sama.</p><div class="flex justify-center items-center gap-2 bg-gray-50 p-3 rounded-xl shadow-inner"><span class="text-2xl">🌸</span><span class="text-2xl">🌸</span><span class="text-2xl">🌸</span><span class="text-lg mx-1 text-gray-400">➔</span><span class="text-2xl animate-ping">💥</span></div></div></div>
+                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm"><span class="bg-green-100 text-green-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">3</span><p class="text-sm font-medium text-gray-600 mt-1">Lakukan 3 kali Match untuk memunculkan soal Quiz.</p></div>
+                <div class="flex gap-4 items-start bg-white p-4 rounded-2xl shadow-sm"><span class="bg-yellow-100 text-yellow-600 rounded-xl w-10 h-10 flex justify-center items-center shrink-0 font-bold text-lg">4</span><p class="text-sm font-medium text-gray-600 mt-1">Jawab soal pilihan ganda. Jawaban salah tidak mengurangi skor.</p></div>
             </div>
         </div>
     </section>
 
-    <!-- 7. SETTINGS SCREEN -->
     <section id="screen-settings" class="screen bg-white">
         <div class="scroll-wrapper !justify-start px-6 pt-24 pb-6">
             <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 hover:scale-105 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
-            
             <h2 class="text-3xl font-black text-center text-gray-800 mb-8 drop-shadow-sm animate-on-load w-full">PENGATURAN</h2>
-            
             <div class="glass-panel w-full p-6 bg-gray-50/80 animate-on-load space-y-4">
                 <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-                    <div class="flex justify-between items-center mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-blue-100 text-blue-500 rounded-full flex justify-center items-center text-xl">🎵</div>
-                            <span class="font-bold text-gray-700">Musik Latar</span>
-                        </div>
-                        <button id="toggle-music" class="w-14 h-8 bg-[var(--secondary)] rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('music')">
-                            <div class="w-6 h-6 bg-white rounded-full absolute top-1 right-1 shadow-md transition-transform duration-300 transform translate-x-0"></div>
-                        </button>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded-xl">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs font-bold text-gray-500">Volume</span>
-                            <span id="volume-label" class="text-xs font-bold bg-blue-100 text-blue-600 px-2 py-0.5 rounded">40%</span>
-                        </div>
-                        <input type="range" id="music-volume" min="0" max="100" value="40" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[var(--primary)]" oninput="changeVolume(this.value)" onchange="saveUserSettings()">
-                    </div>
+                    <div class="flex justify-between items-center mb-4"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-blue-100 text-blue-500 rounded-full flex justify-center items-center text-xl">🎵</div><span class="font-bold text-gray-700">Musik Latar</span></div><button id="toggle-music" class="w-14 h-8 bg-[var(--secondary)] rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('music')"><div class="w-6 h-6 bg-white rounded-full absolute top-1 right-1 shadow-md transition-transform duration-300 transform translate-x-0"></div></button></div>
+                    <div class="bg-gray-50 p-3 rounded-xl"><div class="flex justify-between items-center mb-2"><span class="text-xs font-bold text-gray-500">Volume</span><span id="volume-label" class="text-xs font-bold bg-blue-100 text-blue-600 px-2 py-0.5 rounded">40%</span></div><input type="range" id="music-volume" min="0" max="100" value="40" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[var(--primary)]" oninput="changeVolume(this.value)" onchange="saveUserSettings()"></div>
                 </div>
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-green-100 text-green-500 rounded-full flex justify-center items-center text-xl">🔊</div>
-                        <span class="font-bold text-gray-700">Efek Suara</span>
-                    </div>
-                    <button id="toggle-sfx" class="w-14 h-8 bg-[var(--secondary)] rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('sfx')">
-                        <div class="w-6 h-6 bg-white rounded-full absolute top-1 right-1 shadow-md transition-transform duration-300"></div>
-                    </button>
-                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-green-100 text-green-500 rounded-full flex justify-center items-center text-xl">🔊</div><span class="font-bold text-gray-700">Efek Suara</span></div><button id="toggle-sfx" class="w-14 h-8 bg-[var(--secondary)] rounded-full relative transition-colors duration-300 shadow-inner" onclick="toggleSetting('sfx')"><div class="w-6 h-6 bg-white rounded-full absolute top-1 right-1 shadow-md transition-transform duration-300"></div></button></div>
             </div>
         </div>
     </section>
 
-    <!-- 8. GAME SCREEN -->
     <section id="screen-game" class="screen bg-gradient-to-b from-blue-100 to-green-100">
         <div class="absolute inset-0 pointer-events-none z-0 opacity-40">
             <div class="absolute top-[10%] w-[200%] h-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI1MCIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')] bg-contain bg-repeat-x animate-[float-cloud_40s_linear_infinite]"></div>
         </div>
         
-        <!-- Modern HUD Top Bar -->
         <div class="w-full bg-white/90 backdrop-blur-xl shadow-lg rounded-b-[30px] p-5 flex flex-col justify-between z-20 border-b-4 border-white">
             <div class="flex justify-between items-center mb-3">
                 <div class="flex items-center gap-3 bg-gray-50 pl-2 pr-4 py-1.5 rounded-full border border-gray-100">
                     <div class="w-9 h-9 bg-blue-100 rounded-full flex justify-center items-center text-lg shadow-inner">👦</div>
-                    <div>
-                        <div id="hud-name" class="font-bold text-sm text-gray-800 leading-none">Nama</div>
-                        <div class="text-[10px] text-gray-500 font-medium">Absen <span id="hud-absen"></span></div>
-                    </div>
+                    <div><div id="hud-name" class="font-bold text-sm text-gray-800 leading-none">Nama</div><div class="text-[10px] text-gray-500 font-medium">Absen <span id="hud-absen"></span></div></div>
                 </div>
                 <div class="flex gap-2">
                     <button class="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex justify-center items-center text-lg transition-colors shadow-sm" onclick="toggleMuteInGame()">🔊</button>
@@ -639,55 +442,36 @@
             </div>
             
             <div class="flex justify-between items-center">
-                <!-- Score Card -->
                 <div class="bg-gradient-to-r from-[var(--accent-yellow)] to-[var(--accent-orange)] px-4 py-2 rounded-2xl shadow-md border-2 border-white flex flex-col items-center min-w-[80px]">
                     <span class="text-[10px] text-yellow-900 font-black tracking-wider uppercase">Nilai</span>
                     <span id="hud-score" class="text-2xl font-black text-white drop-shadow-md leading-none">0</span>
                 </div>
-                
-                <!-- Progress & Match Info -->
                 <div class="flex flex-col gap-2 w-3/5">
                     <div class="bg-white p-2 rounded-xl shadow-sm border border-blue-50">
-                        <div class="flex justify-between text-[10px] font-bold text-blue-600 mb-1 px-1">
-                            <span>PROGRES SOAL</span>
-                            <span id="hud-progress">1/10</span>
-                        </div>
-                        <div class="progress-bar-bg !height-[8px]">
-                            <div id="hud-progress-bar" class="progress-bar-fill !bg-blue-400" style="width: 10%;"></div>
-                        </div>
+                        <div class="flex justify-between text-[10px] font-bold text-blue-600 mb-1 px-1"><span>PROGRES SOAL</span><span id="hud-progress">1/10</span></div>
+                        <div class="progress-bar-bg !height-[8px]"><div id="hud-progress-bar" class="progress-bar-fill !bg-blue-400" style="width: 10%;"></div></div>
                     </div>
-                    <div class="flex justify-end gap-1">
-                        <span class="text-[10px] font-bold text-green-700 bg-green-100 px-3 py-1 rounded-full shadow-sm">MATCH: <span id="hud-match-progress" class="text-green-800 text-sm">0</span>/3</span>
-                    </div>
+                    <div class="flex justify-end gap-1"><span class="text-[10px] font-bold text-green-700 bg-green-100 px-3 py-1 rounded-full shadow-sm">MATCH: <span id="hud-match-progress" class="text-green-800 text-sm">0</span>/3</span></div>
                 </div>
             </div>
         </div>
         
-        <!-- Game Board Area -->
         <div class="flex-1 flex justify-center items-center relative p-4 z-10 w-full h-full pb-8">
             <div class="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.4)_0%,transparent_70%)] pointer-events-none"></div>
-            
-            <div id="game-board" class="w-full aspect-square max-w-[380px] glass-panel p-3 grid grid-cols-7 grid-rows-7 gap-1.5 shadow-2xl relative touch-none">
-                <!-- Cells generated via JS -->
-            </div>
+            <div id="game-board" class="w-full aspect-square max-w-[380px] glass-panel p-3 grid grid-cols-7 grid-rows-7 gap-1.5 shadow-2xl relative touch-none"></div>
             <div id="combo-text"></div>
         </div>
     </section>
 
-    <!-- QUIZ MODAL -->
     <div id="modal-quiz" class="absolute top-0 left-0 w-full h-full bg-slate-900/40 backdrop-blur-md z-50 flex flex-col justify-center items-center p-5 hidden">
         <div class="bg-white w-full max-w-sm max-h-[85vh] flex flex-col rounded-[32px] shadow-2xl transform scale-95 transition-all duration-300 relative overflow-hidden" id="quiz-box">
             <div class="bg-[var(--primary)] p-6 pb-8 rounded-b-[40px] text-center relative shadow-md z-10">
                 <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuMiIvPjwvc3ZnPg==')]"></div>
-                <div class="inline-block bg-white/20 backdrop-blur px-4 py-1.5 rounded-full mb-3 border border-white/40 shadow-sm">
-                    <span class="text-white font-bold text-xs tracking-wider">PERTANYAAN <span id="quiz-number">1</span></span>
-                </div>
+                <div class="inline-block bg-white/20 backdrop-blur px-4 py-1.5 rounded-full mb-3 border border-white/40 shadow-sm"><span class="text-white font-bold text-xs tracking-wider">PERTANYAAN <span id="quiz-number">1</span></span></div>
                 <p id="quiz-question" class="text-lg font-bold text-white leading-relaxed drop-shadow-md relative z-10"></p>
             </div>
             <div class="p-5 pt-6 overflow-y-auto custom-scrollbar bg-gray-50 flex-1 relative z-0 -mt-6 pb-8">
-                <div id="quiz-options" class="flex flex-col gap-3 font-poppins pt-4">
-                    <!-- Options injected via JS -->
-                </div>
+                <div id="quiz-options" class="flex flex-col gap-3 font-poppins pt-4"></div>
             </div>
         </div>
     </div>
@@ -698,7 +482,6 @@
         <div id="feedback-score" class="text-2xl font-black text-yellow-300 drop-shadow-md mt-3 bg-black/30 px-4 py-1 rounded-full backdrop-blur">+NILAI</div>
     </div>
 
-    <!-- 9. RESULT SCREEN -->
     <section id="screen-result" class="screen bg-gradient-to-b from-[#FFF9C4] to-[#FFE082]">
         <div class="scroll-wrapper px-6 overflow-hidden relative">
             <div class="absolute inset-0 opacity-20 bg-[repeating-conic-gradient(from_0deg,#FFD54F_0deg_15deg,transparent_15deg_30deg)] animate-[spin-slow_60s_linear_infinite] z-0"></div>
@@ -706,36 +489,17 @@
             <div class="glass-panel w-full p-8 flex flex-col items-center text-center relative overflow-hidden border-[var(--accent-yellow)] border-4 shadow-2xl animate-on-load bg-white/90 z-10 mt-10">
                 <div class="text-[5rem] mb-2 animate-[bounce-soft_2s_infinite] drop-shadow-xl relative z-10">🏆</div>
                 <h2 class="text-3xl font-black text-[var(--accent-orange)] mb-1 drop-shadow-sm relative z-10">PERMAINAN SELESAI</h2>
-                
-                <div id="res-stars" class="flex gap-2 mb-6 text-4xl drop-shadow-md relative z-10">
-                    <!-- Stars updated via JS -->
-                </div>
+                <div id="res-stars" class="flex gap-2 mb-6 text-4xl drop-shadow-md relative z-10"></div>
                 
                 <div class="bg-gray-50 w-full rounded-2xl p-5 shadow-inner mb-6 relative z-10 border border-gray-200">
                     <p class="text-xs text-gray-400 font-bold mb-3 tracking-widest">RINGKASAN HASIL</p>
-                    <div class="flex justify-between items-center border-b border-gray-200 py-2">
-                        <span class="text-gray-500 font-medium text-sm">Pemain</span>
-                        <span id="res-name" class="font-bold text-gray-800 text-lg"></span>
-                    </div>
-                    <div class="flex justify-between items-center border-b border-gray-200 py-2">
-                        <div class="flex items-center gap-2"><span class="text-green-500 text-lg">✔</span> <span class="text-gray-600 font-medium text-sm">Benar</span></div>
-                        <span id="res-benar" class="font-bold text-gray-800 text-lg"></span>
-                    </div>
-                    <div class="flex justify-between items-center border-b border-gray-200 py-2">
-                        <div class="flex items-center gap-2"><span class="text-red-500 text-lg">✖</span> <span class="text-gray-600 font-medium text-sm">Salah</span></div>
-                        <span id="res-salah" class="font-bold text-gray-800 text-lg"></span>
-                    </div>
-                    
-                    <div class="mt-4 pt-4 border-t-2 border-dashed border-gray-300 flex justify-between items-end">
-                        <span class="text-gray-800 font-black text-sm">SKOR AKHIR</span>
-                        <span id="res-skor" class="font-black text-[3rem] text-[var(--accent-orange)] leading-none drop-shadow-sm"></span>
-                    </div>
+                    <div class="flex justify-between items-center border-b border-gray-200 py-2"><span class="text-gray-500 font-medium text-sm">Pemain</span><span id="res-name" class="font-bold text-gray-800 text-lg"></span></div>
+                    <div class="flex justify-between items-center border-b border-gray-200 py-2"><div class="flex items-center gap-2"><span class="text-green-500 text-lg">✔</span> <span class="text-gray-600 font-medium text-sm">Benar</span></div><span id="res-benar" class="font-bold text-gray-800 text-lg"></span></div>
+                    <div class="flex justify-between items-center border-b border-gray-200 py-2"><div class="flex items-center gap-2"><span class="text-red-500 text-lg">✖</span> <span class="text-gray-600 font-medium text-sm">Salah</span></div><span id="res-salah" class="font-bold text-gray-800 text-lg"></span></div>
+                    <div class="mt-4 pt-4 border-t-2 border-dashed border-gray-300 flex justify-between items-end"><span class="text-gray-800 font-black text-sm">SKOR AKHIR</span><span id="res-skor" class="font-black text-[3rem] text-[var(--accent-orange)] leading-none drop-shadow-sm"></span></div>
                 </div>
                 
-                <div id="res-predikat" class="text-lg font-black text-white px-8 py-3 rounded-full shadow-lg mb-8 z-10 border-2 border-white/50 tracking-wider w-full">
-                    MASTER KUIS
-                </div>
-                
+                <div id="res-predikat" class="text-lg font-black text-white px-8 py-3 rounded-full shadow-lg mb-8 z-10 border-2 border-white/50 tracking-wider w-full">MASTER KUIS</div>
                 <div class="w-full flex flex-col gap-3 z-10">
                     <button class="btn-custom btn-primary !w-full !m-0 !py-4 text-xl" onclick="startGame()">🔄 MAIN LAGI</button>
                     <button class="btn-custom !w-full !m-0" onclick="showScreen('screen-landing')">🏠 MENU UTAMA</button>
@@ -744,128 +508,73 @@
         </div>
     </section>
 
-    <!-- 10. LEADERBOARD SCREEN -->
     <section id="screen-leaderboard" class="screen bg-gray-50">
         <div class="scroll-wrapper !justify-start pt-20 px-6 pb-6">
             <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-blue-500 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
-            
             <h2 class="text-3xl font-black text-center text-gray-800 mb-6 drop-shadow-sm animate-on-load w-full">PAPAN <span class="text-[var(--secondary)]">JUARA</span></h2>
-            
             <div class="glass-panel w-full p-2 pb-6 flex flex-col h-[75vh] animate-on-load bg-white shadow-xl">
-                <div class="bg-blue-50 rounded-t-[28px] p-3 text-center border-b border-blue-100 mb-2">
-                    <p class="text-xs font-bold text-blue-600">🏆 TOP 10 SKOR CLOUD</p>
-                </div>
-                <div id="leaderboard-list" class="flex-1 overflow-y-auto space-y-3 font-poppins px-3 custom-scrollbar">
-                    <!-- Injected via JS -->
-                </div>
+                <div class="bg-blue-50 rounded-t-[28px] p-3 text-center border-b border-blue-100 mb-2"><p class="text-xs font-bold text-blue-600">🏆 TOP 10 SKOR CLOUD</p></div>
+                <div id="leaderboard-list" class="flex-1 overflow-y-auto space-y-3 font-poppins px-3 custom-scrollbar"></div>
             </div>
         </div>
     </section>
 
-    <!-- 11. TEACHER LOGIN SCREEN -->
     <section id="screen-teacher-login" class="screen bg-gradient-to-br from-purple-50 to-indigo-50">
         <div class="scroll-wrapper px-6">
             <button class="absolute top-6 left-6 z-50 w-12 h-12 bg-white rounded-full flex justify-center items-center shadow-md border border-gray-100 text-gray-500 hover:text-purple-500 transition-all text-xl font-bold" onclick="showScreen('screen-menu'); playSound('click')">⬅</button>
-            
             <div class="glass-panel w-full p-8 animate-on-load border-purple-200 border-t-8 shadow-2xl bg-white/90">
                 <div class="text-center text-[4rem] mb-2 drop-shadow-md">👩‍🏫</div>
                 <h2 class="text-2xl font-black text-center text-purple-700 mb-2">PORTAL GURU</h2>
                 <p class="text-xs text-center text-gray-500 font-medium mb-8">Masuk untuk kelola soal & lihat nilai siswa</p>
-                
                 <div class="space-y-4">
                     <input type="text" id="teacher-username" placeholder="Username" class="input-modern !bg-purple-50 focus:!border-purple-400 focus:!ring-purple-200">
                     <input type="password" id="teacher-password" placeholder="Password" class="input-modern !bg-purple-50 focus:!border-purple-400 focus:!ring-purple-200">
                 </div>
-                
                 <p id="teacher-error" class="text-red-500 text-sm text-center font-bold h-5 opacity-0 transition-opacity mt-4 bg-red-50 rounded-lg py-1">Username/Password salah!</p>
-                
                 <button class="btn-custom !bg-gradient-to-b !from-purple-500 !to-purple-700 !text-white !border-purple-400 !shadow-[0_8px_0_#6b21a8] hover:!brightness-110 active:!shadow-[0_2px_0_#6b21a8] !w-full !m-0 mt-6 text-xl" onclick="loginTeacher()">MASUK</button>
             </div>
         </div>
     </section>
 
-    <!-- 12. TEACHER DASHBOARD SCREEN -->
     <section id="screen-teacher-dashboard" class="screen bg-gray-100">
-        <!-- Top Navbar -->
         <div class="w-full bg-gradient-to-r from-purple-700 to-indigo-700 text-white p-5 flex justify-between items-center shadow-lg z-20 rounded-b-2xl">
-            <div>
-                <h2 class="font-black text-xl leading-none font-baloo">DASHBOARD</h2>
-                <p class="text-[10px] font-medium text-purple-200 flex items-center gap-1"><span class="animate-pulse">🟢</span> Cloud Active</p>
-            </div>
+            <div><h2 class="font-black text-xl leading-none font-baloo">DASHBOARD</h2><p class="text-[10px] font-medium text-purple-200 flex items-center gap-1"><span class="animate-pulse">🟢</span> Cloud Active</p></div>
             <button class="bg-white/20 hover:bg-white/30 backdrop-blur text-white px-4 py-2 rounded-xl text-sm font-bold shadow transition-all border border-white/30" onclick="logoutTeacher()">Keluar</button>
         </div>
         
-        <!-- Modern Tabs -->
         <div class="flex w-full bg-white shadow-sm z-10 font-poppins text-sm font-bold mt-4 mx-4 rounded-xl overflow-hidden shrink-0" style="width: calc(100% - 32px);">
             <button id="tab-nilai" class="flex-1 py-4 text-purple-600 border-b-4 border-purple-600 bg-purple-50 transition-colors" onclick="switchTeacherTab('nilai')">📊 Rekap Nilai</button>
             <button id="tab-soal" class="flex-1 py-4 text-gray-500 border-b-4 border-transparent hover:bg-gray-50 transition-colors" onclick="switchTeacherTab('soal')">📝 Kelola Soal</button>
             <button id="tab-materi" class="flex-1 py-4 text-gray-500 border-b-4 border-transparent hover:bg-gray-50 transition-colors" onclick="switchTeacherTab('materi')">📚 Materi</button>
         </div>
         
-        <!-- Tab: NILAI -->
         <div id="content-nilai" class="flex-1 overflow-y-auto p-4 custom-scrollbar pb-10 w-full">
             <div class="grid grid-cols-2 gap-3 mb-4 font-poppins">
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
-                    <span class="text-xs font-bold text-gray-500 mb-1">Total Siswa</span>
-                    <span id="stat-total" class="text-2xl font-black text-purple-600">0</span>
-                </div>
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
-                    <span class="text-xs font-bold text-gray-500 mb-1">Rata-rata Kelas</span>
-                    <span id="stat-avg" class="text-2xl font-black text-blue-500">0</span>
-                </div>
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
-                    <span class="text-xs font-bold text-gray-500 mb-1">Nilai Tertinggi</span>
-                    <span id="stat-high" class="text-2xl font-black text-green-500">0</span>
-                </div>
-                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center">
-                    <span class="text-xs font-bold text-gray-500 mb-1">Ketuntasan (≥70)</span>
-                    <span id="stat-pass" class="text-2xl font-black text-orange-500">0%</span>
-                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center"><span class="text-xs font-bold text-gray-500 mb-1">Total Siswa</span><span id="stat-total" class="text-2xl font-black text-purple-600">0</span></div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center"><span class="text-xs font-bold text-gray-500 mb-1">Rata-rata Kelas</span><span id="stat-avg" class="text-2xl font-black text-blue-500">0</span></div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center"><span class="text-xs font-bold text-gray-500 mb-1">Nilai Tertinggi</span><span id="stat-high" class="text-2xl font-black text-green-500">0</span></div>
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center items-center text-center"><span class="text-xs font-bold text-gray-500 mb-1">Ketuntasan (≥70)</span><span id="stat-pass" class="text-2xl font-black text-orange-500">0%</span></div>
             </div>
-            
-            <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100 mb-4">
-                <h3 class="font-bold text-gray-700 text-sm mb-3">Grafik Distribusi Nilai</h3>
-                <div class="relative h-40 w-full">
-                    <canvas id="scoreChart"></canvas>
-                </div>
-            </div>
-            
+            <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100 mb-4"><h3 class="font-bold text-gray-700 text-sm mb-3">Grafik Distribusi Nilai</h3><div class="relative h-40 w-full"><canvas id="scoreChart"></canvas></div></div>
             <div class="bg-white rounded-2xl shadow-sm p-4 border border-gray-100">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-gray-700 text-sm">Tabel Nilai Siswa</h3>
-                    <button class="bg-green-100 text-green-700 hover:bg-green-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center gap-1 active:scale-95 transition-all border border-green-200" onclick="copyScoresToClipboard()">
-                        📋 Salin Excel
-                    </button>
-                </div>
-                
+                <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-gray-700 text-sm">Tabel Nilai Siswa</h3><button class="bg-green-100 text-green-700 hover:bg-green-200 px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm flex items-center gap-1 active:scale-95 transition-all border border-green-200" onclick="copyScoresToClipboard()">📋 Salin Excel</button></div>
                 <div class="overflow-x-auto border border-gray-100 rounded-xl">
                     <table class="w-full text-xs font-poppins text-left min-w-[400px]">
-                        <thead class="bg-gray-50 text-gray-500 border-b border-gray-200">
-                            <tr>
-                                <th class="p-3 font-semibold">Nama</th>
-                                <th class="p-3 text-center font-semibold">Abs</th>
-                                <th class="p-3 text-center text-green-600 font-semibold">B</th>
-                                <th class="p-3 text-center text-red-500 font-semibold">S</th>
-                                <th class="p-3 text-center text-purple-600 font-bold">Skor</th>
-                            </tr>
-                        </thead>
-                        <tbody id="teacher-table-body" class="divide-y divide-gray-100 text-gray-700 font-medium">
-                            <!-- Injected via JS -->
-                        </tbody>
+                        <thead class="bg-gray-50 text-gray-500 border-b border-gray-200"><tr><th class="p-3 font-semibold">Nama</th><th class="p-3 text-center font-semibold">Abs</th><th class="p-3 text-center text-green-600 font-semibold">B</th><th class="p-3 text-center text-red-500 font-semibold">S</th><th class="p-3 text-center text-purple-600 font-bold">Skor</th></tr></thead>
+                        <tbody id="teacher-table-body" class="divide-y divide-gray-100 text-gray-700 font-medium"></tbody>
                     </table>
                 </div>
                 <button class="w-full mt-4 bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 rounded-xl text-sm border border-red-100 transition-colors" onclick="resetData()">🗑 Hapus Semua Data</button>
             </div>
         </div>
         
-        <!-- Tab: SOAL -->
         <div id="content-soal" class="flex-1 overflow-y-auto p-4 custom-scrollbar hidden w-full relative">
             <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-5 mb-5 font-poppins relative shadow-sm overflow-hidden shrink-0">
                 <div class="absolute -right-10 -top-10 text-[8rem] opacity-5">🤖</div>
                 <div class="inline-block bg-blue-500 text-white text-[10px] font-black px-3 py-1 rounded-full shadow-sm mb-3">✨ AI GENERATOR</div>
                 
                 <h3 class="font-black text-gray-800 text-lg mb-1 font-baloo">KAK AL (Asisten Pintar)</h3>
-                <p class="text-xs text-gray-500 font-medium mb-4 leading-relaxed">Tarik soal otomatis dari file soal.json lokal.</p>
+                <p class="text-xs text-gray-500 font-medium mb-4 leading-relaxed">Sistem cerdas penarik dan pengacak soal dari file GitHub yang disambungkan.</p>
                 
                 <div class="space-y-4 relative z-10">
                     <div>
@@ -890,28 +599,21 @@
                     </button>
                 </div>
                 
-                <!-- AI Loading State -->
                 <div id="ai-loading-container" class="hidden mt-4 bg-white/80 backdrop-blur p-4 rounded-xl border border-blue-100 shadow-sm text-center relative z-10">
                     <div class="text-3xl animate-bounce mb-2">🤖</div>
-                    <p id="ai-loading-text" class="text-xs font-bold text-blue-600 mb-3">Kak AL sedang menyiapkan soal...</p>
-                    <div class="progress-bar-bg !h-2">
-                        <div id="ai-progress-bar" class="progress-bar-fill !bg-blue-500" style="width: 0%"></div>
-                    </div>
+                    <p id="ai-loading-text" class="text-xs font-bold text-blue-600 mb-3">Kak AL sedang membuat soal...</p>
+                    <div class="progress-bar-bg !h-2"><div id="ai-progress-bar" class="progress-bar-fill !bg-blue-500" style="width: 0%"></div></div>
                 </div>
             </div>
             
-            <div id="questions-editor" class="space-y-4 font-poppins pb-32">
-                <!-- Injected via JS -->
-            </div>
+            <div id="questions-editor" class="space-y-4 font-poppins pb-32"></div>
             
-            <!-- Sticky Bottom Actions -->
             <div class="absolute bottom-0 left-0 w-full p-4 bg-white/90 backdrop-blur border-t border-gray-100 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] z-20 flex gap-3 pb-8">
                 <button class="w-1/3 bg-gray-100 text-gray-700 hover:bg-gray-200 font-bold py-3 rounded-xl shadow-sm active:scale-95 transition-all text-sm border border-gray-200" onclick="addNewQuestion()">➕ Tambah</button>
                 <button class="w-2/3 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl shadow-md active:scale-95 transition-all text-sm" onclick="saveQuestions()">💾 SIMPAN KE CLOUD</button>
             </div>
         </div>
         
-        <!-- Tab: MATERI -->
         <div id="content-materi" class="flex-1 overflow-y-auto p-6 custom-scrollbar hidden font-poppins w-full">
             <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 text-center">
                 <div class="w-16 h-16 bg-orange-100 text-orange-500 rounded-2xl flex justify-center items-center text-3xl mx-auto mb-4">📚</div>
@@ -928,9 +630,7 @@
         <div class="bg-white w-full max-w-sm rounded-[32px] p-6 shadow-2xl text-center relative animate-on-load">
             <div class="w-12 h-12 bg-blue-100 text-blue-500 rounded-full flex justify-center items-center text-2xl mx-auto -mt-12 mb-4 border-4 border-white shadow-md">🔔</div>
             <p id="custom-modal-text" class="text-gray-700 font-medium mb-6 font-poppins text-sm leading-relaxed"></p>
-            <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full font-baloo">
-                <!-- Buttons injected here -->
-            </div>
+            <div id="custom-modal-buttons" class="flex justify-center gap-3 w-full font-baloo"></div>
         </div>
     </div>
 </div>
@@ -964,7 +664,7 @@
     const TEACHER_USER = 'aldi260605';
     const TEACHER_PASS = '111111aldi';
     
-    // Cadangan soal jika gagal terhubung ke soal.json
+    // Cadangan awal jika di Cloud Kosong
     const DEFAULT_QUESTIONS = [
         { q: "Andi membeli 3 buku tulis. Harga satu buku adalah Rp 4.500. Jika Andi membayar dengan uang Rp 20.000, berapakah kembaliannya?", options: ["Rp 6.500", "Rp 7.500", "Rp 5.500", "Rp 8.000"], answer: 0 },
         { q: "Pancasila adalah dasar negara Indonesia. Sila yang berbunyi 'Keadilan Sosial bagi Seluruh Rakyat Indonesia' dilambangkan dengan...", options: ["Bintang", "Rantai", "Pohon Beringin", "Padi dan Kapas"], answer: 3 },
@@ -985,9 +685,6 @@
     };
     let settings = { music: true, sfx: true, volume: 0.4 };
 
-    // ==================================
-    // FUNGSI TARIK SOAL DARI LOCAL JSON
-    // ==================================
     async function processAIChapter() {
         const selectElement = document.getElementById('ai-chapter');
         const chapterId = selectElement.value;
@@ -1008,19 +705,20 @@
         loadingContainer.classList.remove('hidden');
         
         try {
-            progressBar.style.width = '20%'; loadingText.innerText = "Kak AL membuka modul...";
+            progressBar.style.width = '20%'; loadingText.innerText = "Menghubungkan ke GitHub...";
             await new Promise(r => setTimeout(r, 600));
             
-            progressBar.style.width = '50%'; loadingText.innerText = `Kak AL membaca ${chapterName}...`;
+            // FUNGSI FETCH FILE GITHUB
+            const githubUrl = 'https://raw.githubusercontent.com/aldiitahir344/gamecandy1/main/soal.json';
+            progressBar.style.width = '50%'; loadingText.innerText = `Mengunduh modul: ${chapterName}...`;
             
-            // FUNGSI FETCH FILE LOKAL
-            const response = await fetch('soal.json');
-            if (!response.ok) throw new Error("File soal.json tidak ditemukan di folder!");
+            const response = await fetch(githubUrl);
+            if (!response.ok) throw new Error("Gagal mengambil data. Pastikan link GitHub benar.");
             const bankSoal = await response.json();
             
             if (!bankSoal[chapterId]) throw new Error(`Bab ${chapterId} tidak ditemukan di soal.json!`);
             
-            progressBar.style.width = '80%'; loadingText.innerText = "Kak AL merangkai soal...";
+            progressBar.style.width = '80%'; loadingText.innerText = "Kak AL sedang merangkai soal...";
             await new Promise(r => setTimeout(r, 600));
             
             let soalBabIni = bankSoal[chapterId];
@@ -1034,7 +732,7 @@
                 let opts = [s.correct, ...s.wrongs];
                 let mappedOpts = opts.map((opt, i) => ({ text: opt, isCorrect: i === 0 }));
                 
-                // Acak opsi (Fisher-Yates)
+                // Acak opsi
                 for (let i = mappedOpts.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [mappedOpts[i], mappedOpts[j]] = [mappedOpts[j], mappedOpts[i]];
@@ -1047,7 +745,7 @@
                 };
             });
             
-            // MENGGABUNGKAN (CONCAT) soal baru dengan soal yang sudah ada, BUKAN menimpa
+            // CONCAT: Menggabungkan (Menambah) Soal Baru ke yang Sudah Ada
             activeQuestions = activeQuestions.concat(formattedQuestions);
             
             progressBar.style.width = '100%'; loadingText.innerText = "✅ Selesai!";
@@ -1057,7 +755,7 @@
             showCustomAlert(`✅ Kak AL berhasil menambahkan ${formattedQuestions.length} Soal baru ke daftar.\n\nJangan lupa tekan 'SIMPAN KE CLOUD'!`);
             
         } catch (error) {
-            showCustomAlert(`Error: ${error.message}\nPastikan file soal.json ada di folder yang sama dengan file ini.`);
+            showCustomAlert(`Error: ${error.message}`);
         } finally {
             btn.disabled = false; btn.classList.remove('opacity-50', 'cursor-not-allowed');
             loadingContainer.classList.add('hidden'); progressBar.style.width = '0%';
@@ -1089,8 +787,6 @@
     }
 
     // Audio Logic
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    let audioCtx = new AudioContext();
     function playTone(freq, type, duration, vol=0.1) {
         if (!settings.sfx) return;
         if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -1113,7 +809,6 @@
         }
     }
 
-    // Initialization
     function initApp() {
         showScreen('screen-loading'); updateSettingsUI();
         let progress = 0; const tips = ["Bermain sambil belajar", "Kumpulkan poin tinggi", "Jawab dengan teliti"];
@@ -1136,7 +831,6 @@
         }, 40); 
     }
 
-    // Firebase Logic
     async function initFirebaseAuth() {
         try {
             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) await signInWithCustomToken(auth, __initial_auth_token);
@@ -1259,7 +953,6 @@
         });
     }
 
-    // Teacher Logic
     function loginTeacher() {
         const u = document.getElementById('teacher-username').value; const p = document.getElementById('teacher-password').value;
         const err = document.getElementById('teacher-error'); playSound('click');
@@ -1366,7 +1059,6 @@
         try { document.execCommand('copy'); showCustomAlert('✅ Data berhasil disalin! Buka Excel dan Paste.'); } catch(e) {} document.body.removeChild(el);
     }
 
-    // GAMEPLAY
     function startGame() {
         playSound('click'); if(audioCtx.state === 'suspended') audioCtx.resume();
         const name = document.getElementById('input-name').value.trim(); const absen = document.getElementById('input-absen').value.trim();
@@ -1517,7 +1209,6 @@
         try { await addDoc(collection(db, getScoresCollectionPath()), { name: state.name, absen: state.absen, score: state.score, correct: state.correct, wrong: state.wrong, date: new Date().getTime(), userId: currentUser.uid }); } catch(e) {}
     }
     
-    // Leaderboard
     function showLeaderboard() { renderLeaderboardUI(); showScreen('screen-leaderboard'); }
     function renderLeaderboardUI() {
         const list = document.getElementById('leaderboard-list'); list.innerHTML = '';
@@ -1551,6 +1242,30 @@
             try { for(let s of allScores) { await deleteDoc(doc(db, getScoresCollectionPath(), s.id)); } showCustomAlert("Data berhasil dihapus!"); } catch(e) {}
         });
     }
+
+    window._doStartVideo = function() {
+        playSound('click');
+        const overlay = document.getElementById('start-video-overlay');
+        if(overlay) overlay.style.display = 'none';
+        const vid = document.getElementById('intro-video');
+        if(vid) {
+            vid.play().catch(e => { window._doFinishVideo(); });
+            vid.onended = window._doFinishVideo;
+        } else {
+            window._doFinishVideo();
+        }
+    };
+
+    window._doFinishVideo = function() {
+        const vidScreen = document.getElementById('screen-splash-video');
+        if (vidScreen) {
+            vidScreen.classList.remove('active');
+            vidScreen.style.display = 'none';
+        }
+        const vid = document.getElementById('intro-video');
+        if (vid) { vid.pause(); vid.currentTime = 0; }
+        initApp();
+    };
 
     // Exports to Global window
     window.showScreen = showScreen; window.playSound = playSound; window.startGame = startGame; window.showLeaderboard = showLeaderboard;
